@@ -2,8 +2,8 @@ import Image from "next/image";
 
 const DEMO_USER_NAME = "Demo User";
 
-/** Primary tint for demo avatar (approximates app primary oklch). */
-const AVATAR_BG = "D97746";
+/** Primary tint for demo avatar (matches --primary). */
+const AVATAR_BG = "BF4F30";
 
 type SidebarProps = {
   collapsed: boolean;
@@ -13,7 +13,7 @@ export function Sidebar({ collapsed }: SidebarProps) {
   return (
     <aside
       className={
-        "flex h-screen shrink-0 flex-col border-r border-neutral-200 bg-white transition-[width] duration-200 ease-out " +
+        "flex h-screen shrink-0 flex-col border-r border-neutral-200 bg-background transition-[width] duration-200 ease-out " +
         (collapsed ? "w-[72px]" : "w-60")
       }
     >
@@ -25,10 +25,10 @@ export function Sidebar({ collapsed }: SidebarProps) {
           }
         >
           <Image
-            src={collapsed ? "/small.svg" : "/logo.svg"}
+            src={collapsed ? "/small.ico" : "/logo.svg"}
             alt="Pixii"
-            width={collapsed ? 256 : 824}
-            height={collapsed ? 256 : 219}
+            width={collapsed ? 32 : 824}
+            height={collapsed ? 32 : 219}
             unoptimized
             priority
             className={

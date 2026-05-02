@@ -20,7 +20,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="flex min-h-full bg-white text-black">
+      <body className="flex min-h-full bg-background text-black">
         <AppShell>{children}</AppShell>
       </body>
     </html>
