@@ -125,7 +125,7 @@ export function Sidebar({ collapsed }: SidebarProps) {
   return (
     <aside
       className={
-        "flex h-screen shrink-0 flex-col border-r border-neutral-200/80 bg-background transition-[width] duration-200 ease-out " +
+        "flex h-full min-h-0 shrink-0 flex-col border-r border-neutral-200/80 bg-background transition-[width] duration-200 ease-out " +
         (collapsed ? "w-[72px]" : "w-60")
       }
     >
@@ -133,9 +133,8 @@ export function Sidebar({ collapsed }: SidebarProps) {
         <Link
           href="/"
           className={
-            "flex min-w-0 flex-1 items-center rounded-lg outline-none transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
-            (collapsed ? "justify-center px-0.5" : "") +
-            (isHome ? " ring-1 ring-primary/25 ring-offset-2 ring-offset-background" : " hover:bg-black/[0.04]")
+            "flex min-w-0 flex-1 items-center outline-none " +
+            (collapsed ? "justify-center px-0.5" : "")
           }
           aria-current={isHome ? "page" : undefined}
         >

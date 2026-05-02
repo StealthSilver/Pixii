@@ -1,10 +1,5 @@
-import { FeaturePage } from "@/components/FeaturePage";
+import { redirect } from "next/navigation";
 
 export default function HookPage() {
-  return (
-    <FeaturePage
-      title="Hooks"
-      description="Discover high-performing content hooks from trending posts automatically."
-    />
-  );
+  redirect("/dashboard/hooks");
 }

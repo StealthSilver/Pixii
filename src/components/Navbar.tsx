@@ -9,7 +9,7 @@ type NavbarProps = {
 
 export function Navbar({ sidebarCollapsed, onToggleSidebar }: NavbarProps) {
   return (
-    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between border-b border-neutral-200 bg-background px-4">
+    <header className="z-10 flex h-14 shrink-0 items-center justify-between border-b border-neutral-200 bg-background px-4">
       <button
         type="button"
         onClick={onToggleSidebar}
