@@ -31,6 +31,8 @@ type NavEntry = {
   label: string;
   href: string;
   Icon: IconType;
+  /** App routes under these paths keep this item active (e.g. dashboard tools). */
+  activePathPrefixes?: string[];
 };
 
 type NavSection = {
@@ -44,9 +46,24 @@ const NAV_SECTIONS: NavSection[] = [
     id: "intelligence",
     title: "Intelligence",
     items: [
-      { label: "Hooks", href: "/hook", Icon: FaLink },
-      { label: "AEO", href: "/aeo", Icon: FaSearch },
-      { label: "Rufus", href: "/rufus", Icon: FaRobot },
+      {
+        label: "Hooks",
+        href: "/hook",
+        Icon: FaLink,
+        activePathPrefixes: ["/dashboard/hooks"],
+      },
+      {
+        label: "AEO",
+        href: "/aeo",
+        Icon: FaSearch,
+        activePathPrefixes: ["/dashboard/aeo"],
+      },
+      {
+        label: "Rufus",
+        href: "/rufus",
+        Icon: FaRobot,
+        activePathPrefixes: ["/dashboard/rufus-twin"],
+      },
     ],
   },
   {
@@ -71,8 +88,18 @@ const NAV_SECTIONS: NavSection[] = [
     id: "visuals",
     title: "Visuals",
     items: [
-      { label: "Studio", href: "/studio", Icon: FaPalette },
-      { label: "Renderer", href: "/renderer", Icon: FaCube },
+      {
+        label: "Studio",
+        href: "/studio",
+        Icon: FaPalette,
+        activePathPrefixes: ["/dashboard/photo-upgrader"],
+      },
+      {
+        label: "Renderer",
+        href: "/renderer",
+        Icon: FaCube,
+        activePathPrefixes: ["/dashboard/packaging-renderer"],
+      },
     ],
   },
   {
@@ -102,6 +129,21 @@ function SectionIcon({ sectionId }: { sectionId: string }) {
 type SidebarProps = {
   collapsed: boolean;
 };
+
+function isNavItemActive(
+  pathname: string,
+  href: string,
+  activePathPrefixes?: string[],
+): boolean {
+  if (pathname === href) return true;
+  if (!activePathPrefixes?.length) return false;
+  for (const prefix of activePathPrefixes) {
+    if (pathname === prefix || pathname.startsWith(`${prefix}/`)) {
+      return true;
+    }
+  }
+  return false;
+}
 
 function navItemClassNames(
   collapsed: boolean,
@@ -174,8 +216,8 @@ export function Sidebar({ collapsed }: SidebarProps) {
               </div>
             )}
             <ul className={collapsed ? "flex flex-col items-center gap-1" : "space-y-0.5"}>
-              {section.items.map(({ label, href, Icon }) => {
-                const isActive = pathname === href;
+              {section.items.map(({ label, href, Icon, activePathPrefixes }) => {
+                const isActive = isNavItemActive(pathname, href, activePathPrefixes);
                 return (
                   <li
                     key={`${section.id}-${label}`}

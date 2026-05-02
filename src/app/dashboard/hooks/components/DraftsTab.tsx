@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FaInbox } from "react-icons/fa";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
 import type { DraftJson } from "../types";
@@ -37,6 +37,15 @@ export function DraftsTab({
 }: DraftsTabProps) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (copiedId === null) {
+      return;
+    }
+    const t = window.setTimeout(() => setCopiedId(null), 2000);
+    return () => window.clearTimeout(t);
+  }, [copiedId]);
 
   const toggleExpand = useCallback((id: string) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -58,9 +67,10 @@ export function DraftsTab({
     }
   };
 
-  const copyContent = async (text: string) => {
+  const copyContent = async (draftId: string, text: string) => {
     try {
       await navigator.clipboard.writeText(text);
+      setCopiedId(draftId);
     } catch {
       onToast("Could not copy — try again.", "error");
     }
@@ -153,10 +163,10 @@ export function DraftsTab({
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                onClick={() => void copyContent(d.content)}
+                onClick={() => void copyContent(d._id, d.content)}
                 className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800 transition-colors hover:bg-black/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
               >
-                Copy
+                {copiedId === d._id ? "Copied" : "Copy"}
               </button>
               {confirmId === d._id ? (
                 <span className="inline-flex flex-wrap items-center gap-2 text-xs">
