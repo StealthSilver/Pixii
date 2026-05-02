@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 type FeaturePageProps = {
-  title: string;
+  title: ReactNode;
   /** Short tagline shown under the title in secondary/muted style. */
   description?: string;
   children?: ReactNode;

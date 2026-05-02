@@ -1,10 +1,5 @@
-import { FeaturePage } from "@/components/FeaturePage";
+import { redirect } from "next/navigation";
 
 export default function RufusPage() {
-  return (
-    <FeaturePage
-      title="Rufus"
-      description="Simulate AI-driven shopping answers about your product on marketplaces."
-    />
-  );
+  redirect("/dashboard/rufus-twin");
 }
