@@ -1,10 +1,5 @@
-import { FeaturePage } from "@/components/FeaturePage";
+import { redirect } from "next/navigation";
 
 export default function AeoPage() {
-  return (
-    <FeaturePage
-      title="AEO"
-      description="Compare how major AI models rank your product against competitors."
-    />
-  );
+  redirect("/dashboard/aeo");
 }

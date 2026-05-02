@@ -1,0 +1,228 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import type { AeoFullResult } from "../types";
+import {
+  collectCompetitorNames,
+  highlightResponseHtml,
+} from "../highlightHtml";
+
+type EngineCardProps = {
+  title: string;
+  icon: string;
+  score: number | null;
+  unavailable?: boolean;
+  /** API error message when unavailable. */
+  errorDetail?: string;
+  parsed: Record<string, unknown>;
+  raw: string;
+  brandName: string;
+  allCompetitorNames: string[];
+};
+
+function badgeClass(kind: "good" | "mid" | "bad" | "muted"): string {
+  const base = "inline-flex rounded-full border px-2 py-0.5 text-[11px] font-semibold ";
+  if (kind === "good") {
+    return base + "border-emerald-200 bg-emerald-50 text-emerald-900";
+  }
+  if (kind === "mid") {
+    return base + "border-amber-200 bg-amber-50 text-amber-900";
+  }
+  if (kind === "bad") {
+    return base + "border-red-200 bg-red-50 text-red-900";
+  }
+  return base + "border-neutral-200 bg-neutral-50 text-neutral-600";
+}
+
+function strengthLabel(v: string): string {
+  switch (v) {
+    case "top_pick":
+      return "Top pick";
+    case "mentioned":
+      return "Mentioned";
+    case "listed":
+      return "Listed";
+    default:
+      return "Not mentioned";
+  }
+}
+
+function sentimentLabel(v: string): string {
+  switch (v) {
+    case "positive":
+      return "Positive";
+    case "neutral":
+      return "Neutral";
+    case "negative":
+      return "Negative";
+    default:
+      return "Not mentioned";
+  }
+}
+
+function scoreTone(score: number | null): "good" | "mid" | "bad" | "na" {
+  if (score === null || score === undefined) {
+    return "na";
+  }
+  if (score >= 70) {
+    return "good";
+  }
+  if (score >= 40) {
+    return "mid";
+  }
+  return "bad";
+}
+
+export function EngineCard({
+  title,
+  icon,
+  score,
+  unavailable,
+  errorDetail,
+  parsed,
+  raw,
+  brandName,
+  allCompetitorNames,
+}: EngineCardProps) {
+  const [open, setOpen] = useState(false);
+  const mentioned = Boolean(parsed.brand_mentioned);
+  const rank =
+    typeof parsed.mention_rank === "number" ? parsed.mention_rank : null;
+  const strength = String(parsed.recommendation_strength ?? "not_mentioned");
+  const sentiment = String(parsed.sentiment ?? "not_mentioned");
+  const ctx =
+    parsed.mention_context === null || parsed.mention_context === undefined
+      ? null
+      : String(parsed.mention_context);
+
+  const localCompetitors = useMemo(
+    () => collectCompetitorNames(parsed),
+    [parsed],
+  );
+  const highlightNames = useMemo(() => {
+    const s = new Set<string>();
+    for (const n of allCompetitorNames) {
+      s.add(n);
+    }
+    for (const n of localCompetitors) {
+      s.add(n);
+    }
+    return [...s];
+  }, [allCompetitorNames, localCompetitors]);
+
+  const scoreColor =
+    scoreTone(score) === "good"
+      ? "text-emerald-700"
+      : scoreTone(score) === "mid"
+        ? "text-amber-700"
+        : scoreTone(score) === "bad"
+          ? "text-red-700"
+          : "text-neutral-500";
+
+  const sentKind =
+    sentiment === "positive"
+      ? "good"
+      : sentiment === "negative"
+        ? "bad"
+        : sentiment === "neutral"
+          ? "mid"
+          : "muted";
+
+  const strengthKind =
+    strength === "top_pick"
+      ? "good"
+      : strength === "mentioned" || strength === "listed"
+        ? "mid"
+        : "muted";
+
+  const html = useMemo(
+    () => highlightResponseHtml(raw, brandName, highlightNames),
+    [raw, brandName, highlightNames],
+  );
+
+  return (
+    <article className="flex flex-col rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 font-heading text-sm font-bold text-black"
+            aria-hidden
+          >
+            {icon}
+          </span>
+          <div>
+            <h3 className="font-heading text-sm font-semibold text-black">
+              {title}
+            </h3>
+            {unavailable ? (
+              <span className={badgeClass("muted")}>Unavailable</span>
+            ) : null}
+            {unavailable && errorDetail ? (
+              <p className="mt-1 max-w-[14rem] text-[11px] leading-snug text-red-700">
+                {errorDetail}
+              </p>
+            ) : null}
+          </div>
+        </div>
+        <p className={`font-heading text-3xl font-bold ${scoreColor}`}>
+          {score === null ? "—" : score}
+        </p>
+      </div>
+      <p className="mt-1 text-xs text-neutral-500">out of 100</p>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        <span className={badgeClass(mentioned && rank ? "good" : "muted")}>
+          {mentioned && rank ? `#${rank} mention` : "Not mentioned"}
+        </span>
+        <span className={badgeClass(strengthKind)}>
+          {strengthLabel(strength)}
+        </span>
+        <span className={badgeClass(sentKind)}>{sentimentLabel(sentiment)}</span>
+      </div>
+
+      <div className="mt-4 border-l-4 border-primary/35 bg-black/[0.02] px-3 py-2 text-sm text-neutral-800">
+        {ctx ? (
+          <p className="leading-relaxed">{ctx}</p>
+        ) : (
+          <p className="text-sm text-neutral-500">
+            Your brand was not mentioned in this response
+          </p>
+        )}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="mt-3 inline-flex w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 shadow-sm transition-colors hover:bg-black/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+      >
+        {open ? "Hide full response" : "View full response"}
+      </button>
+      {open ? (
+        <div
+          className="mt-2 max-h-[200px] overflow-y-auto rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 font-mono text-xs leading-relaxed text-neutral-900"
+          // eslint-disable-next-line react/no-danger -- intentional highlighting of trusted model output
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      ) : null}
+    </article>
+  );
+}
+
+export function competitorNamesFromResult(r: AeoFullResult): string[] {
+  const names = new Set<string>();
+  const bn = r.brandName.trim().toLowerCase();
+  for (const row of r.competitors ?? []) {
+    const nm = String(row.name ?? "").trim();
+    if (nm && nm.toLowerCase() !== bn) {
+      names.add(nm);
+    }
+  }
+  for (const p of [r.gptParsed, r.claudeParsed, r.geminiParsed]) {
+    for (const n of collectCompetitorNames(p)) {
+      if (n.trim().toLowerCase() !== bn) {
+        names.add(n);
+      }
+    }
+  }
+  return [...names];
+}

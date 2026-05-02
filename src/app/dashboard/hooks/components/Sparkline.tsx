@@ -1,26 +1,40 @@
 "use client";
 
-import { useId } from "react";
+type SparklineProps = {
+  values: number[];
+  className?: string;
+};
 
-function normalizePoints(values: number[], width: number, height: number) {
+/** Fixed viewBox; parent controls display size via Tailwind. */
+const VB_W = 120;
+const VB_H = 40;
+const PAD = { t: 6, r: 4, b: 8, l: 4 };
+
+function chartPoints(
+  values: number[],
+  width: number,
+  height: number,
+  pad: typeof PAD,
+): { x: number; y: number }[] {
   if (values.length === 0) {
     return [];
   }
   const min = Math.min(...values);
   const max = Math.max(...values);
-  const pad = 4;
   const span = max - min || 1;
+  const innerW = width - pad.l - pad.r;
+  const innerH = height - pad.t - pad.b;
   return values.map((v, i) => {
     const x =
       values.length === 1
-        ? width / 2
-        : pad + (i / (values.length - 1)) * (width - pad * 2);
-    const ny = pad + (1 - (v - min) / span) * (height - pad * 2);
-    return { x, y: ny };
+        ? pad.l + innerW / 2
+        : pad.l + (i / (values.length - 1)) * innerW;
+    const y = pad.t + (1 - (v - min) / span) * innerH;
+    return { x, y };
   });
 }
 
-function buildSmoothPath(points: { x: number; y: number }[]): string {
+function buildPolylinePath(points: { x: number; y: number }[]): string {
   if (points.length === 0) {
     return "";
   }
@@ -28,97 +42,54 @@ function buildSmoothPath(points: { x: number; y: number }[]): string {
     return `M ${points[0].x} ${points[0].y}`;
   }
   let d = `M ${points[0].x} ${points[0].y}`;
-  for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[Math.max(0, i - 1)];
-    const p1 = points[i];
-    const p2 = points[i + 1];
-    const p3 = points[Math.min(points.length - 1, i + 2)];
-    const cp1x = p1.x + (p2.x - p0.x) / 6;
-    const cp1y = p1.y + (p2.y - p0.y) / 6;
-    const cp2x = p2.x - (p3.x - p1.x) / 6;
-    const cp2y = p2.y - (p3.y - p1.y) / 6;
-    d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+  for (let i = 1; i < points.length; i++) {
+    d += ` L ${points[i].x} ${points[i].y}`;
   }
   return d;
 }
 
-function buildAreaPath(
-  points: { x: number; y: number }[],
-  baselineY: number,
-): string {
-  if (points.length === 0) {
-    return "";
-  }
-  const top = buildSmoothPath(points);
-  if (points.length === 1) {
-    const p = points[0];
-    return `${top} L ${p.x + 0.5} ${baselineY} L ${p.x - 0.5} ${baselineY} Z`;
-  }
-  const first = points[0];
-  const last = points[points.length - 1];
-  return `${top} L ${last.x} ${baselineY} L ${first.x} ${baselineY} Z`;
-}
-
-type SparklineProps = {
-  values: number[];
-  className?: string;
-};
-
+/**
+ * Compact line chart for weekly trend (replaces area sparkline).
+ * Styling aligns with HookCard: neutral grid, primary series, rounded caps.
+ */
 export function Sparkline({ values, className }: SparklineProps) {
-  const gradId = useId().replace(/:/g, "");
-  const w = 120;
-  const h = 36;
-  const pad = 4;
-  const baselineY = h - pad;
-  const pts = normalizePoints(values, w, h);
-  const linePath = buildSmoothPath(pts);
-  const areaPath = buildAreaPath(pts, baselineY);
-  const last = pts[pts.length - 1];
+  const pts = chartPoints(values, VB_W, VB_H, PAD);
+  const pathD = buildPolylinePath(pts);
+  const axisY = VB_H - PAD.b;
+  const innerL = PAD.l;
+  const innerR = VB_W - PAD.r;
+  const gridYs = [PAD.t, PAD.t + (axisY - PAD.t) * 0.5, axisY];
 
   return (
     <svg
-      viewBox={`0 0 ${w} ${h}`}
+      viewBox={`0 0 ${VB_W} ${VB_H}`}
       className={"block max-h-full w-full " + (className ?? "")}
       preserveAspectRatio="none"
       aria-hidden
     >
-      <defs>
-        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="currentColor" stopOpacity={0.22} />
-          <stop offset="100%" stopColor="currentColor" stopOpacity={0.02} />
-        </linearGradient>
-      </defs>
-
-      {pts.length > 1
-        ? pts.map((p, i) => (
-            <line
-              key={i}
-              x1={p.x}
-              y1={baselineY}
-              x2={p.x}
-              y2={baselineY - 3}
-              className="stroke-neutral-200"
-              strokeWidth={0.9}
-              vectorEffect="non-scaling-stroke"
-            />
-          ))
-        : null}
-
-      {areaPath ? (
-        <path
-          d={areaPath}
-          fill={`url(#${gradId})`}
-          className="text-primary"
-          stroke="none"
+      {gridYs.map((gy, i) => (
+        <line
+          key={i}
+          x1={innerL}
+          y1={gy}
+          x2={innerR}
+          y2={gy}
+          className={
+            gy === axisY
+              ? "stroke-neutral-200"
+              : "stroke-neutral-100 [stroke-dasharray:3_3]"
+          }
+          strokeWidth={gy === axisY ? 1 : 0.85}
+          vectorEffect="non-scaling-stroke"
         />
-      ) : null}
+      ))}
 
-      {linePath ? (
+      {pathD && pts.length > 1 ? (
         <path
-          d={linePath}
+          d={pathD}
           fill="none"
           stroke="currentColor"
-          strokeWidth={1.75}
+          strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-primary"
@@ -126,30 +97,35 @@ export function Sparkline({ values, className }: SparklineProps) {
         />
       ) : null}
 
-      {pts.length > 1
-        ? pts.map((p, i) => (
-            <circle
-              key={`d-${i}`}
-              cx={p.x}
-              cy={p.y}
-              r={1.6}
-              className="fill-white stroke-primary/50"
-              strokeWidth={0.85}
-              vectorEffect="non-scaling-stroke"
-            />
-          ))
-        : null}
-
-      {last ? (
+      {pts.length === 1 ? (
         <circle
-          cx={last.x}
-          cy={last.y}
-          r={2.75}
+          cx={pts[0].x}
+          cy={pts[0].y}
+          r={3}
           className="fill-primary stroke-white"
           strokeWidth={1.25}
           vectorEffect="non-scaling-stroke"
         />
-      ) : null}
+      ) : (
+        pts.map((p, i) => {
+          const isLast = i === pts.length - 1;
+          return (
+            <circle
+              key={i}
+              cx={p.x}
+              cy={p.y}
+              r={isLast ? 3.25 : 2.25}
+              className={
+                isLast
+                  ? "fill-primary stroke-white"
+                  : "fill-white stroke-primary/55"
+              }
+              strokeWidth={isLast ? 1.35 : 1}
+              vectorEffect="non-scaling-stroke"
+            />
+          );
+        })
+      )}
     </svg>
   );
 }
