@@ -18,8 +18,12 @@ export type AeoEngineErrors = {
 export type AeoRunMeta = {
   rankSummary: number | null;
   brandsMentionedCount: number;
-  /** Model id used for the shopper-response Gemini call (for support / debugging). */
+  /** Model id used for Gemini calls in this run (after probe). */
   geminiModel?: string;
+  /** Generative Language API version used for Gemini (e.g. v1, v1beta). */
+  geminiApiVersion?: string;
+  /** When OpenAI failed/quota, these slots used Gemini text instead. */
+  usedGeminiForOpenAiSlots?: { gpt: boolean; mini: boolean };
   engineErrors?: AeoEngineErrors;
 };
 

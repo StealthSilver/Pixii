@@ -326,6 +326,19 @@ export default function AeoDashboardPage() {
 
               {result ? (
                 <div className="mt-8 space-y-6">
+                  {result.meta?.usedGeminiForOpenAiSlots &&
+                  (result.meta.usedGeminiForOpenAiSlots.gpt ||
+                    result.meta.usedGeminiForOpenAiSlots.mini) ? (
+                    <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+                      Demo note: OpenAI hit quota or was skipped, so the{" "}
+                      <strong>GPT-4o</strong> and/or <strong>GPT-4o mini</strong>{" "}
+                      answers below were generated with{" "}
+                      <strong>
+                        Gemini ({result.meta.geminiModel ?? "Gemini"})
+                      </strong>{" "}
+                      instead (same free-tier key as the third column).
+                    </p>
+                  ) : null}
                   <ScoreOverview
                     overallScore={result.overallScore}
                     rankSummary={derivedMeta?.rankSummary ?? null}
