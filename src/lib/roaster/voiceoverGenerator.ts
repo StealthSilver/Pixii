@@ -1,4 +1,8 @@
 import { uploadRawFromBuffer } from "@/lib/cloudinary";
+import {
+  formatElevenLabsErrorBody,
+  resolveElevenLabsApiKey,
+} from "@/lib/elevenlabs/apiKey";
 
 const VOICE_ID = "nPczCjzI2devNBz1zQrb";
 
@@ -13,9 +17,11 @@ export async function generateRoasterVoiceover(
   script: string,
   jobId: string,
 ): Promise<string> {
-  const apiKey = process.env.ELEVEN_LABS_API_KEY?.trim();
+  const apiKey = resolveElevenLabsApiKey();
   if (!apiKey) {
-    throw new Error("ELEVEN_LABS_API_KEY is not configured.");
+    throw new Error(
+      "ElevenLabs API key is not configured. Set ELEVEN_LABS_API_KEY (or ELEVENLABS_API_KEY) in .env.local.",
+    );
   }
 
   const response = await fetch(
@@ -43,9 +49,8 @@ export async function generateRoasterVoiceover(
   if (!response.ok) {
     const t = await response.text();
     console.warn("[roaster/voiceover] ElevenLabs error", response.status, t.slice(0, 200));
-    throw new Error(
-      `Voiceover failed (${response.status}): ${t.slice(0, 280) || "unknown error"}`,
-    );
+    const friendly = formatElevenLabsErrorBody(response.status, t);
+    throw new Error(`Voiceover failed (${response.status}): ${friendly}`);
   }
 
   const audioBuffer = await response.arrayBuffer();

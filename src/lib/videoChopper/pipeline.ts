@@ -64,9 +64,7 @@ export async function processVideoChopperJob(jobId: string): Promise<void> {
     } catch (e) {
       const msg = friendlyError(e);
       job.status = "failed";
-      job.errorMessage = msg.includes("timed out")
-        ? msg
-        : "Transcription timed out. Please try a shorter video.";
+      job.errorMessage = msg.length > 900 ? `${msg.slice(0, 897)}…` : msg;
       await job.save();
       return;
     }
@@ -208,15 +206,22 @@ export async function processVideoChopperJob(jobId: string): Promise<void> {
   } catch (e) {
     const msg = friendlyError(e);
     await connectDB();
+    const shortPrivate =
+      (msg.includes("private") || msg.includes("unavailable")) &&
+      !msg.toLowerCase().includes("yt-dlp");
+    const tooLong =
+      msg.includes("Video too long") ||
+      (msg.toLowerCase().includes("60 minutes") && msg.toLowerCase().includes("long"));
+    const errorMessage = shortPrivate
+      ? "This video is private or unavailable."
+      : tooLong
+        ? "Video must be under 60 minutes."
+        : msg.length > 900
+          ? `${msg.slice(0, 897)}…`
+          : msg;
     await VideoChopperJob.findByIdAndUpdate(jobId, {
       status: "failed",
-      errorMessage: msg.includes("download")
-        ? "Could not download this video. It may be region-locked or have download restrictions."
-        : msg.includes("private") || msg.includes("unavailable")
-          ? "This video is private or unavailable."
-          : msg.includes("long")
-            ? "Video must be under 60 minutes."
-            : msg,
+      errorMessage,
     }).exec();
   } finally {
     if (audioPath) {

@@ -101,8 +101,17 @@ export async function transcribeAudio(audioPath: string): Promise<TranscriptionR
     return parseWhisperOutput(output);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    if (msg.toLowerCase().includes("time") || msg.toLowerCase().includes("timeout")) {
-      throw new Error("Transcription timed out. Please try a shorter video.");
+    const lower = msg.toLowerCase();
+    if (
+      /\btimeout\b/.test(lower) ||
+      lower.includes("timed out") ||
+      lower.includes("maximum wait") ||
+      lower.includes("exceeded the maximum") ||
+      lower.includes("prediction did not finish")
+    ) {
+      throw new Error(
+        "Transcription took too long or Replicate did not finish in time. Check REPLICATE_API_KEY and Replicate status; very long videos may need a higher serverless limit.",
+      );
     }
     throw e;
   } finally {

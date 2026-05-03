@@ -180,11 +180,11 @@ export function VideoTab({
  Avatar frames ({avatarFrameUrls.length})
  </p>
  <div className="mt-3 grid grid-cols-2 gap-2">
- {avatarFrameUrls.slice(0, 4).map((u, i) => (
- // eslint-disable-next-line @next/next/no-img-element
- <img
- key={u}
- src={u}
+            {avatarFrameUrls.slice(0, 4).map((u, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={`avatar-frame-${i}`}
+                src={u}
  alt={`Frame ${i + 1}`}
  className="aspect-[3/4] w-full rounded-md object-cover"
  />

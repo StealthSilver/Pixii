@@ -1,10 +1,26 @@
 import { fal } from "@fal-ai/client";
-import { uploadImageFromUrl, uploadVideoFromUrl } from "@/lib/cloudinary";
+import sharp from "sharp";
+import {
+  uploadImageFromFile,
+  uploadImageFromUrl,
+  uploadVideoFromUrl,
+} from "@/lib/cloudinary";
 import type { AvatarResult } from "@/lib/aiCreator/types";
 import { getPersonaById } from "@/lib/aiCreator/personas";
 
 const NEGATIVE_PROMPT =
   "cartoon, illustration, watermark, text overlay, logo, deformed hands";
+
+/** Persona accent colors → RGB for Fal-free placeholder frames. */
+const PERSONA_PLACEHOLDER_RGB: Record<string, { r: number; g: number; b: number }> =
+  {
+    pink: { r: 190, g: 24, b: 93 },
+    blue: { r: 29, g: 78, b: 216 },
+    purple: { r: 126, g: 34, b: 206 },
+    amber: { r: 180, g: 83, b: 9 },
+    teal: { r: 13, g: 148, b: 136 },
+    green: { r: 21, g: 128, b: 61 },
+  };
 
 function extractFluxImages(payload: unknown): string[] {
   if (!payload || typeof payload !== "object") {
@@ -49,12 +65,63 @@ function extractVideoUrl(payload: unknown): string | null {
   return null;
 }
 
+function falConfigured(): boolean {
+  return Boolean(process.env.FAL_API_KEY?.trim());
+}
+
+/** Studio-style placeholder frames when Fal.ai is not configured or Flux fails. */
+async function placeholderAvatarFrames(
+  personaId: string,
+  jobId: string,
+): Promise<AvatarResult> {
+  const persona = getPersonaById(personaId);
+  const bg = PERSONA_PLACEHOLDER_RGB[persona.color] ?? { r: 39, g: 39, b: 42 };
+  const w = 540;
+  const h = 960;
+  const labels = [
+    "Voiceover package",
+    "Use frames + audio",
+    "in CapCut or similar",
+    "Still frames for edit",
+  ];
+  const urls: string[] = [];
+
+  for (let i = 0; i < 4; i++) {
+    const line = labels[i] ?? labels[0];
+    const svg = `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgb(${bg.r},${bg.g},${bg.b});stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(${Math.min(255, bg.r + 40)},${Math.min(255, bg.g + 40)},${Math.min(255, bg.b + 45)});stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <text x="50%" y="38%" text-anchor="middle" fill="rgba(255,255,255,0.95)" font-family="system-ui,sans-serif" font-size="22" font-weight="600">${persona.name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;")}</text>
+  <text x="50%" y="46%" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="system-ui,sans-serif" font-size="15">${persona.handle.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;")}</text>
+  <text x="50%" y="58%" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui,sans-serif" font-size="14">${line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;")}</text>
+  <text x="50%" y="88%" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-family="system-ui,sans-serif" font-size="12">Frame ${i + 1} · job ${jobId.slice(-6)}</text>
+</svg>`;
+
+    const buf = await sharp(Buffer.from(svg)).jpeg({ quality: 88 }).toBuffer();
+    urls.push(
+      await uploadImageFromFile(buf, "pixii/ai-creator/avatars"),
+    );
+  }
+
+  console.info(`[aiCreator/avatar] placeholder frames job=${jobId}`);
+  return {
+    frameUrls: urls,
+    assembled: false,
+    finalVideoUrl: null,
+  };
+}
+
 async function generateFluxPortrait(
   prompt: string,
 ): Promise<string | null> {
   const falKey = process.env.FAL_API_KEY?.trim();
   if (!falKey) {
-    throw new Error("FAL_API_KEY is not configured.");
+    return null;
   }
   fal.config({ credentials: falKey });
 
@@ -102,7 +169,9 @@ export async function generateAvatarVideo(
 
   const avatarRemote = await generateFluxPortrait(basePrompt);
   if (!avatarRemote) {
-    return fallbackFrames(personaId, jobId);
+    return falConfigured()
+      ? fallbackFrames(personaId, jobId)
+      : placeholderAvatarFrames(personaId, jobId);
   }
 
   const avatarImageUrl = await uploadImageFromUrl(
@@ -112,7 +181,6 @@ export async function generateAvatarVideo(
 
   const falKey = process.env.FAL_API_KEY?.trim();
   if (!falKey) {
-    console.warn("[aiCreator/avatar] Missing FAL_API_KEY — using static frames");
     return fallbackFourFramesFromOne(avatarImageUrl, personaId, jobId);
   }
   fal.config({ credentials: falKey });
@@ -211,7 +279,7 @@ async function fallbackFrames(
   }
 
   if (urls.length === 0) {
-    throw new Error("Avatar image generation failed.");
+    return placeholderAvatarFrames(personaId, jobId);
   }
 
   while (urls.length < 4) {

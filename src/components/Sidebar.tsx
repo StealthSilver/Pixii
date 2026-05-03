@@ -110,6 +110,7 @@ const NAV_SECTIONS: NavSection[] = [
         href: "/roaster",
         Icon: FlameGlyph,
         activePathPrefixes: ["/dashboard/roaster", "/roaster"],
+        isBeta: true,
       },
       {
         label: "Reviews",
@@ -153,14 +154,12 @@ const NAV_SECTIONS: NavSection[] = [
         href: "/studio",
         Icon: StudioNavIcon,
         activePathPrefixes: ["/dashboard/photo-upgrader"],
-        isBeta: true,
       },
       {
         label: "Renderer",
         href: "/renderer",
         Icon: CubeGlyph,
         activePathPrefixes: ["/dashboard/packaging-renderer"],
-        isBeta: true,
       },
     ],
   },
@@ -168,7 +167,7 @@ const NAV_SECTIONS: NavSection[] = [
     id: "store",
     title: "Store",
     items: [
-      { label: "Shopify", href: "/shopify", Icon: ShopifyGlyph, isBeta: true },
+      { label: "Shopify", href: "/shopify", Icon: ShopifyGlyph },
     ],
   },
 ];

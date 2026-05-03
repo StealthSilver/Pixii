@@ -251,24 +251,29 @@ async function runRenderStage(
   );
 
   const generate = async (): Promise<{ urls: string[]; engine: "fal" | "replicate" }> => {
-    try {
-      const urls = await runFalFluxImg2Img(
-        textureUrl,
-        built.prompt,
-        built.negativePrompt,
-        variationCount,
-      );
-      return { urls, engine: "fal" };
-    } catch (falErr) {
-      console.error("[packaging-renderer] Fal.ai failed, falling back to Replicate", falErr);
-      const urls = await runReplicateSdxlImg2Img(
-        textureUrl,
-        built.prompt,
-        built.negativePrompt,
-        variationCount,
-      );
-      return { urls, engine: "replicate" };
+    if (process.env.FAL_API_KEY?.trim()) {
+      try {
+        const urls = await runFalFluxImg2Img(
+          textureUrl,
+          built.prompt,
+          built.negativePrompt,
+          variationCount,
+        );
+        return { urls, engine: "fal" };
+      } catch (falErr) {
+        console.error(
+          "[packaging-renderer] Fal.ai failed, falling back to Replicate",
+          falErr,
+        );
+      }
     }
+    const urls = await runReplicateSdxlImg2Img(
+      textureUrl,
+      built.prompt,
+      built.negativePrompt,
+      variationCount,
+    );
+    return { urls, engine: "replicate" };
   };
 
   const { urls: rawUrls, engine } = await withTimeout(

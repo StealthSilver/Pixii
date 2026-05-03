@@ -66,5 +66,7 @@ export async function runReplicatePrediction(params: {
     await new Promise((r) => setTimeout(r, pollIntervalMs));
   }
 
-  throw new Error("Transcription timed out. Please try a shorter video.");
+  throw new Error(
+    "Replicate did not report success before the poll deadline. Check REPLICATE_API_KEY, model version, and https://replicate.com/status — or increase maxWaitMs for this job.",
+  );
 }

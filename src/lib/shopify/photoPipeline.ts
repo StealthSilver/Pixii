@@ -142,38 +142,50 @@ Return ONLY JSON:
     }).exec();
 
     const falKey = process.env.FAL_API_KEY?.trim();
-    if (!falKey) {
-      throw new Error("FAL_API_KEY is not configured.");
-    }
-    fal.config({ credentials: falKey });
+    let falUrls: string[] = [];
+    let cloudinaryUrls: string[] = [];
 
-    const falResult = await withTimeout(
-      fal.subscribe("fal-ai/flux/dev", {
-        input: {
-          prompt,
-          image_url: job.productImageUrl,
-          image_size: "landscape_4_3",
-          num_inference_steps: 30,
-          guidance_scale: 7,
-          num_images: 4,
-          negative_prompt: negativePrompt,
-          enable_safety_checker: false,
-        } as never,
-      }),
-      75_000,
-      "Fal.ai image generation",
-    );
+    if (falKey) {
+      fal.config({ credentials: falKey });
 
-    const payload = (falResult as { data?: unknown }).data ?? falResult;
-    const falUrls = extractFalImages(payload);
-    if (falUrls.length < 1) {
-      throw new Error("Fal.ai returned no images.");
-    }
+      const falResult = await withTimeout(
+        fal.subscribe("fal-ai/flux/dev", {
+          input: {
+            prompt,
+            image_url: job.productImageUrl,
+            image_size: "landscape_4_3",
+            num_inference_steps: 30,
+            guidance_scale: 7,
+            num_images: 4,
+            negative_prompt: negativePrompt,
+            enable_safety_checker: false,
+          } as never,
+        }),
+        75_000,
+        "Fal.ai image generation",
+      );
 
-    const cloudinaryUrls: string[] = [];
-    for (const u of falUrls.slice(0, 4)) {
-      const secure = await uploadImageFromUrl(u, CLOUDINARY_FOLDER);
-      cloudinaryUrls.push(secure);
+      const payload = (falResult as { data?: unknown }).data ?? falResult;
+      falUrls = extractFalImages(payload);
+      if (falUrls.length < 1) {
+        throw new Error("Fal.ai returned no images.");
+      }
+
+      cloudinaryUrls = [];
+      for (const u of falUrls.slice(0, 4)) {
+        const secure = await uploadImageFromUrl(u, CLOUDINARY_FOLDER);
+        cloudinaryUrls.push(secure);
+      }
+    } else {
+      console.warn(
+        "[shopify/photo] FAL_API_KEY unset — using original product image for all slots.",
+      );
+      const src = job.productImageUrl;
+      falUrls = [src, src, src, src];
+      cloudinaryUrls = [];
+      for (let i = 0; i < 4; i++) {
+        cloudinaryUrls.push(await uploadImageFromUrl(src, CLOUDINARY_FOLDER));
+      }
     }
 
     await ShopifyPhotoJob.findByIdAndUpdate(jobId, {

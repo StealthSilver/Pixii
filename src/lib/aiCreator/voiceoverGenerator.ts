@@ -1,13 +1,19 @@
 import { uploadRawFromBuffer } from "@/lib/cloudinary";
+import {
+  formatElevenLabsErrorBody,
+  resolveElevenLabsApiKey,
+} from "@/lib/elevenlabs/apiKey";
 
 export async function generateCreatorVoiceover(
   script: string,
   voiceId: string,
   jobId: string,
 ): Promise<string> {
-  const apiKey = process.env.ELEVEN_LABS_API_KEY?.trim();
+  const apiKey = resolveElevenLabsApiKey();
   if (!apiKey) {
-    throw new Error("ELEVEN_LABS_API_KEY is not configured.");
+    throw new Error(
+      "ElevenLabs API key is not configured. Set ELEVEN_LABS_API_KEY (or ELEVENLABS_API_KEY) in .env.local.",
+    );
   }
 
   const charCount = script.length;
@@ -38,9 +44,6 @@ export async function generateCreatorVoiceover(
     }),
   });
 
-  if (res.status === 401) {
-    throw new Error("Invalid ElevenLabs API key");
-  }
   if (res.status === 422) {
     throw new Error("Script too long for voiceover");
   }
@@ -52,7 +55,7 @@ export async function generateCreatorVoiceover(
 
   if (!res.ok) {
     const t = await res.text();
-    throw new Error(`ElevenLabs error (${res.status}): ${t.slice(0, 200)}`);
+    throw new Error(formatElevenLabsErrorBody(res.status, t));
   }
 
   const arrayBuffer = await res.arrayBuffer();

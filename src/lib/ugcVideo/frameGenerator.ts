@@ -88,8 +88,19 @@ export async function generateVideoFrames(
 ): Promise<{ falUrls: string[]; cloudinaryUrls: string[] }> {
   const falKey = process.env.FAL_API_KEY?.trim();
   if (!falKey) {
-    throw new Error("FAL_API_KEY is not configured.");
+    console.warn(
+      "[ugc-video] FAL_API_KEY unset — mirroring product image as four frames.",
+    );
+    const cloudinaryUrls: string[] = [];
+    for (let i = 0; i < 4; i++) {
+      cloudinaryUrls.push(await uploadImageFromUrl(productImageUrl, FRAME_FOLDER));
+    }
+    return {
+      falUrls: [productImageUrl, productImageUrl, productImageUrl, productImageUrl],
+      cloudinaryUrls,
+    };
   }
+
   fal.config({ credentials: falKey });
 
   const framePrompts = buildFramePrompts(product, persona, script, platform);

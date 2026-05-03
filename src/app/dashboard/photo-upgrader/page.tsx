@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { FaCheck, FaSpinner } from "react-icons/fa";
-import { BetaFeatureNotice } from "@/components/BetaFeatureNotice";
 import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
@@ -311,7 +310,6 @@ export default function PhotoUpgraderPage() {
  <div className="relative min-h-full overflow-x-hidden">
  <GridBackdrop />
  <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
- <BetaFeatureNotice />
  <header className="border-b border-border/70 pb-6">
  <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
  Studio
@@ -445,7 +443,7 @@ export default function PhotoUpgraderPage() {
  onChange={(e) => setUseAiBackground(e.target.checked)}
  className="size-4 rounded border-border text-primary focus:ring-primary"
  />
- AI-generated studio background (Fal.ai)
+ AI-generated studio background (uses Fal.ai when configured; otherwise preset color)
  </label>
 
  <label className="mt-3 flex cursor-pointer items-center gap-2 text-sm font-medium text-foreground/90">
@@ -455,7 +453,7 @@ export default function PhotoUpgraderPage() {
  onChange={(e) => setRelightEnabled(e.target.checked)}
  className="size-4 rounded border-border text-primary focus:ring-primary"
  />
- Relight & polish (Clipdrop)
+ Relight & polish (Clipdrop — skipped if CLIPDROP_API_KEY is not set)
  </label>
 
  <button

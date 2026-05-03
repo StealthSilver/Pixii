@@ -314,7 +314,7 @@ export async function processPhotoJob(jobId: string): Promise<void> {
 
     let withBackgroundUrl: string;
 
-    if (fresh.useAiBackground) {
+    if (fresh.useAiBackground && process.env.FAL_API_KEY?.trim()) {
       const basePrompt =
         "professional studio product photography, soft box lighting, clean background, commercial quality, 8k resolution, sharp focus, " +
         getBackgroundPrompt(fresh.backgroundStyle);
@@ -329,6 +329,19 @@ export async function processPhotoJob(jobId: string): Promise<void> {
         falUrl,
         "pixii/photo-upgrader/with-background",
       );
+    } else if (fresh.useAiBackground) {
+      console.warn(
+        "[photo-upgrader] AI background requested but FAL_API_KEY is unset — using preset studio background.",
+      );
+      const jpegBuf = await compositePresetBackground(
+        fresh.transparentUrl!,
+        fresh.backgroundStyle,
+        fresh.outputSize,
+      );
+      withBackgroundUrl = await uploadImageFromFile(
+        jpegBuf,
+        "pixii/photo-upgrader/with-background",
+      );
     } else {
       const jpegBuf = await compositePresetBackground(
         fresh.transparentUrl!,
@@ -341,10 +354,11 @@ export async function processPhotoJob(jobId: string): Promise<void> {
       );
     }
 
-    // STEP 4 — RELIGHT
+    // STEP 4 — RELIGHT (optional: requires CLIPDROP_API_KEY)
     let finalSourceUrl = withBackgroundUrl;
 
-    if (fresh.relightEnabled) {
+    const clipKey = process.env.CLIPDROP_API_KEY?.trim();
+    if (fresh.relightEnabled && clipKey) {
       await PhotoJob.findByIdAndUpdate(jobId, {
         status: "relighting",
         currentStep: 4,
@@ -358,6 +372,10 @@ export async function processPhotoJob(jobId: string): Promise<void> {
       finalSourceUrl = await uploadImageFromFile(
         relitBuf,
         "pixii/photo-upgrader/relit",
+      );
+    } else if (fresh.relightEnabled && !clipKey) {
+      console.warn(
+        "[photo-upgrader] Relight enabled but CLIPDROP_API_KEY unset — using composed image without Clipdrop relight.",
       );
     }
 

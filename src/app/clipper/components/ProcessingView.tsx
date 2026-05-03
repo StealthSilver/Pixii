@@ -58,7 +58,7 @@ export function ProcessingView({
  <h2 className="font-heading text-lg font-semibold text-foreground">
  Something went wrong
  </h2>
- <p className="mt-2 text-sm text-muted-foreground">
+ <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
  {errorMessage ?? "Processing failed. Try another video."}
  </p>
  <button

@@ -38,6 +38,8 @@ export async function GET(request: NextRequest) {
         { status: 400 },
       );
     }
-    return NextResponse.json({ error: "Video not available" }, { status: 400 });
+    const capped =
+      msg.length > 320 ? "Video not available. See server logs or .env.example (YOUTUBE_API_KEY)." : msg;
+    return NextResponse.json({ error: capped }, { status: 400 });
   }
 }
