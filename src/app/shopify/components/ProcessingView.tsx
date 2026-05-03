@@ -45,7 +45,7 @@ export function ProcessingView({
   };
 
   return (
-    <section className="mx-auto mt-4 max-w-xl rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+    <section className="mt-4 max-w-xl rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
       <div className="flex items-center gap-3 border-b border-neutral-100 pb-4">
         <div className="relative size-[60px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
           {productThumbUrl ? (
@@ -127,7 +127,7 @@ export function ProcessingView({
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="mt-2 text-center text-xs text-neutral-500">
+            <p className="mt-2 text-left text-xs text-neutral-500">
               Generating for {fmt(elapsedSeconds)}...
             </p>
           </div>

@@ -67,8 +67,8 @@ export function PushPanel({
 
   if (done) {
     return (
-      <div className="mt-8 rounded-xl border border-emerald-200 bg-emerald-50/50 p-8 text-center shadow-sm">
-        <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-emerald-500 text-white">
+      <div className="mt-8 rounded-xl border border-emerald-200 bg-emerald-50/50 p-8 text-left shadow-sm">
+        <div className="flex size-16 items-center justify-center rounded-full bg-emerald-500 text-white">
           <svg className="size-9" viewBox="0 0 24 24" fill="none" aria-hidden>
             <path
               d="M5 13l4 4L19 7"
@@ -89,7 +89,7 @@ export function PushPanel({
           href={adminProductUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-4 inline-block text-sm font-semibold text-primary underline-offset-2 hover:underline"
+          className="mt-4 block text-sm font-semibold text-primary underline-offset-2 hover:underline"
         >
           View on Shopify
         </a>
@@ -107,11 +107,11 @@ export function PushPanel({
   return (
     <div className="mt-8 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
       {!selectedImageUrl ? (
-        <p className="py-6 text-center text-sm text-neutral-500">
+        <p className="py-6 text-left text-sm text-neutral-500">
           Select a photo above to publish it to your listing
         </p>
       ) : (
-        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
           <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
             <Image
               src={selectedImageUrl}
@@ -121,7 +121,7 @@ export function PushPanel({
               unoptimized
             />
           </div>
-          <div className="min-w-0 flex-1 text-center sm:text-left">
+          <div className="min-w-0 flex-1 text-left">
             <p className="font-heading text-sm font-semibold text-black">
               Ready to publish to {productTitle}
             </p>

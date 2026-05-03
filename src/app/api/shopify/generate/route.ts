@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { ShopifyConnection } from "@/lib/models/shopifyConnection";
+import { ShopifyPhotoJob } from "@/lib/models/shopifyPhotoJob";
 import {
   SHOPIFY_PHOTO_LIFESTYLES,
   type ShopifyPhotoLifestyle,

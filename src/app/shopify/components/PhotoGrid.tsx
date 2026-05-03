@@ -93,7 +93,7 @@ export function PhotoGrid({
           ),
         )}
       </div>
-      <p className="mt-3 text-center text-xs text-neutral-500">
+      <p className="mt-3 text-left text-xs text-neutral-500">
         Generated using {lifestyleKey.replace(/_/g, " ")} scene
         {processingTimeMs != null ? ` · ${(processingTimeMs / 1000).toFixed(1)}s` : ""}
       </p>

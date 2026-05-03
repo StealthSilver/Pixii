@@ -31,9 +31,9 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
     "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
   return (
-    <div className="mx-auto mt-8 max-w-[480px]">
+    <div className="max-w-[480px]">
       <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-start text-left">
           <span
             className="rounded-lg px-3 py-1 text-xs font-bold tracking-wide text-white"
             style={{ backgroundColor: SHOPIFY_GREEN }}
@@ -81,12 +81,12 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
         </button>
       </div>
 
-      <p className="mt-6 text-center text-xs leading-relaxed text-neutral-600">
+      <p className="mt-6 text-left text-xs leading-relaxed text-neutral-600">
         🔒 Your store data is never stored without your permission. We only request access to
         read and update product images.
       </p>
 
-      <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+      <div className="mt-8 flex flex-wrap items-center justify-start gap-2">
         {[
           "✓ Auto-generate lifestyle photos",
           "✓ One-click publish to listing",
