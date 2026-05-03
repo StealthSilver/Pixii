@@ -12,6 +12,9 @@ import {
 } from "@/lib/reviewAnalytics/revenueEstimator";
 import { analyzeReviews } from "@/lib/reviewAnalytics/reviewAnalyzer";
 
+/** Total reviews to collect across all listings (split evenly per ASIN, capped per listing in the scraper). */
+const REVIEW_SCRAPE_TOTAL_BUDGET = 50;
+
 function toJobListing(
   l: ScrapedListing & { estimatedMonthlySales?: number; estimatedMonthlyRevenue?: number },
 ) {
@@ -91,7 +94,7 @@ export async function processReviewAnalysis(jobId: string): Promise<void> {
     const asins = allScraped.map((l) => l.asin);
     const reviewsPerListing = Math.min(
       100,
-      Math.ceil(1000 / Math.max(1, asins.length)),
+      Math.ceil(REVIEW_SCRAPE_TOTAL_BUDGET / Math.max(1, asins.length)),
     );
     const titleByAsin: Record<string, string> = {};
     for (const l of allScraped) {

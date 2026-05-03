@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 import { extractAsin as extractAsinFromUrl } from "@/lib/aiCreator/extractAsin";
-import { callClaude } from "@/lib/rufusTwin/claude";
+import { callReviewAnalyticsLlm } from "@/lib/reviewAnalytics/anthropic";
 import { parseJsonFromClaude } from "@/lib/aiCreator/jsonUtils";
 import { throttledScraperApiFetch } from "@/lib/reviewAnalytics/scraperThrottle";
 
@@ -203,7 +203,7 @@ async function claudeSingleListing(
   asin: string,
   isUserListing: boolean,
 ): Promise<ScrapedListing> {
-  const raw = await callClaude({
+  const raw = await callReviewAnalyticsLlm({
     system: "You return only valid JSON. No markdown.",
     messages: [
       {
@@ -244,7 +244,7 @@ async function claudeGenerateCompetitors(
   seed: ScrapedListing,
   count: number,
 ): Promise<ScrapedListing[]> {
-  const raw = await callClaude({
+  const raw = await callReviewAnalyticsLlm({
     system: "You return only valid JSON. No markdown.",
     messages: [
       {

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import mongoose from "mongoose";
 import { connectDB } from "@/lib/mongodb";
 import { ReviewAnalysis } from "@/lib/models/reviewAnalysis";
@@ -7,6 +7,7 @@ import { processReviewAnalysis } from "@/lib/reviewAnalytics/pipeline";
 
 export const maxDuration = 300;
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
@@ -38,6 +39,16 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!process.env.ANTHROPIC_API_KEY?.trim()) {
+      return NextResponse.json(
+        {
+          error:
+            "Review Analytics requires ANTHROPIC_API_KEY (set it in .env.local). Optional: SCRAPERAPI_KEY for real Amazon HTML/reviews.",
+        },
+        { status: 503 },
+      );
+    }
+
     let job;
     try {
       await connectDB();
@@ -55,9 +66,11 @@ export async function POST(request: Request) {
         ? job._id.toString()
         : String(job._id);
 
-    processReviewAnalysis(id).catch((err) => {
-      console.error("[review-analytics/submit] pipeline", id, err);
-    });
+    after(() =>
+      processReviewAnalysis(id).catch((err) => {
+        console.error("[review-analytics/submit] pipeline", id, err);
+      }),
+    );
 
     return NextResponse.json({ jobId: id });
   } catch (e) {

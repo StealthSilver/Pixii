@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import { callClaude } from "@/lib/rufusTwin/claude";
+import { callReviewAnalyticsLlm } from "@/lib/reviewAnalytics/anthropic";
 import { parseJsonFromClaude } from "@/lib/aiCreator/jsonUtils";
 import { throttledScraperApiFetch } from "@/lib/reviewAnalytics/scraperThrottle";
 
@@ -94,42 +94,66 @@ async function claudeReviews(
   title: string,
   count: number,
 ): Promise<ScrapedReview[]> {
-  const raw = await callClaude({
-    system: "You return only valid JSON. No markdown.",
-    messages: [
-      {
-        role: "user",
-        content: `Generate ${count} realistic Amazon customer reviews for ASIN ${asin} (${title}).
+  const batchSize = 28;
+  const out: ScrapedReview[] = [];
+  const seen = new Set<string>();
+  const cap = Math.min(100, Math.max(1, count));
+
+  while (out.length < cap) {
+    const n = Math.min(batchSize, cap - out.length);
+    const raw = await callReviewAnalyticsLlm({
+      system: "You return only valid JSON. No markdown.",
+      messages: [
+        {
+          role: "user",
+          content: `Generate ${n} realistic Amazon customer reviews for ASIN ${asin} (${title}).
 Mix of ratings: mostly 4-5 star, some 3 star, a few 1-2 star.
 Make reviews specific, realistic, varied in length.
 Return ONLY JSON array, each item: { rating, title, body, verifiedPurchase, helpfulVotes, reviewDate } (reviewDate ISO string).`,
-      },
-    ],
-    maxTokens: 8192,
-    timeoutMs: 120_000,
-  });
-  const arr = parseJsonFromClaude<unknown>(raw);
-  if (!Array.isArray(arr)) {
-    return [];
-  }
-  return arr.map((row) => {
-    const o = row as Record<string, unknown>;
-    const rd = o.reviewDate;
-    let reviewDate: Date | null = null;
-    if (typeof rd === "string") {
-      const d = new Date(rd);
-      reviewDate = Number.isNaN(d.getTime()) ? null : d;
+        },
+      ],
+      maxTokens: 8192,
+      timeoutMs: 120_000,
+    });
+    const arr = parseJsonFromClaude<unknown>(raw);
+    if (!Array.isArray(arr) || arr.length === 0) {
+      break;
     }
-    return {
-      asin,
-      rating: Math.min(5, Math.max(1, Number(o.rating ?? 4))),
-      title: String(o.title ?? ""),
-      body: String(o.body ?? ""),
-      verifiedPurchase: Boolean(o.verifiedPurchase),
-      helpfulVotes: typeof o.helpfulVotes === "number" ? o.helpfulVotes : 0,
-      reviewDate,
-    };
-  });
+    let added = 0;
+    for (const row of arr) {
+      const o = row as Record<string, unknown>;
+      const rd = o.reviewDate;
+      let reviewDate: Date | null = null;
+      if (typeof rd === "string") {
+        const d = new Date(rd);
+        reviewDate = Number.isNaN(d.getTime()) ? null : d;
+      }
+      const r: ScrapedReview = {
+        asin,
+        rating: Math.min(5, Math.max(1, Number(o.rating ?? 4))),
+        title: String(o.title ?? ""),
+        body: String(o.body ?? ""),
+        verifiedPurchase: Boolean(o.verifiedPurchase),
+        helpfulVotes: typeof o.helpfulVotes === "number" ? o.helpfulVotes : 0,
+        reviewDate,
+      };
+      const k = dedupeKey(r);
+      if (seen.has(k)) {
+        continue;
+      }
+      seen.add(k);
+      out.push(r);
+      added++;
+      if (out.length >= cap) {
+        break;
+      }
+    }
+    if (added === 0) {
+      break;
+    }
+  }
+
+  return out.slice(0, cap);
 }
 
 function dedupeKey(r: ScrapedReview): string {
@@ -187,7 +211,7 @@ export async function scrapeReviewsForAsin(
   }
 
   const title = productTitle ?? "product";
-  return (await claudeReviews(asin, title, 20)).slice(0, cap);
+  return (await claudeReviews(asin, title, cap)).slice(0, cap);
 }
 
 export async function scrapeAllReviews(

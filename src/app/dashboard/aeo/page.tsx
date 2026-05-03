@@ -24,6 +24,12 @@ import { Recommendations } from "./components/Recommendations";
 import { RawResponses } from "./components/RawResponses";
 import { HistoryList } from "./components/HistoryList";
 import { ResultsSkeleton } from "./components/ResultsSkeleton";
+import { TutorialVideoOverlay } from "./components/TutorialVideoOverlay";
+
+const AEO_TUTORIAL_SEEN_KEY = "pixii_aeo_tutorial_seen";
+
+const secondaryBtnClass =
+  "inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
 async function fetchJson<T>(url: string): Promise<T> {
   const res = await fetch(url);
@@ -123,6 +129,10 @@ export default function AeoDashboardPage() {
     message: string;
     variant: "success" | "error";
   } | null>(null);
+  const [tutorialReady, setTutorialReady] = useState(false);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialIframeKey, setTutorialIframeKey] = useState(0);
+  const [showPlayTutorialButton, setShowPlayTutorialButton] = useState(false);
 
   const {
     data: historyData,
@@ -172,6 +182,33 @@ export default function AeoDashboardPage() {
     const t = window.setTimeout(() => setToast(null), 3800);
     return () => window.clearTimeout(t);
   }, [toast]);
+
+  useEffect(() => {
+    try {
+      const seenBefore =
+        window.localStorage.getItem(AEO_TUTORIAL_SEEN_KEY) === "1";
+      setShowPlayTutorialButton(seenBefore);
+      if (!seenBefore) {
+        setTutorialIframeKey((k) => k + 1);
+        setTutorialOpen(true);
+      }
+    } catch {
+      setShowPlayTutorialButton(false);
+      setTutorialIframeKey((k) => k + 1);
+      setTutorialOpen(true);
+    }
+    setTutorialReady(true);
+  }, []);
+
+  const handleTutorialClose = useCallback(() => {
+    setTutorialOpen(false);
+    try {
+      window.localStorage.setItem(AEO_TUTORIAL_SEEN_KEY, "1");
+    } catch {
+      /* ignore quota / private mode */
+    }
+    setShowPlayTutorialButton(true);
+  }, []);
 
   useEffect(() => {
     if (!running) {
@@ -282,17 +319,33 @@ export default function AeoDashboardPage() {
         <GridBackdrop />
         <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
           <header className="border-b border-border/70 pb-6">
-            <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Intelligence
-            </p>
-            <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
-              AEO Diagnostic
-            </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Run a shopper query across GPT-4o, GPT-4o mini, and Gemini—then
-              review mentions, competitors, and prioritized fixes in one minimal
-              report.
-            </p>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0 flex-1">
+                <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Intelligence
+                </p>
+                <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+                  AEO Diagnostic
+                </h1>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  Run a shopper query across GPT-4o, GPT-4o mini, and Gemini—then
+                  review mentions, competitors, and prioritized fixes in one minimal
+                  report.
+                </p>
+              </div>
+              {tutorialReady && showPlayTutorialButton ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTutorialIframeKey((k) => k + 1);
+                    setTutorialOpen(true);
+                  }}
+                  className={`${secondaryBtnClass} shrink-0 self-start`}
+                >
+                  Play tutorial
+                </button>
+              ) : null}
+            </div>
           </header>
 
           <div
@@ -445,6 +498,15 @@ export default function AeoDashboardPage() {
           </div>
         </div>
       </div>
+
+      {tutorialReady ? (
+        <TutorialVideoOverlay
+          open={tutorialOpen}
+          onClose={handleTutorialClose}
+          autoplay
+          iframeKey={tutorialIframeKey}
+        />
+      ) : null}
 
       {toast ? (
         <Toast

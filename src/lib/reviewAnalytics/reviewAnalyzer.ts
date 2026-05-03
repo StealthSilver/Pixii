@@ -1,10 +1,12 @@
-import { callClaude } from "@/lib/rufusTwin/claude";
 import { parseJsonFromClaude } from "@/lib/aiCreator/jsonUtils";
+import { callReviewAnalyticsLlm } from "@/lib/reviewAnalytics/anthropic";
 import type { ScrapedReview } from "@/lib/reviewAnalytics/reviewScraper";
 import type { ListingWithRevenue } from "@/lib/reviewAnalytics/revenueEstimator";
 
 const MAX_SAMPLE_CHARS = 80_000;
 const BODY_TRUNC = 200;
+/** Cap per-review sentiment scores in the model output to avoid truncated JSON. */
+const MAX_SENTIMENT_INDICES = 40;
 
 function dedupeKey(r: ScrapedReview): string {
   return `${r.asin}|${r.rating}|${r.title}|${(r.body ?? "").slice(0, 80)}`;
@@ -145,6 +147,8 @@ async function runClaudeAnalysis(params: {
     })
     .join("\n\n");
 
+  const sentimentCount = Math.min(sampleReviews.length, MAX_SENTIMENT_INDICES);
+
   const userPrompt = `Analyze these Amazon customer reviews across ${listings.length} competing products in the ${category} category.
 
 USER'S LISTING (ASIN: ${userAsin}): ${userListing.title}
@@ -156,7 +160,9 @@ ${competitors.map((l) => `- ${l.title} | $${l.price} | ${l.rating}/5 stars | ${l
 REVIEWS SAMPLE (${sampleReviews.length} reviews):
 ${reviewBlock}
 
-Analyze these reviews and return ONLY valid JSON (no markdown, no explanation):
+Analyze these reviews and return ONLY valid JSON (no markdown, no explanation).
+Each purchaseCriteria item should name a recurring customer theme (a topic multiple reviews touch when possible), grounded in the review text above.
+
 {
   "purchaseCriteria": [
     {
@@ -186,9 +192,9 @@ Analyze these reviews and return ONLY valid JSON (no markdown, no explanation):
   ]
 }
 
-The reviewSentiments array must have exactly ${sampleReviews.length} entries with index 0..${sampleReviews.length - 1} matching the order of the REVIEWS SAMPLE above.`;
+The reviewSentiments array must have exactly ${sentimentCount} entries: indices 0 through ${sentimentCount - 1}, matching the first ${sentimentCount} reviews in the REVIEWS SAMPLE above in order. sentimentScore is 0-100 per review. Do not include entries for reviews after index ${sentimentCount - 1}.`;
 
-  const raw = await callClaude({
+  const raw = await callReviewAnalyticsLlm({
     system:
       "You are an expert Amazon market researcher and customer psychology analyst. " +
       "You specialize in mining customer reviews to extract purchase criteria, sentiment patterns, and competitive intelligence. " +
