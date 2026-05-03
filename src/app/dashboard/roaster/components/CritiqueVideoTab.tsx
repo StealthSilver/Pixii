@@ -3,239 +3,246 @@
 import { useRef, useState } from "react";
 import type { RoasterJobView } from "./types";
 
+const card =
+  "rounded-xl border border-border/80 bg-card/95 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]";
+
+const secondaryBtn =
+  "rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted dark:ring-white/[0.06]";
+
+const secondaryBtnSm =
+  "rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted dark:ring-white/[0.06]";
+
+const primaryLink =
+  "inline-flex flex-1 items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 sm:flex-none dark:ring-white/15";
+
 function gradeCircleClass(letter: string): string {
- switch (letter.toUpperCase()) {
- case "A":
- return "bg-emerald-500 text-white ring-emerald-200";
- case "B":
- return "bg-sky-600 text-white ring-sky-200";
- case "C":
- return "bg-amber-500 text-white ring-amber-200";
- case "D":
- return "bg-orange-500 text-white ring-orange-200";
- default:
- return "bg-red-600 text-white ring-red-200";
- }
+  switch (letter.toUpperCase()) {
+    case "A":
+      return "bg-emerald-500 text-white ring-emerald-200 dark:ring-emerald-900/55";
+    case "B":
+      return "bg-sky-600 text-white ring-sky-200 dark:ring-sky-900/55";
+    case "C":
+      return "bg-amber-500 text-white ring-amber-200 dark:ring-amber-900/55";
+    case "D":
+      return "bg-orange-500 text-white ring-orange-200 dark:ring-orange-900/55";
+    default:
+      return "bg-red-600 text-white ring-red-200 dark:ring-red-900/55";
+  }
 }
 
 type CritiqueVideoTabProps = {
- job: RoasterJobView;
+  job: RoasterJobView;
 };
 
 export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
- const { listingScore, critiqueScript, voiceoverUrl, avatarFrameUrls, finalVideoUrl } =
- job;
- const lg = listingScore.letterGrade.toUpperCase();
- const audioRef = useRef<HTMLAudioElement>(null);
- const [capOpen, setCapOpen] = useState(false);
- const [copyShare, setCopyShare] = useState(false);
+  const {
+    listingScore,
+    critiqueScript,
+    voiceoverUrl,
+    avatarFrameUrls,
+    finalVideoUrl,
+  } = job;
+  const lg = listingScore.letterGrade.toUpperCase();
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [capOpen, setCapOpen] = useState(false);
+  const [copyShare, setCopyShare] = useState(false);
 
- const downloadScript = () => {
- const text = critiqueScript.fullScript ?? "";
- const blob = new Blob([text], { type: "text/plain" });
- const a = document.createElement("a");
- a.href = URL.createObjectURL(blob);
- a.download = "roaster-critique-script.txt";
- a.click();
- URL.revokeObjectURL(a.href);
- };
+  const downloadScript = () => {
+    const text = critiqueScript.fullScript ?? "";
+    const blob = new Blob([text], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "roaster-critique-script.txt";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 
- const copyShareLink = async () => {
- await navigator.clipboard.writeText(job.shareableLink);
- setCopyShare(true);
- window.setTimeout(() => setCopyShare(false), 2000);
- };
+  const copyShareLink = async () => {
+    await navigator.clipboard.writeText(job.shareableLink);
+    setCopyShare(true);
+    window.setTimeout(() => setCopyShare(false), 2000);
+  };
 
- const downloadMp3 = async () => {
- const res = await fetch(voiceoverUrl);
- const blob = await res.blob();
- const a = document.createElement("a");
- a.href = URL.createObjectURL(blob);
- a.download = "roaster-voiceover.mp3";
- a.click();
- URL.revokeObjectURL(a.href);
- };
+  const downloadMp3 = async () => {
+    const res = await fetch(voiceoverUrl);
+    const blob = await res.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "roaster-voiceover.mp3";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 
- const zipFrames = async () => {
- const JSZip = (await import("jszip")).default;
- const zip = new JSZip();
- for (let i = 0; i < avatarFrameUrls.length; i++) {
- const u = avatarFrameUrls[i];
- const res = await fetch(u);
- const buf = await res.arrayBuffer();
- const ext = u.includes(".png") ? "png" : "jpg";
- zip.file(`frame_${i + 1}.${ext}`, buf);
- }
- const out = await zip.generateAsync({ type: "blob" });
- const a = document.createElement("a");
- a.href = URL.createObjectURL(out);
- a.download = "roaster-avatar-frames.zip";
- a.click();
- URL.revokeObjectURL(a.href);
- };
+  const zipFrames = async () => {
+    const JSZip = (await import("jszip")).default;
+    const zip = new JSZip();
+    for (let i = 0; i < avatarFrameUrls.length; i++) {
+      const u = avatarFrameUrls[i];
+      const res = await fetch(u);
+      const buf = await res.arrayBuffer();
+      const ext = u.includes(".png") ? "png" : "jpg";
+      zip.file(`frame_${i + 1}.${ext}`, buf);
+    }
+    const out = await zip.generateAsync({ type: "blob" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(out);
+    a.download = "roaster-avatar-frames.zip";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 
- const hasVideo = Boolean(finalVideoUrl?.trim());
+  const hasVideo = Boolean(finalVideoUrl?.trim());
 
- return (
- <div className="space-y-6">
- <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
- <div className="flex flex-col items-center text-center">
- <div
- className={
- "flex size-28 items-center justify-center rounded-full text-5xl font-heading font-bold shadow-md ring-4 " +
- gradeCircleClass(lg)
- }
- aria-label={`Grade ${lg}`}
- >
- {lg}
- </div>
- <p className="mt-3 font-heading text-2xl font-bold text-foreground">
- {listingScore.overallScore}/100
- </p>
- <p className="mt-1 text-sm text-muted-foreground">
- Estimated conversion rate: {listingScore.conversionEstimate || "—"}
- </p>
- </div>
- </section>
+  return (
+    <div className="space-y-6">
+      <section className={`${card} p-6`}>
+        <div className="flex flex-col items-center text-center">
+          <div
+            className={
+              "flex size-28 items-center justify-center rounded-full text-5xl font-heading font-bold shadow-md ring-4 " +
+              gradeCircleClass(lg)
+            }
+            aria-label={`Grade ${lg}`}
+          >
+            {lg}
+          </div>
+          <p className="mt-3 font-heading text-2xl font-bold text-foreground">
+            {listingScore.overallScore}/100
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Estimated conversion rate: {listingScore.conversionEstimate || "—"}
+          </p>
+        </div>
+      </section>
 
- {hasVideo ? (
- <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
- <video
- controls
- style={{ maxWidth: 400 }}
- className="mx-auto w-full rounded-lg"
- >
- <source src={finalVideoUrl} type="video/mp4" />
- </video>
- <div className="mt-4 flex flex-wrap gap-2">
- <a
- href={finalVideoUrl}
- download
- className="inline-flex flex-1 items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 sm:flex-none"
- >
- Download Video
- </a>
- <button
- type="button"
- onClick={() => void copyShareLink()}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
- >
- {copyShare ? "Copied!" : "Copy Share Link"}
- </button>
- <button
- type="button"
- onClick={downloadScript}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
- >
- Download Script
- </button>
- </div>
- </div>
- ) : (
- <div className="space-y-6">
- <div className="rounded-xl border border-violet-200 bg-violet-50/40 p-5 shadow-sm">
- <h3 className="font-heading text-lg font-semibold text-foreground">
- Your Critique Package
- </h3>
- <div className="mx-auto mt-4 flex max-w-[300px] justify-center">
- {avatarFrameUrls[0] ? (
- // eslint-disable-next-line @next/next/no-img-element
- <img
- src={avatarFrameUrls[0]}
- alt=""
- width={300}
- height={400}
- className="max-h-[400px] w-full max-w-[300px] rounded-xl object-cover shadow-md"
- />
- ) : (
- <div className="flex h-[280px] w-[220px] items-center justify-center rounded-xl bg-border text-xs text-muted-foreground">
- No preview image
- </div>
- )}
- </div>
- <audio
- ref={audioRef}
- controls
- className="mt-4 w-full"
- src={voiceoverUrl}
- >
- <source src={voiceoverUrl} />
- </audio>
- <div className="mt-4 flex flex-wrap gap-2">
- <button
- type="button"
- onClick={() => void copyShareLink()}
- className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
- >
- {copyShare ? "Copied!" : "Copy Share Link"}
- </button>
- <button
- type="button"
- onClick={() => void downloadMp3()}
- className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
- >
- Download MP3
- </button>
- {avatarFrameUrls.length > 1 ? (
- <button
- type="button"
- onClick={() => void zipFrames()}
- className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
- >
- Download Avatar Frames (ZIP)
- </button>
- ) : (
- avatarFrameUrls.map((u, i) => (
- <a
- key={u}
- href={u}
- download
- target="_blank"
- rel="noreferrer"
- className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-primary hover:bg-muted"
- >
- Frame {i + 1}
- </a>
- ))
- )}
- </div>
- </div>
+      {hasVideo ? (
+        <div className={`${card} p-5`}>
+          <video
+            controls
+            style={{ maxWidth: 400 }}
+            className="mx-auto w-full rounded-lg"
+          >
+            <source src={finalVideoUrl} type="video/mp4" />
+          </video>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a href={finalVideoUrl} download className={primaryLink}>
+              Download video
+            </a>
+            <button
+              type="button"
+              onClick={() => void copyShareLink()}
+              className={secondaryBtn}
+            >
+              {copyShare ? "Copied!" : "Copy share link"}
+            </button>
+            <button type="button" onClick={downloadScript} className={secondaryBtn}>
+              Download script
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div
+            className={`${card} border-violet-200/90 bg-violet-50/50 p-5 dark:border-violet-500/35 dark:bg-violet-950/25`}
+          >
+            <h3 className="font-heading text-lg font-semibold text-foreground">
+              Your critique package
+            </h3>
+            <div className="mx-auto mt-4 flex max-w-[300px] justify-center">
+              {avatarFrameUrls[0] ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarFrameUrls[0]}
+                  alt=""
+                  width={300}
+                  height={400}
+                  className="max-h-[400px] w-full max-w-[300px] rounded-xl object-cover shadow-md"
+                />
+              ) : (
+                <div className="flex h-[280px] w-[220px] items-center justify-center rounded-xl bg-border text-xs text-muted-foreground">
+                  No preview image
+                </div>
+              )}
+            </div>
+            <audio
+              ref={audioRef}
+              controls
+              className="mt-4 w-full"
+              src={voiceoverUrl}
+            >
+              <source src={voiceoverUrl} />
+            </audio>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => void copyShareLink()}
+                className={secondaryBtnSm}
+              >
+                {copyShare ? "Copied!" : "Copy share link"}
+              </button>
+              <button type="button" onClick={() => void downloadMp3()} className={secondaryBtnSm}>
+                Download MP3
+              </button>
+              {avatarFrameUrls.length > 1 ? (
+                <button
+                  type="button"
+                  onClick={() => void zipFrames()}
+                  className={secondaryBtnSm}
+                >
+                  Download avatar frames (ZIP)
+                </button>
+              ) : (
+                avatarFrameUrls.map((u, i) => (
+                  <a
+                    key={u}
+                    href={u}
+                    download
+                    target="_blank"
+                    rel="noreferrer"
+                    className={secondaryBtnSm + " text-primary"}
+                  >
+                    Frame {i + 1}
+                  </a>
+                ))
+              )}
+            </div>
+          </div>
 
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
- <button
- type="button"
- onClick={() => setCapOpen((o) => !o)}
- className="flex w-full items-center justify-between text-left font-heading text-sm font-semibold text-foreground"
- >
- Assemble in CapCut — 4 steps
- <span className="text-muted-foreground/75">{capOpen ? "" : ""}</span>
- </button>
- {capOpen ? (
- <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm text-foreground/90">
- <li>
- Import the avatar image as a photo clip, set duration to match
- audio length
- </li>
- <li>Import the MP3 voiceover and sync to the image clip</li>
- <li>Add auto-captions using CapCut&apos;s caption tool</li>
- <li>Export as 9:16 vertical video and share</li>
- </ol>
- ) : null}
- </div>
- </div>
- )}
+          <div className={`${card} p-4`}>
+            <button
+              type="button"
+              onClick={() => setCapOpen((o) => !o)}
+              className="flex w-full items-center justify-between text-left font-heading text-sm font-semibold text-foreground transition-colors hover:text-primary"
+            >
+              Assemble in CapCut — 4 steps
+              <span className="text-muted-foreground/75">{capOpen ? "−" : "+"}</span>
+            </button>
+            {capOpen ? (
+              <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm text-foreground/90">
+                <li>
+                  Import the avatar image as a photo clip, set duration to match
+                  audio length
+                </li>
+                <li>Import the MP3 voiceover and sync to the image clip</li>
+                <li>Add auto-captions using CapCut&apos;s caption tool</li>
+                <li>Export as 9:16 vertical video and share</li>
+              </ol>
+            ) : null}
+          </div>
+        </div>
+      )}
 
- <div className="rounded-xl border-y border-r border-border border-l-4 border-l-primary bg-card p-5 shadow-sm">
- <p className="font-heading text-sm font-semibold text-foreground">
- What the presenter says:
- </p>
- <p className="mt-2 text-base italic text-foreground">
- {critiqueScript.intro}
- </p>
- <p className="mt-2 text-xs text-muted-foreground">
- Full script available in the Rewrites tab
- </p>
- </div>
- </div>
- );
+      <div
+        className={`${card} border-y border-r border-l-[3px] border-l-primary border-border p-5`}
+      >
+        <p className="font-heading text-sm font-semibold text-foreground">
+          What the presenter says:
+        </p>
+        <p className="mt-2 text-base italic text-foreground">{critiqueScript.intro}</p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Full script available in the Rewrites tab
+        </p>
+      </div>
+    </div>
+  );
 }

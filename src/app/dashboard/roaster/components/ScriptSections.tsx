@@ -37,7 +37,7 @@ export function ScriptSections({ job }: ScriptSectionsProps) {
  };
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <button
  type="button"
  onClick={() => setOpen((o) => !o)}
@@ -68,11 +68,11 @@ export function ScriptSections({ job }: ScriptSectionsProps) {
  </p>
  </div>
  ))}
- <button
- type="button"
- onClick={downloadFull}
- className="w-full rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
- >
+        <button
+          type="button"
+          onClick={downloadFull}
+          className="w-full rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted dark:ring-white/[0.06]"
+        >
  Download Full Script
  </button>
  </div>
