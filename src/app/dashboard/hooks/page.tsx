@@ -7,6 +7,7 @@ import { GridBackdrop } from "@/components/GridBackdrop";
 import { DraftsTab } from "./components/DraftsTab";
 import { HookCard } from "./components/HookCard";
 import { Toast } from "./components/Toast";
+import { TutorialVideoOverlay } from "./components/TutorialVideoOverlay";
 import type { WriteTabHandle } from "./components/WriteTab";
 import { WriteTab } from "./components/WriteTab";
 import type { DraftJson, HookPatternJson, TabId } from "./types";
@@ -76,6 +77,7 @@ export default function HooksDashboardPage() {
     message: string;
     variant: "success" | "error";
   } | null>(null);
+  const [tutorialOpen, setTutorialOpen] = useState(true);
 
   const writeRef = useRef<WriteTabHandle>(null);
   const { mutate: mutateKey } = useSWRConfig();
@@ -373,6 +375,11 @@ export default function HooksDashboardPage() {
           </div>
         </div>
       </div>
+
+      <TutorialVideoOverlay
+        open={tutorialOpen}
+        onClose={() => setTutorialOpen(false)}
+      />
 
       {toast ? (
         <Toast
