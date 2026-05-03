@@ -7,6 +7,7 @@ import {
  FaRobot,
  FaVideo,
 } from "react-icons/fa";
+import { BetaFeatureNotice } from "@/components/BetaFeatureNotice";
 import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import { extractAsin } from "@/lib/aiCreator/extractAsin";
@@ -301,6 +302,7 @@ export default function AiCreatorPage() {
  <div className="relative min-h-full overflow-x-hidden">
  <GridBackdrop />
  <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <BetaFeatureNotice />
  <header className="border-b border-border/70 pb-6">
  <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
  Content

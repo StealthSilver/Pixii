@@ -66,6 +66,8 @@ type NavEntry = {
   Icon: NavGlyph;
   /** App routes under these paths keep this item active (e.g. dashboard tools). */
   activePathPrefixes?: string[];
+  /** Show a Beta pill in the sidebar (expanded + tooltip when collapsed). */
+  isBeta?: boolean;
 };
 
 type NavSection = {
@@ -131,13 +133,14 @@ const NAV_SECTIONS: NavSection[] = [
     id: "content",
     title: "Content",
     items: [
-      { label: "Creator", href: "/creator", Icon: PenGlyph },
-      { label: "UGC", href: "/ugc", Icon: CameraGlyph },
+      { label: "Creator", href: "/creator", Icon: PenGlyph, isBeta: true },
+      { label: "UGC", href: "/ugc", Icon: CameraGlyph, isBeta: true },
       {
         label: "Clipper",
         href: "/clipper",
         Icon: ScissorsGlyph,
         activePathPrefixes: ["/clipper"],
+        isBeta: true,
       },
     ],
   },
@@ -150,19 +153,23 @@ const NAV_SECTIONS: NavSection[] = [
         href: "/studio",
         Icon: StudioNavIcon,
         activePathPrefixes: ["/dashboard/photo-upgrader"],
+        isBeta: true,
       },
       {
         label: "Renderer",
         href: "/renderer",
         Icon: CubeGlyph,
         activePathPrefixes: ["/dashboard/packaging-renderer"],
+        isBeta: true,
       },
     ],
   },
   {
     id: "store",
     title: "Store",
-    items: [{ label: "Shopify", href: "/shopify", Icon: ShopifyGlyph }],
+    items: [
+      { label: "Shopify", href: "/shopify", Icon: ShopifyGlyph, isBeta: true },
+    ],
   },
 ];
 
@@ -286,7 +293,8 @@ export function Sidebar({ collapsed }: SidebarProps) {
               </div>
             )}
             <ul className={collapsed ? "flex flex-col items-center gap-1" : "space-y-0.5"}>
-              {section.items.map(({ label, href, Icon, activePathPrefixes }) => {
+              {section.items.map(
+                ({ label, href, Icon, activePathPrefixes, isBeta }) => {
                 const isActive = isNavItemActive(pathname, href, activePathPrefixes);
                 return (
                   <li
@@ -295,8 +303,15 @@ export function Sidebar({ collapsed }: SidebarProps) {
                   >
                     <Link
                       href={href}
-                      title={collapsed ? `${section.title} · ${label}` : undefined}
-                      className={navItemClassNames(collapsed, isActive)}
+                      title={
+                        collapsed
+                          ? `${section.title} · ${label}${isBeta ? " · Beta" : ""}`
+                          : undefined
+                      }
+                      className={
+                        navItemClassNames(collapsed, isActive) +
+                        (collapsed && isBeta ? " relative" : "")
+                      }
                       aria-current={isActive ? "page" : undefined}
                     >
                       <Icon
@@ -309,12 +324,35 @@ export function Sidebar({ collapsed }: SidebarProps) {
                         aria-hidden
                       />
                       {!collapsed && (
-                        <span className="min-w-0 truncate">{label}</span>
+                        <>
+                          <span className="min-w-0 flex-1 truncate">{label}</span>
+                          {isBeta ? (
+                            <span
+                              className={
+                                "shrink-0 rounded-md border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] " +
+                                (isActive
+                                  ? "border-primary/35 bg-primary/15 text-primary"
+                                  : "border-primary/25 bg-primary/8 text-primary/90 group-hover:border-primary/40 group-hover:bg-primary/12")
+                              }
+                            >
+                              Beta
+                            </span>
+                          ) : null}
+                        </>
                       )}
+                      {collapsed && isBeta ? (
+                        <span
+                          className="pointer-events-none absolute -right-0.5 -top-0.5 rounded bg-primary px-[3px] py-px text-[8px] font-bold leading-none text-primary-foreground shadow-sm"
+                          aria-hidden
+                        >
+                          β
+                        </span>
+                      ) : null}
                     </Link>
                   </li>
                 );
-              })}
+              },
+              )}
             </ul>
           </div>
         ))}
