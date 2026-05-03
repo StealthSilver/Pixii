@@ -10,12 +10,12 @@ const OPTIONS: {
   {
     id: "studio_white",
     label: "Studio White",
-    dot: "border border-neutral-300 bg-white",
+    dot: "border border-border bg-card",
   },
   {
     id: "studio_dark",
     label: "Studio Dark",
-    dot: "bg-neutral-700",
+    dot: "bg-foreground/65",
   },
   {
     id: "lifestyle_kitchen",
@@ -47,7 +47,7 @@ type StyleSelectorProps = {
 export function StyleSelector({ value, onChange }: StyleSelectorProps) {
   return (
     <div>
-      <p className="text-sm font-medium text-neutral-700">Scene & Lighting</p>
+      <p className="text-sm font-medium text-foreground/90">Scene & Lighting</p>
       <div className="mt-2 flex flex-wrap gap-2">
         {OPTIONS.map((o) => {
           const active = value === o.id;
@@ -59,8 +59,8 @@ export function StyleSelector({ value, onChange }: StyleSelectorProps) {
               className={
                 "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm transition-colors " +
                 (active
-                  ? "border-primary bg-primary/10 text-black ring-2 ring-primary/25"
-                  : "border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50")
+                  ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/25"
+                  : "border-border bg-card text-foreground hover:bg-muted")
               }
             >
               <span className={`size-2.5 shrink-0 rounded-full ${o.dot}`} aria-hidden />

@@ -69,16 +69,16 @@ export function ProcessingView({
 
   if (status === "failed") {
     return (
-      <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <h2 className="font-heading text-lg font-semibold text-black">
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h2 className="font-heading text-lg font-semibold text-foreground">
           Something went wrong
         </h2>
-        <p className="mt-2 text-sm text-neutral-600">
+        <p className="mt-2 text-sm text-muted-foreground">
           We couldn&apos;t finish your renders. You can try again with a different file or settings.
         </p>
         {errorMessage ? (
-          <details className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
-            <summary className="cursor-pointer font-semibold text-neutral-800">
+          <details className="mt-4 rounded-lg border border-border bg-muted px-3 py-2 text-sm">
+            <summary className="cursor-pointer font-semibold text-foreground">
               Technical details
             </summary>
             <p className="mt-2 whitespace-pre-wrap font-mono text-xs text-red-800">
@@ -98,12 +98,12 @@ export function ProcessingView({
   }
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <h2 className="font-heading text-lg font-semibold text-black">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <h2 className="font-heading text-lg font-semibold text-foreground">
         Processing
       </h2>
       {filename ? (
-        <p className="mt-2 inline-flex rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-medium text-neutral-600">
+        <p className="mt-2 inline-flex rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
           {filename}
         </p>
       ) : null}
@@ -116,8 +116,8 @@ export function ProcessingView({
               (step1Done
                 ? "border-emerald-500 bg-emerald-500 text-white"
                 : step1Active
-                  ? "border-primary bg-white text-primary"
-                  : "border-neutral-200 bg-white text-neutral-400")
+                  ? "border-primary bg-card text-primary"
+                  : "border-border bg-card text-muted-foreground/75")
             }
           >
             {step1Done ? (
@@ -135,13 +135,13 @@ export function ProcessingView({
             <p
               className={
                 "text-sm font-semibold " +
-                (step1Active ? "text-black" : "text-neutral-700")
+                (step1Active ? "text-foreground" : "text-foreground/90")
               }
             >
               Extracting artwork from PDF
             </p>
             {step1Active ? (
-              <p className="mt-0.5 text-xs text-neutral-500">Working…</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">Working…</p>
             ) : null}
           </div>
         </div>
@@ -150,7 +150,7 @@ export function ProcessingView({
           <div
             className={
               "absolute left-[-50%] top-5 hidden h-0.5 w-[calc(100%+1rem)] sm:block " +
-              (step1Done ? "bg-emerald-500" : "bg-neutral-200")
+              (step1Done ? "bg-emerald-500" : "bg-border")
             }
             aria-hidden
           />
@@ -160,8 +160,8 @@ export function ProcessingView({
               (step2Done
                 ? "border-emerald-500 bg-emerald-500 text-white"
                 : step2Active
-                  ? "border-primary bg-white text-primary"
-                  : "border-neutral-200 bg-white text-neutral-400")
+                  ? "border-primary bg-card text-primary"
+                  : "border-border bg-card text-muted-foreground/75")
             }
           >
             {step2Done ? (
@@ -179,26 +179,26 @@ export function ProcessingView({
             <p
               className={
                 "text-sm font-semibold " +
-                (step2Active ? "text-black" : "text-neutral-700")
+                (step2Active ? "text-foreground" : "text-foreground/90")
               }
             >
               Generating 3D renders with AI
             </p>
             {step2Active ? (
-              <p className="mt-0.5 text-xs text-neutral-500">Working…</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">Working…</p>
             ) : null}
           </div>
         </div>
       </div>
 
       <div className="mt-8">
-        <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-100">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-foreground/10">
           <div
             className="h-full rounded-full bg-emerald-500 transition-[width] duration-500"
             style={{ width: `${progressPct}%` }}
           />
         </div>
-        <p className="mt-2 text-xs text-neutral-500">
+        <p className="mt-2 text-xs text-muted-foreground">
           Processing for {timeStr}…
         </p>
       </div>
@@ -216,14 +216,14 @@ export function ProcessingView({
             </span>
           ) : null}
           {status === "rendering" && !renderEngine ? (
-            <span className="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-semibold text-neutral-700">
+            <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold text-foreground/90">
               Preparing render…
             </span>
           ) : null}
         </div>
       ) : null}
 
-      <p className="mt-3 text-xs text-neutral-500">
+      <p className="mt-3 text-xs text-muted-foreground">
         We&apos;re wrapping your artwork onto a 3D {shapeLabel.toLowerCase()}{" "}
         model.
       </p>

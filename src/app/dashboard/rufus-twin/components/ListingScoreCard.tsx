@@ -18,10 +18,10 @@ function BarRow({
   const colors = getScoreColor(value);
   return (
     <div className="flex items-center gap-3">
-      <span className="w-24 shrink-0 text-xs font-medium text-neutral-600">
+      <span className="w-24 shrink-0 text-xs font-medium text-muted-foreground">
         {label}
       </span>
-      <div className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-neutral-100">
+      <div className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-foreground/10">
         <div
           className={`absolute left-0 top-0 h-full rounded-full ${colors.bar}`}
           style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
@@ -79,8 +79,8 @@ export function ListingScoreCard({
 }: ListingScoreCardProps) {
   if (!score) {
     return (
-      <section className="rounded-xl border border-dashed border-neutral-200 bg-white/80 p-6 text-center shadow-sm">
-        <p className="text-sm font-medium text-neutral-800">
+      <section className="rounded-xl border border-dashed border-border bg-card/80 p-6 text-center shadow-sm">
+        <p className="text-sm font-medium text-foreground">
           Add your listing details to get a personalized Rufus visibility score
         </p>
         <button
@@ -90,7 +90,7 @@ export function ListingScoreCard({
         >
           Add Listing
         </button>
-        <p className="mt-2 text-xs text-neutral-500">
+        <p className="mt-2 text-xs text-muted-foreground">
           Expand &ldquo;Add your listing&rdquo; above, paste your content, then run
           the simulation again to score your listing.
         </p>
@@ -102,15 +102,15 @@ export function ListingScoreCard({
   const grade = scoreGradeLetter(score.overallScore);
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <div className="flex flex-col items-center border-b border-neutral-100 pb-5 text-center">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <div className="flex flex-col items-center border-b border-border/55 pb-5 text-center">
         <div
           className={`font-heading text-5xl font-bold tabular-nums ${overallColors.text}`}
         >
           {Math.round(score.overallScore)}
         </div>
         <div className="mt-1 flex items-center gap-2">
-          <p className="text-sm font-medium text-neutral-600">
+          <p className="text-sm font-medium text-muted-foreground">
             Rufus Visibility Score
           </p>
           <span
@@ -120,7 +120,7 @@ export function ListingScoreCard({
           </span>
         </div>
         {score.productTitle ? (
-          <p className="mt-2 max-w-lg text-xs text-neutral-500 line-clamp-2">
+          <p className="mt-2 max-w-lg text-xs text-muted-foreground line-clamp-2">
             {score.productTitle}
             {score.asin ? ` · ${score.asin}` : ""}
           </p>
@@ -134,12 +134,12 @@ export function ListingScoreCard({
       </div>
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Gaps
           </h4>
           <ul className="mt-2 space-y-2">
             {score.gaps.map((g) => (
-              <li key={g} className="flex gap-2 text-sm text-neutral-700">
+              <li key={g} className="flex gap-2 text-sm text-foreground/90">
                 <XIcon />
                 <span>{g}</span>
               </li>
@@ -147,12 +147,12 @@ export function ListingScoreCard({
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Improvements
           </h4>
           <ul className="mt-2 space-y-2">
             {score.improvements.map((g) => (
-              <li key={g} className="flex gap-2 text-sm text-neutral-700">
+              <li key={g} className="flex gap-2 text-sm text-foreground/90">
                 <CheckIcon />
                 <span>{g}</span>
               </li>

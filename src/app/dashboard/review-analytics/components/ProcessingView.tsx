@@ -77,11 +77,11 @@ export function ProcessingView({
 
   if (status === "failed") {
     return (
-      <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <h2 className="font-heading text-lg font-semibold text-black">
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h2 className="font-heading text-lg font-semibold text-foreground">
           Something went wrong
         </h2>
-        <p className="mt-2 text-sm text-neutral-600">
+        <p className="mt-2 text-sm text-muted-foreground">
           {errorMessage ?? "Processing failed."}
         </p>
         <button
@@ -96,17 +96,17 @@ export function ProcessingView({
   }
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
       {userAsin ? (
         <p className="mb-4 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
           ASIN: {userAsin}
         </p>
       ) : null}
 
-      <p className="text-sm text-neutral-600">Analyzing for {timeStr}…</p>
-      <p className="mt-1 text-xs italic text-neutral-500">{ROTATING[msgIdx]}</p>
+      <p className="text-sm text-muted-foreground">Analyzing for {timeStr}…</p>
+      <p className="mt-1 text-xs italic text-muted-foreground">{ROTATING[msgIdx]}</p>
 
-      <div className="mt-5 h-2 overflow-hidden rounded-full bg-neutral-100">
+      <div className="mt-5 h-2 overflow-hidden rounded-full bg-foreground/10">
         <div
           className="h-full rounded-full bg-emerald-500 transition-[width] duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
@@ -125,26 +125,26 @@ export function ProcessingView({
           return (
             <li
               key={step.title}
-              className="rounded-lg border border-neutral-100 bg-neutral-50/80 px-3 py-2.5"
+              className="rounded-lg border border-border/55 bg-muted/80 px-3 py-2.5"
             >
               <div className="flex items-start gap-2">
-                <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-white">
+                <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card">
                   {done ? (
                     <FaCheck className="size-3 text-emerald-600" aria-hidden />
                   ) : active ? (
                     <FaSpinner className="size-3 animate-spin text-primary" aria-hidden />
                   ) : (
-                    <span className="size-2 rounded-full bg-neutral-200" aria-hidden />
+                    <span className="size-2 rounded-full bg-border" aria-hidden />
                   )}
                 </span>
                 <div className="min-w-0 flex-1">
                   <p
-                    className={`text-sm font-semibold ${done || active ? "text-black" : "text-neutral-600"}`}
+                    className={`text-sm font-semibold ${done || active ? "text-foreground" : "text-muted-foreground"}`}
                   >
                     {step.title}
                   </p>
                   {active ? (
-                    <p className="mt-0.5 text-xs text-neutral-600">{step.active}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{step.active}</p>
                   ) : null}
                 </div>
               </div>
@@ -153,12 +153,12 @@ export function ProcessingView({
         })}
       </ol>
 
-      <div className="mt-4 flex flex-wrap gap-4 text-xs font-medium text-neutral-700">
+      <div className="mt-4 flex flex-wrap gap-4 text-xs font-medium text-foreground/90">
         <span>📦 {totalListingsScraped} / 10 listings scraped</span>
         <span>💬 {totalReviewsScraped} reviews collected</span>
       </div>
 
-      <p className="mt-4 text-[11px] text-neutral-500">
+      <p className="mt-4 text-[11px] text-muted-foreground">
         * Estimates use Best Sellers Rank. Directional only.
       </p>
     </section>

@@ -28,7 +28,7 @@ export function ProgressSteps({
 
   return (
     <div className="mt-4 space-y-2">
-      <ol className="space-y-2 rounded-lg border border-neutral-200 bg-white/80 px-3 py-3 text-sm">
+      <ol className="space-y-2 rounded-lg border border-border bg-card/80 px-3 py-3 text-sm">
         {STEPS.map((label, i) => {
           const isStep1 = i === 0;
           const parallelGroup = i >= 1;
@@ -51,8 +51,8 @@ export function ProgressSteps({
           }
 
           return (
-            <li key={label} className="flex items-center gap-2 text-neutral-700">
-              <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-white">
+            <li key={label} className="flex items-center gap-2 text-foreground/90">
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card">
                 {done ? (
                   <FaCheck className="size-3 text-emerald-600" aria-hidden />
                 ) : running ? (
@@ -61,15 +61,15 @@ export function ProgressSteps({
                     aria-hidden
                   />
                 ) : (
-                  <span className="size-2 rounded-full bg-neutral-200" aria-hidden />
+                  <span className="size-2 rounded-full bg-border" aria-hidden />
                 )}
               </span>
-              <span className={done ? "font-medium text-black" : ""}>{label}</span>
+              <span className={done ? "font-medium text-foreground" : ""}>{label}</span>
             </li>
           );
         })}
       </ol>
-      <p className="text-center text-xs text-neutral-500">{elapsedLabel}</p>
+      <p className="text-center text-xs text-muted-foreground">{elapsedLabel}</p>
     </div>
   );
 }

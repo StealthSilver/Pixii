@@ -42,20 +42,20 @@ Working on the fixes now 🔧
   };
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <p className="text-sm font-semibold text-black">Share this critique:</p>
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <p className="text-sm font-semibold text-foreground">Share this critique:</p>
       <div className="mt-3 flex flex-wrap gap-2">
         <button
           type="button"
           onClick={() => void copy("link")}
-          className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-neutral-50"
+          className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
         >
           {copyLink ? "Copied!" : "Copy Link"}
         </button>
         <button
           type="button"
           onClick={() => void copy("li")}
-          className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-neutral-50"
+          className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
         >
           {copyLi ? "Copied!" : "Copy for LinkedIn"}
         </button>

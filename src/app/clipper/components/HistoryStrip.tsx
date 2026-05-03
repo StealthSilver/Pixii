@@ -24,7 +24,7 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
 
   return (
     <div className="mt-8">
-      <h3 className="font-heading text-sm font-semibold text-black">Previous Jobs</h3>
+      <h3 className="font-heading text-sm font-semibold text-foreground">Previous Jobs</h3>
       <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
         {show.map((h) => (
           <button
@@ -34,7 +34,7 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
             onClick={() => onSelect(h._id)}
             className="group flex w-32 shrink-0 flex-col items-stretch text-left"
           >
-            <div className="relative size-20 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
+            <div className="relative size-20 overflow-hidden rounded-lg border border-border bg-foreground/10">
               {h.thumbnailUrl ? (
                 <Image
                   src={h.thumbnailUrl}
@@ -46,12 +46,12 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
               ) : null}
             </div>
             <p
-              className="mt-2 line-clamp-1 text-xs font-semibold text-neutral-800"
+              className="mt-2 line-clamp-1 text-xs font-semibold text-foreground"
               title={h.videoTitle}
             >
               {h.videoTitle.length > 15 ? `${h.videoTitle.slice(0, 15)}…` : h.videoTitle}
             </p>
-            <p className="text-[10px] text-neutral-500">
+            <p className="text-[10px] text-muted-foreground">
               {h.createdAt ? formatRelativeTime(h.createdAt) : ""}
             </p>
           </button>

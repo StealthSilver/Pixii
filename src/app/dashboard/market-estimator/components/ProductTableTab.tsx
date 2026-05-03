@@ -14,12 +14,12 @@ function rankBadgeClass(rank: number): string {
     return "bg-amber-100 text-amber-900 ring-1 ring-amber-300";
   }
   if (rank === 2) {
-    return "bg-neutral-200 text-neutral-800 ring-1 ring-neutral-400";
+    return "bg-border text-foreground ring-1 ring-muted-foreground/45";
   }
   if (rank === 3) {
     return "bg-orange-100 text-orange-900 ring-1 ring-orange-300";
   }
-  return "bg-neutral-100 text-neutral-600";
+  return "bg-foreground/10 text-muted-foreground";
 }
 
 export function ProductTableTab({ job }: ProductTableTabProps) {
@@ -51,17 +51,17 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-3">
-        <label className="text-xs font-medium text-neutral-700">
+        <label className="text-xs font-medium text-foreground/90">
           Min Revenue $
           <input
             type="number"
             value={minRev}
             onChange={(e) => setMinRev(e.target.value)}
             placeholder="0"
-            className="mt-1 block w-28 rounded-lg border border-neutral-200 bg-white px-2 py-1.5 text-sm shadow-sm"
+            className="mt-1 block w-28 rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm"
           />
         </label>
-        <label className="text-xs font-medium text-neutral-700">
+        <label className="text-xs font-medium text-foreground/90">
           Min Rating
           <input
             type="number"
@@ -69,14 +69,14 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
             value={minRating}
             onChange={(e) => setMinRating(e.target.value)}
             placeholder="0"
-            className="mt-1 block w-24 rounded-lg border border-neutral-200 bg-white px-2 py-1.5 text-sm shadow-sm"
+            className="mt-1 block w-24 rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm"
           />
         </label>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
+      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
         <table className="min-w-[720px] w-full text-left text-sm">
-          <thead className="border-b border-neutral-200 bg-neutral-50 text-xs font-semibold uppercase tracking-wide text-neutral-600">
+          <thead className="border-b border-border bg-muted text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             <tr>
               <th className="px-3 py-2">Rank</th>
               <th className="px-3 py-2">Product</th>
@@ -88,7 +88,7 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
               <th className="px-3 py-2">Revenue Share</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-neutral-100">
+          <tbody className="divide-y divide-border/50">
             {rows.map((p) => {
               const share = (p.estimatedMonthlyRevenue / totalRev) * 100;
               return (
@@ -102,7 +102,7 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
                   </td>
                   <td className="max-w-[220px] px-3 py-2">
                     <div className="flex gap-2">
-                      <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-neutral-50">
+                      <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-border/55 bg-muted">
                         {p.imageUrl ? (
                           <Image
                             src={p.imageUrl}
@@ -115,10 +115,10 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
                         ) : null}
                       </div>
                       <div className="min-w-0">
-                        <p className="line-clamp-2 text-xs font-semibold text-neutral-900">
+                        <p className="line-clamp-2 text-xs font-semibold text-foreground">
                           {p.title}
                         </p>
-                        <p className="line-clamp-1 text-[11px] text-neutral-500">
+                        <p className="line-clamp-1 text-[11px] text-muted-foreground">
                           {p.brand || "—"}
                         </p>
                       </div>
@@ -141,13 +141,13 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
                   </td>
                   <td className="px-3 py-2">
                     <div className="flex items-center gap-2">
-                      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-neutral-100">
+                      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-foreground/10">
                         <div
                           className="h-full rounded-full bg-primary/70"
                           style={{ width: `${Math.min(100, share)}%` }}
                         />
                       </div>
-                      <span className="text-[11px] text-neutral-600">
+                      <span className="text-[11px] text-muted-foreground">
                         {share.toFixed(1)}%
                       </span>
                     </div>
@@ -159,7 +159,7 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
         </table>
       </div>
 
-      <p className="text-[11px] text-neutral-500">
+      <p className="text-[11px] text-muted-foreground">
         * Revenue estimates are approximations based on Best Sellers Rank position.
         Actual revenues may vary significantly. Use as directional guidance only.
       </p>

@@ -12,7 +12,7 @@ function platformPillClass(platform: string): string {
     case "LinkedIn":
       return "border-indigo-200 bg-indigo-50 text-indigo-800";
     default:
-      return "border-neutral-200 bg-neutral-50 text-neutral-700";
+      return "border-border bg-muted text-foreground/90";
   }
 }
 
@@ -45,9 +45,9 @@ export function HookCard({ pattern, onUseHook }: HookCardProps) {
   const examples = pattern.exampleHooks.slice(0, 3);
 
   return (
-    <article className="flex flex-col rounded-xl border border-neutral-200/80 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
+    <article className="flex flex-col rounded-xl border border-border/80 bg-card p-4 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <h3 className="font-heading text-lg font-semibold tracking-tight text-black">
+        <h3 className="font-heading text-lg font-semibold tracking-tight text-foreground">
           {pattern.name}
         </h3>
         <span
@@ -59,7 +59,7 @@ export function HookCard({ pattern, onUseHook }: HookCardProps) {
           {badge.label}
         </span>
       </div>
-      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-600">
+      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
         {pattern.description}
       </p>
 
@@ -81,7 +81,7 @@ export function HookCard({ pattern, onUseHook }: HookCardProps) {
         {examples.map((hook, i) => (
           <li
             key={i}
-            className="text-sm italic leading-snug text-neutral-700"
+            className="text-sm italic leading-snug text-foreground/90"
           >
             “{hook}”
           </li>
@@ -89,11 +89,11 @@ export function HookCard({ pattern, onUseHook }: HookCardProps) {
       </ul>
 
       <div className="mt-4 min-w-0">
-        <p className="text-xs font-medium text-neutral-500">
+        <p className="text-xs font-medium text-muted-foreground">
           Trend · last {pattern.trendHistory.length || 1}{" "}
           {pattern.trendHistory.length === 1 ? "week" : "weeks"}
         </p>
-        <div className="mt-1.5 h-9 w-full overflow-hidden rounded-md bg-neutral-50/80 ring-1 ring-inset ring-neutral-100">
+        <div className="mt-1.5 h-9 w-full overflow-hidden rounded-md bg-muted/80 ring-1 ring-inset ring-border/45">
           <Sparkline
             values={
               pattern.trendHistory.length
@@ -105,8 +105,8 @@ export function HookCard({ pattern, onUseHook }: HookCardProps) {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-neutral-100 pt-4">
-        <p className="text-xs font-medium text-neutral-600">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border/55 pt-4">
+        <p className="text-xs font-medium text-muted-foreground">
           Used {pattern.usageCount} times
         </p>
         <button

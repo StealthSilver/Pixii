@@ -42,8 +42,8 @@ export function QueryInput({
   showSubmit,
 }: QueryInputProps) {
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <label className="block text-sm font-medium text-neutral-700">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <label className="block text-sm font-medium text-foreground/90">
         Your question
         <textarea
           value={queryText}
@@ -53,10 +53,10 @@ export function QueryInput({
           placeholder='Ask what a shopper would ask Rufus... e.g. "best magnesium for seniors"'
           rows={2}
           className={
-            "mt-1.5 min-h-[56px] w-full resize-y rounded-lg border border-neutral-200 px-3 py-3 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+            "mt-1.5 min-h-[56px] w-full resize-y rounded-lg border border-border px-3 py-3 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
             (inputReadOnly
-              ? "cursor-default bg-neutral-50 text-neutral-800"
-              : "bg-white")
+              ? "cursor-default bg-muted text-foreground"
+              : "bg-card")
           }
         />
       </label>
@@ -68,7 +68,7 @@ export function QueryInput({
             type="button"
             disabled={disabled || Boolean(inputReadOnly)}
             onClick={() => onQueryChange(q)}
-            className="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-medium text-neutral-800 shadow-sm transition-colors hover:bg-black/[0.04] disabled:opacity-50"
+            className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-foreground shadow-sm transition-colors hover:bg-foreground/[0.06] disabled:opacity-50"
           >
             {q}
           </button>

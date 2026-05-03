@@ -284,7 +284,7 @@ export default function AeoDashboardPage() {
                 "rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
                 (view === "history"
                   ? "bg-primary/10 text-primary"
-                  : "border border-neutral-200 bg-white text-neutral-700 shadow-sm hover:bg-black/[0.03]")
+                  : "border border-border bg-card text-foreground/90 shadow-sm hover:bg-foreground/[0.06]")
               }
             >
               {view === "history" ? "Run diagnostic" : "History"}

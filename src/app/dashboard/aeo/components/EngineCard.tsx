@@ -31,7 +31,7 @@ function badgeClass(kind: "good" | "mid" | "bad" | "muted"): string {
   if (kind === "bad") {
     return base + "border-red-200 bg-red-50 text-red-900";
   }
-  return base + "border-neutral-200 bg-neutral-50 text-neutral-600";
+  return base + "border-border bg-muted text-muted-foreground";
 }
 
 function strengthLabel(v: string): string {
@@ -117,7 +117,7 @@ export function EngineCard({
         ? "text-amber-700"
         : scoreTone(score) === "bad"
           ? "text-red-700"
-          : "text-neutral-500";
+          : "text-muted-foreground";
 
   const sentKind =
     sentiment === "positive"
@@ -141,17 +141,17 @@ export function EngineCard({
   );
 
   return (
-    <article className="flex flex-col rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+    <article className="flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm">
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2">
           <span
-            className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 font-heading text-sm font-bold text-black"
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-muted font-heading text-sm font-bold text-foreground"
             aria-hidden
           >
             {icon}
           </span>
           <div>
-            <h3 className="font-heading text-sm font-semibold text-black">
+            <h3 className="font-heading text-sm font-semibold text-foreground">
               {title}
             </h3>
             {unavailable ? (
@@ -168,7 +168,7 @@ export function EngineCard({
           {score === null ? "—" : score}
         </p>
       </div>
-      <p className="mt-1 text-xs text-neutral-500">out of 100</p>
+      <p className="mt-1 text-xs text-muted-foreground">out of 100</p>
 
       <div className="mt-3 flex flex-wrap gap-2">
         <span className={badgeClass(mentioned && rank ? "good" : "muted")}>
@@ -180,11 +180,11 @@ export function EngineCard({
         <span className={badgeClass(sentKind)}>{sentimentLabel(sentiment)}</span>
       </div>
 
-      <div className="mt-4 border-l-4 border-primary/35 bg-black/[0.02] px-3 py-2 text-sm text-neutral-800">
+      <div className="mt-4 border-l-4 border-primary/35 bg-foreground/[0.04] px-3 py-2 text-sm text-foreground">
         {ctx ? (
           <p className="leading-relaxed">{ctx}</p>
         ) : (
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-muted-foreground">
             Your brand was not mentioned in this response
           </p>
         )}
@@ -193,13 +193,13 @@ export function EngineCard({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="mt-3 inline-flex w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 shadow-sm transition-colors hover:bg-black/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+        className="mt-3 inline-flex w-full items-center justify-center rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm transition-colors hover:bg-foreground/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
       >
         {open ? "Hide full response" : "View full response"}
       </button>
       {open ? (
         <div
-          className="mt-2 max-h-[200px] overflow-y-auto rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 font-mono text-xs leading-relaxed text-neutral-900"
+          className="mt-2 max-h-[200px] overflow-y-auto rounded-lg border border-border bg-muted px-3 py-2 font-mono text-xs leading-relaxed text-foreground"
           // eslint-disable-next-line react/no-danger -- intentional highlighting of trusted model output
           dangerouslySetInnerHTML={{ __html: html }}
         />

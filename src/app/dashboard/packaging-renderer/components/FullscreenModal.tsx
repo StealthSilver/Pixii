@@ -29,7 +29,7 @@ export function FullscreenModal({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black/85 p-4"
+      className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-foreground/88 backdrop-blur-[2px] p-4"
       role="dialog"
       aria-modal="true"
       aria-label="Render preview"
@@ -37,7 +37,7 @@ export function FullscreenModal({
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-4 top-4 rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white hover:bg-white/20"
+        className="absolute right-4 top-4 rounded-lg bg-card/10 px-3 py-2 text-sm font-semibold text-white hover:bg-card/20"
       >
         ×
       </button>
@@ -47,7 +47,7 @@ export function FullscreenModal({
           <button
             type="button"
             onClick={onPrev}
-            className="absolute left-0 z-10 rounded-lg bg-white/10 px-3 py-4 text-white hover:bg-white/20 md:left-4"
+            className="absolute left-0 z-10 rounded-lg bg-card/10 px-3 py-4 text-white hover:bg-card/20 md:left-4"
             aria-label="Previous image"
           >
             ‹
@@ -67,7 +67,7 @@ export function FullscreenModal({
           <button
             type="button"
             onClick={onNext}
-            className="absolute right-0 z-10 rounded-lg bg-white/10 px-3 py-4 text-white hover:bg-white/20 md:right-4"
+            className="absolute right-0 z-10 rounded-lg bg-card/10 px-3 py-4 text-white hover:bg-card/20 md:right-4"
             aria-label="Next image"
           >
             ›

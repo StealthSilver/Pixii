@@ -345,7 +345,7 @@ function ShopifyPhotosPageContent() {
   }, []);
 
   const inputClass =
-    "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+    "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
   const connected = connection?.connected === true;
 
@@ -357,8 +357,8 @@ function ShopifyPhotosPageContent() {
       >
         {connLoading ? (
           <div className="mt-8 max-w-6xl space-y-3">
-            <div className="h-10 max-w-md animate-pulse rounded-lg bg-neutral-100" />
-            <div className="h-48 max-w-lg animate-pulse rounded-xl bg-neutral-100" />
+            <div className="h-10 max-w-md animate-pulse rounded-lg bg-foreground/10" />
+            <div className="h-48 max-w-lg animate-pulse rounded-xl bg-foreground/10" />
           </div>
         ) : view === "connect" ? (
           <div className="mt-8 max-w-6xl">
@@ -405,9 +405,9 @@ function ShopifyPhotosPageContent() {
                   }
                 >
                   {selectedProduct ? (
-                    <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+                    <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
                       <div className="flex items-start gap-4">
-                        <div className="relative size-[120px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+                        <div className="relative size-[120px] shrink-0 overflow-hidden rounded-lg bg-foreground/10">
                           {selectedProduct.images?.[0]?.src ? (
                             <Image
                               src={selectedProduct.images[0].src}
@@ -419,7 +419,7 @@ function ShopifyPhotosPageContent() {
                           ) : null}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="font-heading text-sm font-semibold text-black">
+                          <p className="font-heading text-sm font-semibold text-foreground">
                             {selectedProduct.title}
                           </p>
                           <button
@@ -437,9 +437,9 @@ function ShopifyPhotosPageContent() {
                     </div>
                   ) : null}
 
-                  <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+                  <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
                     <LifestyleSelector value={lifestyle} onChange={setLifestyle} />
-                    <label className="mt-6 block text-sm font-medium text-neutral-700">
+                    <label className="mt-6 block text-sm font-medium text-foreground/90">
                       Product Category
                       <input
                         type="text"
@@ -449,10 +449,10 @@ function ShopifyPhotosPageContent() {
                         className={inputClass}
                       />
                     </label>
-                    <p className="mt-1 text-xs text-neutral-500">
+                    <p className="mt-1 text-xs text-muted-foreground">
                       Auto-detected from your Shopify product type
                     </p>
-                    <p className="mt-4 text-xs text-neutral-600">
+                    <p className="mt-4 text-xs text-muted-foreground">
                       ⏱ ~30–50 seconds · 📸 4 photo variations · 💰 ~$0.07 per generation
                     </p>
                     <button
@@ -490,7 +490,7 @@ function ShopifyPhotosPageContent() {
               <div>
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="relative size-10 shrink-0 overflow-hidden rounded-md bg-neutral-100">
+                    <div className="relative size-10 shrink-0 overflow-hidden rounded-md bg-foreground/10">
                       {selectedProduct.images?.[0]?.src ? (
                         <Image
                           src={selectedProduct.images[0].src}
@@ -501,7 +501,7 @@ function ShopifyPhotosPageContent() {
                         />
                       ) : null}
                     </div>
-                    <p className="truncate font-heading text-sm font-semibold text-black">
+                    <p className="truncate font-heading text-sm font-semibold text-foreground">
                       {selectedProduct.title}
                     </p>
                   </div>
@@ -514,7 +514,7 @@ function ShopifyPhotosPageContent() {
                         setJob(null);
                         setJobId(null);
                       }}
-                      className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                      className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted"
                     >
                       Generate Another
                     </button>
@@ -528,14 +528,14 @@ function ShopifyPhotosPageContent() {
                         setJob(null);
                         setJobId(null);
                       }}
-                      className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                      className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted"
                     >
                       New Product
                     </button>
                   </div>
                 </div>
 
-                <div className="mt-6 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+                <div className="mt-6 rounded-xl border border-border bg-card p-5 shadow-sm">
                   <PhotoGrid
                     urls={job.cloudinaryUrls ?? []}
                     lifestyleKey={job.lifestyle}
@@ -592,8 +592,8 @@ export default function ShopifyPhotosPage() {
           description="Connect your Shopify store to generate and publish lifestyle photos automatically."
         >
           <div className="mt-8 max-w-6xl space-y-3">
-            <div className="h-10 max-w-md animate-pulse rounded-lg bg-neutral-100" />
-            <div className="h-48 max-w-lg animate-pulse rounded-xl bg-neutral-100" />
+            <div className="h-10 max-w-md animate-pulse rounded-lg bg-foreground/10" />
+            <div className="h-48 max-w-lg animate-pulse rounded-xl bg-foreground/10" />
           </div>
         </FeaturePage>
       }

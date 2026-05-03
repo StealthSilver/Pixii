@@ -391,7 +391,7 @@ export default function RufusTwinPage() {
                 "rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
                 (mainView === "history"
                   ? "bg-primary/10 text-primary"
-                  : "border border-neutral-200 bg-white text-neutral-700 shadow-sm hover:bg-black/[0.03]")
+                  : "border border-border bg-card text-foreground/90 shadow-sm hover:bg-foreground/[0.06]")
               }
             >
               {mainView === "history" ? "Query" : "History"}
@@ -421,7 +421,7 @@ export default function RufusTwinPage() {
                   <button
                     type="button"
                     onClick={dismissHistoryBanner}
-                    className="rounded-md border border-blue-200 bg-white px-2 py-1 text-xs font-semibold text-blue-900 hover:bg-blue-100/80"
+                    className="rounded-md border border-blue-200 bg-card px-2 py-1 text-xs font-semibold text-blue-900 hover:bg-blue-100/80"
                     aria-label="Dismiss"
                   >
                     ×
@@ -463,7 +463,7 @@ export default function RufusTwinPage() {
                 >
                   {relatedLoading ? (
                     <div className="absolute inset-0 z-10 flex items-start justify-center pt-16">
-                      <div className="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/95 px-4 py-3 text-sm font-medium text-neutral-800 shadow-lg">
+                      <div className="flex items-center gap-2 rounded-xl border border-border bg-card/95 px-4 py-3 text-sm font-medium text-foreground shadow-lg">
                         <span className="size-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                         Updating simulation…
                       </div>
@@ -471,20 +471,20 @@ export default function RufusTwinPage() {
                   ) : null}
 
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <blockquote className="max-w-3xl border-l-4 border-primary/30 pl-4 text-sm italic text-neutral-700">
+                    <blockquote className="max-w-3xl border-l-4 border-primary/30 pl-4 text-sm italic text-foreground/90">
                       {queryText}
                     </blockquote>
                     <button
                       type="button"
                       onClick={onNewQuery}
-                      className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 shadow-sm hover:bg-black/[0.03]"
+                      className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-foreground/[0.06]"
                     >
                       New Query
                     </button>
                   </div>
 
                   <section>
-                    <h3 className="font-heading text-base font-semibold text-black">
+                    <h3 className="font-heading text-base font-semibold text-foreground">
                       Rufus response
                     </h3>
                     <div className="mt-3">
@@ -496,10 +496,10 @@ export default function RufusTwinPage() {
                   </section>
 
                   <section>
-                    <h3 className="font-heading text-base font-semibold text-black">
+                    <h3 className="font-heading text-base font-semibold text-foreground">
                       What Rufus weighted in this response
                     </h3>
-                    <p className="mt-1 text-sm text-neutral-600">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       Optimize these factors to appear in more Rufus answers
                     </p>
                     <div className="mt-4">
@@ -508,10 +508,10 @@ export default function RufusTwinPage() {
                   </section>
 
                   <section>
-                    <h3 className="font-heading text-base font-semibold text-black">
+                    <h3 className="font-heading text-base font-semibold text-foreground">
                       Products Rufus would likely recommend
                     </h3>
-                    <p className="mt-1 text-sm text-neutral-600">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       These products are well-positioned for this query
                     </p>
                     <div className="mt-4">
@@ -520,10 +520,10 @@ export default function RufusTwinPage() {
                   </section>
 
                   <section>
-                    <h3 className="font-heading text-base font-semibold text-black">
+                    <h3 className="font-heading text-base font-semibold text-foreground">
                       Your Listing&apos;s Rufus Score
                     </h3>
-                    <p className="mt-1 text-sm text-neutral-600">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       How well your listing is optimized for this query
                     </p>
                     <div className="mt-4">
@@ -535,7 +535,7 @@ export default function RufusTwinPage() {
                   </section>
 
                   <section>
-                    <h3 className="font-heading text-base font-semibold text-black">
+                    <h3 className="font-heading text-base font-semibold text-foreground">
                       Shoppers also ask Rufus
                     </h3>
                     <div className="mt-3">
@@ -547,18 +547,18 @@ export default function RufusTwinPage() {
                     </div>
                   </section>
 
-                  <div className="flex flex-wrap gap-2 border-t border-neutral-100 pt-4">
+                  <div className="flex flex-wrap gap-2 border-t border-border/55 pt-4">
                     <button
                       type="button"
                       onClick={() => void onSave()}
-                      className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 shadow-sm hover:bg-black/[0.03]"
+                      className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-foreground/[0.06]"
                     >
                       {savedForId === queryId ? "✓ Saved" : "Save Query"}
                     </button>
                     <button
                       type="button"
                       onClick={() => void onCopy()}
-                      className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 shadow-sm hover:bg-black/[0.03]"
+                      className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-foreground/[0.06]"
                     >
                       {copyLabel ?? "Copy Response"}
                     </button>
@@ -566,7 +566,7 @@ export default function RufusTwinPage() {
                       type="button"
                       onClick={onRunAgain}
                       disabled={loading || relatedLoading || historyReadOnly}
-                      className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-800 shadow-sm hover:bg-black/[0.03] disabled:opacity-50"
+                      className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-foreground/[0.06] disabled:opacity-50"
                     >
                       Run Again
                     </button>

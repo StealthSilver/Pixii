@@ -16,7 +16,7 @@ function platformPillClass(platform: string): string {
     case "LinkedIn":
       return "border-indigo-200 bg-indigo-50 text-indigo-800";
     default:
-      return "border-neutral-200 bg-neutral-50 text-neutral-700";
+      return "border-border bg-muted text-foreground/90";
   }
 }
 
@@ -82,11 +82,11 @@ export function DraftsTab({
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="animate-pulse rounded-xl border border-neutral-200/80 bg-white p-4"
+            className="animate-pulse rounded-xl border border-border/80 bg-card p-4"
           >
-            <div className="h-4 w-1/3 rounded bg-neutral-200" />
-            <div className="mt-3 h-3 w-full rounded bg-neutral-100" />
-            <div className="mt-2 h-3 w-[92%] rounded bg-neutral-100" />
+            <div className="h-4 w-1/3 rounded bg-border" />
+            <div className="mt-3 h-3 w-full rounded bg-foreground/10" />
+            <div className="mt-2 h-3 w-[92%] rounded bg-foreground/10" />
           </div>
         ))}
       </div>
@@ -103,12 +103,12 @@ export function DraftsTab({
 
   if (!drafts?.length) {
     return (
-      <div className="flex min-h-[240px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-neutral-200 bg-white/60 px-6 py-10 text-center">
-        <FaInbox className="size-12 text-neutral-300" aria-hidden />
-        <p className="font-heading text-base font-semibold text-black">
+      <div className="flex min-h-[240px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/60 px-6 py-10 text-center">
+        <FaInbox className="size-12 text-muted-foreground/55" aria-hidden />
+        <p className="font-heading text-base font-semibold text-foreground">
           No saved drafts yet
         </p>
-        <p className="max-w-md text-sm text-neutral-600">
+        <p className="max-w-md text-sm text-muted-foreground">
           Generate posts and save them here.
         </p>
       </div>
@@ -126,7 +126,7 @@ export function DraftsTab({
         return (
           <li
             key={d._id}
-            className="rounded-xl border border-neutral-200/80 bg-white p-4 shadow-sm"
+            className="rounded-xl border border-border/80 bg-card p-4 shadow-sm"
           >
             <div className="flex flex-wrap items-center gap-2">
               <span
@@ -137,14 +137,14 @@ export function DraftsTab({
               >
                 {d.platform}
               </span>
-              <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11px] font-semibold text-neutral-700">
+              <span className="rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-semibold text-foreground/90">
                 {d.tone}
               </span>
-              <span className="text-xs text-neutral-500">
+              <span className="text-xs text-muted-foreground">
                 {formatRelativeTime(d.createdAt)}
               </span>
             </div>
-            <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-black">
+            <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-foreground">
               {preview}
               {truncated ? "…" : ""}
             </p>
@@ -157,20 +157,20 @@ export function DraftsTab({
                 {isOpen ? "Show less" : "Show more"}
               </button>
             ) : null}
-            <p className="mt-2 text-xs text-neutral-500">
+            <p className="mt-2 text-xs text-muted-foreground">
               Pattern: {d.patternName}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => void copyContent(d._id, d.content)}
-                className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800 transition-colors hover:bg-black/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+                className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-foreground/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
               >
                 {copiedId === d._id ? "Copied" : "Copy"}
               </button>
               {confirmId === d._id ? (
                 <span className="inline-flex flex-wrap items-center gap-2 text-xs">
-                  <span className="font-medium text-neutral-700">
+                  <span className="font-medium text-foreground/90">
                     Are you sure?
                   </span>
                   <button
@@ -183,7 +183,7 @@ export function DraftsTab({
                   <button
                     type="button"
                     onClick={() => setConfirmId(null)}
-                    className="rounded-lg border border-neutral-200 px-3 py-1.5 font-semibold text-neutral-800 hover:bg-black/[0.03]"
+                    className="rounded-lg border border-border px-3 py-1.5 font-semibold text-foreground hover:bg-foreground/[0.06]"
                   >
                     Cancel
                   </button>

@@ -22,7 +22,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
 
   return (
     <div className="space-y-6">
-      <p className="rounded-lg border border-neutral-200 bg-neutral-50/80 px-4 py-3 text-sm text-neutral-700">
+      <p className="rounded-lg border border-border bg-muted/80 px-4 py-3 text-sm text-foreground/90">
         These are the {sorted.length} things customers actually base their purchase decision
         on — ranked by how often they&apos;re mentioned.
       </p>
@@ -31,7 +31,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
         {sorted.map((c) => {
           const diff = c.yourListingScore - c.competitorAvgScore;
           let badge = (
-            <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold text-neutral-700">
+            <span className="rounded-full bg-foreground/10 px-2 py-0.5 text-[10px] font-semibold text-foreground/90">
               Competitive
             </span>
           );
@@ -52,10 +52,10 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
           return (
             <article
               key={c.criteriaName + c.importanceScore}
-              className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm"
+              className="rounded-xl border border-border bg-card p-4 shadow-sm"
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
-                <h3 className="font-heading text-base font-semibold text-black">
+                <h3 className="font-heading text-base font-semibold text-foreground">
                   {c.criteriaName}
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">
@@ -68,11 +68,11 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
 
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 <div>
-                  <div className="flex justify-between text-xs font-medium text-neutral-600">
+                  <div className="flex justify-between text-xs font-medium text-muted-foreground">
                     <span>Market Satisfaction</span>
                     <span>{Math.round(c.satisfactionScore)}/100</span>
                   </div>
-                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-neutral-100">
+                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-foreground/10">
                     <div
                       className={`h-full rounded-full ${scoreBarClass(c.satisfactionScore)}`}
                       style={{ width: `${Math.min(100, c.satisfactionScore)}%` }}
@@ -80,11 +80,11 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between text-xs font-medium text-neutral-600">
+                  <div className="flex justify-between text-xs font-medium text-muted-foreground">
                     <span>Your Listing</span>
                     <span>{Math.round(c.yourListingScore)}/100</span>
                   </div>
-                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-neutral-100">
+                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-foreground/10">
                     <div
                       className={`h-full rounded-full ${scoreBarClass(c.yourListingScore)}`}
                       style={{ width: `${Math.min(100, c.yourListingScore)}%` }}
@@ -94,10 +94,10 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
               </div>
 
               <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <blockquote className="border-l-4 border-emerald-500 pl-3 text-xs italic text-neutral-600">
+                <blockquote className="border-l-4 border-emerald-500 pl-3 text-xs italic text-muted-foreground">
                   ✓ {c.topPositiveQuote}
                 </blockquote>
-                <blockquote className="border-l-4 border-red-500 pl-3 text-xs italic text-neutral-600">
+                <blockquote className="border-l-4 border-red-500 pl-3 text-xs italic text-muted-foreground">
                   ✗ {c.topNegativeQuote}
                 </blockquote>
               </div>
@@ -111,7 +111,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
           <p className="text-xs font-semibold uppercase tracking-wide text-primary">
             💡 Key Insight
           </p>
-          <p className="mt-2 text-sm font-medium leading-relaxed text-neutral-900">
+          <p className="mt-2 text-sm font-medium leading-relaxed text-foreground">
             {keyInsight}
           </p>
         </div>

@@ -35,14 +35,14 @@ function scorePillClass(score: number): string {
   if (score >= 5) {
     return "bg-amber-100 text-amber-950";
   }
-  return "bg-neutral-100 text-neutral-700";
+  return "bg-foreground/10 text-foreground/90";
 }
 
 function PlatformBadge({ platform }: { platform: string }) {
   const p = platform.toLowerCase();
   if (p === "tiktok") {
     return (
-      <span className="rounded-md bg-black px-2 py-0.5 text-[10px] font-bold text-white">
+      <span className="rounded-md bg-foreground px-2 py-0.5 text-[10px] font-bold text-background">
         TikTok
       </span>
     );
@@ -113,7 +113,7 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
   };
 
   return (
-    <div className="flex flex-col rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+    <div className="flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm">
       <div className="flex items-start justify-between gap-2">
         <span
           className={
@@ -123,7 +123,7 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
         >
           #{index + 1}
         </span>
-        <span className="text-sm font-semibold text-neutral-800">
+        <span className="text-sm font-semibold text-foreground">
           🔥 {clip.viralScore.toFixed(1)}/10
         </span>
         <div className="ml-auto">
@@ -131,27 +131,27 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
         </div>
       </div>
 
-      <h3 className="mt-3 font-heading text-base font-semibold leading-snug text-black">
+      <h3 className="mt-3 font-heading text-base font-semibold leading-snug text-foreground">
         {clip.hookTitle}
       </h3>
-      <p className="mt-1 text-sm text-neutral-500">Why viral: {clip.whyViral}</p>
+      <p className="mt-1 text-sm text-muted-foreground">Why viral: {clip.whyViral}</p>
 
-      <p className="mt-3 text-sm text-neutral-800">
-        <span className="font-mono text-xs text-neutral-600">
+      <p className="mt-3 text-sm text-foreground">
+        <span className="font-mono text-xs text-muted-foreground">
           {secondsToTimestamp(clip.startTime)}
         </span>
-        <span className="mx-1.5 text-neutral-400">→</span>
-        <span className="font-mono text-xs text-neutral-600">
+        <span className="mx-1.5 text-muted-foreground/75">→</span>
+        <span className="font-mono text-xs text-muted-foreground">
           {secondsToTimestamp(clip.endTime)}
         </span>
-        <span className="ml-2 text-xs text-neutral-500">({Math.round(clip.duration)} sec)</span>
+        <span className="ml-2 text-xs text-muted-foreground">({Math.round(clip.duration)} sec)</span>
       </p>
 
       <div className="mt-3">
-        <p className="text-xs font-medium text-neutral-500">Transcript:</p>
+        <p className="text-xs font-medium text-muted-foreground">Transcript:</p>
         <div
           className={
-            "mt-1 rounded-lg border border-neutral-100 bg-neutral-50 px-3 py-2 text-sm text-neutral-800 " +
+            "mt-1 rounded-lg border border-border/55 bg-muted px-3 py-2 text-sm text-foreground " +
             (expanded ? "" : "line-clamp-4")
           }
         >
@@ -169,7 +169,7 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
       </div>
 
       {!showManual ? (
-        <div className="mt-4 flex flex-wrap gap-2 border-t border-neutral-100 pt-4">
+        <div className="mt-4 flex flex-wrap gap-2 border-t border-border/55 pt-4">
           <a
             href={clip.cloudinaryUrl!}
             download
@@ -182,7 +182,7 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
           <button
             type="button"
             onClick={() => void copyTs()}
-            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
           >
             Copy Timestamp
           </button>
@@ -190,13 +190,13 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
             href={ytUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
           >
             Open in YouTube
           </a>
         </div>
       ) : (
-        <div className="mt-4 space-y-3 border-t border-neutral-100 pt-4">
+        <div className="mt-4 space-y-3 border-t border-border/55 pt-4">
           <div className="rounded-lg border border-amber-200 bg-amber-50/80 px-3 py-2 text-sm text-amber-950">
             <p className="font-semibold">📌 Manual cut required</p>
             <p className="mt-1 font-mono text-xs">
@@ -214,11 +214,11 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
           <button
             type="button"
             onClick={() => void copyCapcut()}
-            className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+            className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
           >
             Copy Timestamp for CapCut
           </button>
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-muted-foreground">
             Auto-cutting requires a persistent server. Use the timestamps above in CapCut,
             Premiere, or DaVinci Resolve.
           </p>

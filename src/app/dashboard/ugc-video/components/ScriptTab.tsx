@@ -64,10 +64,10 @@ export function ScriptTab({
     <div>
       <div className="flex items-baseline justify-between gap-3">
         <div>
-          <h3 className="font-heading text-lg font-semibold text-black">
+          <h3 className="font-heading text-lg font-semibold text-foreground">
             Generated Script
           </h3>
-          <p className="mt-1 text-sm text-neutral-600">
+          <p className="mt-1 text-sm text-muted-foreground">
             {script.wordCount} words · ~30 seconds
           </p>
         </div>
@@ -77,27 +77,27 @@ export function ScriptTab({
       </div>
 
       <div className="mt-6 space-y-4">
-        <div className="rounded-lg border-l-4 border-sky-500 bg-white p-4 shadow-sm ring-1 ring-neutral-100">
+        <div className="rounded-lg border-l-4 border-sky-500 bg-card p-4 shadow-sm ring-1 ring-border/45">
           <p className="text-xs font-semibold text-sky-800">🎣 Hook · 0-3 sec</p>
-          <p className="mt-2 text-sm text-neutral-800">{script.hook}</p>
+          <p className="mt-2 text-sm text-foreground">{script.hook}</p>
         </div>
-        <div className="rounded-lg border-l-4 border-amber-500 bg-white p-4 shadow-sm ring-1 ring-neutral-100">
+        <div className="rounded-lg border-l-4 border-amber-500 bg-card p-4 shadow-sm ring-1 ring-border/45">
           <p className="text-xs font-semibold text-amber-900">
             😤 Problem · 3-8 sec
           </p>
-          <p className="mt-2 text-sm text-neutral-800">{script.problem}</p>
+          <p className="mt-2 text-sm text-foreground">{script.problem}</p>
         </div>
-        <div className="rounded-lg border-l-4 border-emerald-500 bg-white p-4 shadow-sm ring-1 ring-neutral-100">
+        <div className="rounded-lg border-l-4 border-emerald-500 bg-card p-4 shadow-sm ring-1 ring-border/45">
           <p className="text-xs font-semibold text-emerald-900">
             ✅ Solution · 8-20 sec
           </p>
-          <p className="mt-2 text-sm text-neutral-800">{script.solution}</p>
+          <p className="mt-2 text-sm text-foreground">{script.solution}</p>
         </div>
-        <div className="rounded-lg border-l-4 border-violet-500 bg-white p-4 shadow-sm ring-1 ring-neutral-100">
+        <div className="rounded-lg border-l-4 border-violet-500 bg-card p-4 shadow-sm ring-1 ring-border/45">
           <p className="text-xs font-semibold text-violet-900">
             📣 CTA · 20-30 sec
           </p>
-          <p className="mt-2 text-sm text-neutral-800">{script.cta}</p>
+          <p className="mt-2 text-sm text-foreground">{script.cta}</p>
         </div>
       </div>
 
@@ -109,7 +109,7 @@ export function ScriptTab({
             await navigator.clipboard.writeText(script.fullScript);
             onToast("Script copied.", "success");
           }}
-          className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50 disabled:opacity-50"
+          className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted disabled:opacity-50"
         >
           Copy Full Script
         </button>
@@ -117,7 +117,7 @@ export function ScriptTab({
           type="button"
           disabled={loading}
           onClick={() => void postRegenerate({})}
-          className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50 disabled:opacity-50"
+          className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted disabled:opacity-50"
         >
           Regenerate Script
         </button>
@@ -125,7 +125,7 @@ export function ScriptTab({
           type="button"
           disabled={loading}
           onClick={() => setShowFeedback((s) => !s)}
-          className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50 disabled:opacity-50"
+          className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted disabled:opacity-50"
         >
           Regenerate with Feedback
         </button>
@@ -133,13 +133,13 @@ export function ScriptTab({
 
       {showFeedback ? (
         <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-end">
-          <label className="min-w-0 flex-1 text-sm font-medium text-neutral-700">
+          <label className="min-w-0 flex-1 text-sm font-medium text-foreground/90">
             What should change?
             <input
               type="text"
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm shadow-sm"
+              className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm"
               placeholder="e.g. More energy in the hook"
             />
           </label>

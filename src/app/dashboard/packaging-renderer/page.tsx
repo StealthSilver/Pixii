@@ -307,7 +307,7 @@ export default function PackagingRendererPage() {
   }, [modalOpen, statusPayload]);
 
   const inputClass =
-    "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+    "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
   const onPdf = useCallback((file: File | null) => {
     setUploadError(null);
@@ -460,12 +460,12 @@ export default function PackagingRendererPage() {
         <div className="mt-8 max-w-3xl space-y-6">
           {view === "upload" && (
             <section
-              className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
+              className="rounded-xl border border-border bg-card p-5 shadow-sm"
               aria-labelledby="pr-upload-heading"
             >
               <h2
                 id="pr-upload-heading"
-                className="font-heading text-lg font-semibold text-black"
+                className="font-heading text-lg font-semibold text-foreground"
               >
                 Upload dieline
               </h2>
@@ -479,17 +479,17 @@ export default function PackagingRendererPage() {
               </div>
 
               {pdfFile ? (
-                <div className="mt-8 space-y-6 rounded-xl border border-neutral-100 bg-neutral-50/50 p-4">
-                  <h3 className="font-heading text-base font-semibold text-black">
+                <div className="mt-8 space-y-6 rounded-xl border border-border/55 bg-muted/50 p-4">
+                  <h3 className="font-heading text-base font-semibold text-foreground">
                     Package Configuration
                   </h3>
                   <ShapeSelector value={packageShape} onChange={setPackageShape} />
                   <div>
-                    <p className="text-sm font-medium text-neutral-700">
+                    <p className="text-sm font-medium text-foreground/90">
                       Approximate Dimensions (cm)
                     </p>
                     <div className="mt-2 grid grid-cols-3 gap-3">
-                      <label className="text-xs font-medium text-neutral-600">
+                      <label className="text-xs font-medium text-muted-foreground">
                         Width
                         <input
                           type="number"
@@ -505,7 +505,7 @@ export default function PackagingRendererPage() {
                           className={inputClass}
                         />
                       </label>
-                      <label className="text-xs font-medium text-neutral-600">
+                      <label className="text-xs font-medium text-muted-foreground">
                         Height
                         <input
                           type="number"
@@ -521,7 +521,7 @@ export default function PackagingRendererPage() {
                           className={inputClass}
                         />
                       </label>
-                      <label className="text-xs font-medium text-neutral-600">
+                      <label className="text-xs font-medium text-muted-foreground">
                         Depth
                         <input
                           type="number"
@@ -538,7 +538,7 @@ export default function PackagingRendererPage() {
                         />
                       </label>
                     </div>
-                    <p className="mt-1 text-[11px] text-neutral-500">
+                    <p className="mt-1 text-[11px] text-muted-foreground">
                       Used to improve render accuracy
                     </p>
                   </div>
@@ -547,7 +547,7 @@ export default function PackagingRendererPage() {
                   <AngleSelector value={renderAngle} onChange={setRenderAngle} />
 
                   <div>
-                    <p className="text-sm font-medium text-neutral-700">
+                    <p className="text-sm font-medium text-foreground/90">
                       Variations
                     </p>
                     <div className="mt-2 flex flex-wrap gap-2">
@@ -560,21 +560,21 @@ export default function PackagingRendererPage() {
                             "rounded-full border px-4 py-1.5 text-xs font-semibold shadow-sm " +
                             (variationCount === n
                               ? "border-primary bg-primary/10 ring-2 ring-primary/25"
-                              : "border-neutral-200 bg-white hover:bg-neutral-50")
+                              : "border-border bg-card hover:bg-muted")
                           }
                         >
                           {n}
                         </button>
                       ))}
                     </div>
-                    <p className="mt-1 text-[11px] text-neutral-500">
+                    <p className="mt-1 text-[11px] text-muted-foreground">
                       More variations = longer processing time
                     </p>
                   </div>
                 </div>
               ) : null}
 
-              <div className="mt-6 rounded-xl border border-dashed border-neutral-200 bg-white/80 px-4 py-3 text-sm text-neutral-600">
+              <div className="mt-6 rounded-xl border border-dashed border-border bg-card/80 px-4 py-3 text-sm text-muted-foreground">
                 <p>⏱ Estimated time: 30–60 seconds</p>
                 <p className="mt-1">💰 Estimated cost: ~$0.08</p>
               </div>
@@ -615,8 +615,8 @@ export default function PackagingRendererPage() {
 
           {view === "result" && statusPayload?.outputUrls?.length ? (
             <div className="space-y-6">
-              <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-                <h2 className="font-heading text-lg font-semibold text-black">
+              <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+                <h2 className="font-heading text-lg font-semibold text-foreground">
                   Your renders
                 </h2>
                 <div className="mt-4">
@@ -647,22 +647,22 @@ export default function PackagingRendererPage() {
                   />
                 </div>
 
-                <div className="mt-6 flex flex-wrap gap-2 border-t border-neutral-100 pt-4">
-                  <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] font-semibold text-neutral-800">
+                <div className="mt-6 flex flex-wrap gap-2 border-t border-border/55 pt-4">
+                  <span className="rounded-full border border-border bg-muted px-2.5 py-1 text-[11px] font-semibold text-foreground">
                     {statusPayload.packageShape}
                   </span>
-                  <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] font-semibold text-neutral-800">
+                  <span className="rounded-full border border-border bg-muted px-2.5 py-1 text-[11px] font-semibold text-foreground">
                     {STYLE_LABELS[statusPayload.renderStyle as RenderStyle] ??
                       statusPayload.renderStyle}
                   </span>
-                  <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] font-semibold text-neutral-800">
+                  <span className="rounded-full border border-border bg-muted px-2.5 py-1 text-[11px] font-semibold text-foreground">
                     {ANGLE_LABELS[statusPayload.renderAngle as RenderAngle] ??
                       statusPayload.renderAngle}
                   </span>
-                  <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] font-semibold text-neutral-800">
+                  <span className="rounded-full border border-border bg-muted px-2.5 py-1 text-[11px] font-semibold text-foreground">
                     Engine: {engineLabel}
                   </span>
-                  <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] font-semibold text-neutral-800">
+                  <span className="rounded-full border border-border bg-muted px-2.5 py-1 text-[11px] font-semibold text-foreground">
                     Generated in {timeBadge}
                   </span>
                 </div>
@@ -689,14 +689,14 @@ export default function PackagingRendererPage() {
                       setRegenAngle(statusPayload.renderAngle as RenderAngle);
                       setShowRegeneratePanel((v) => !v);
                     }}
-                    className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                    className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
                   >
                     Try Different Style
                   </button>
                   <button
                     type="button"
                     onClick={resetAll}
-                    className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                    className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
                   >
                     Render New Packaging
                   </button>
@@ -708,14 +708,14 @@ export default function PackagingRendererPage() {
                         variant: "success",
                       })
                     }
-                    className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                    className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
                   >
                     Save to Gallery
                   </button>
                 </div>
 
                 {showRegeneratePanel ? (
-                  <div className="mt-6 rounded-xl border border-neutral-200 bg-neutral-50/80 p-4">
+                  <div className="mt-6 rounded-xl border border-border bg-muted/80 p-4">
                     <StyleSelector value={regenStyle} onChange={setRegenStyle} />
                     <div className="mt-4">
                       <AngleSelector value={regenAngle} onChange={setRegenAngle} />

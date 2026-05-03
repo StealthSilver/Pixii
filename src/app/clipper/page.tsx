@@ -289,8 +289,8 @@ export default function ClipperPage() {
 
           {view === "result" && displayJob && (
             <>
-              <div className="flex flex-wrap items-center gap-4 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-                <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-neutral-100">
+              <div className="flex flex-wrap items-center gap-4 rounded-xl border border-border bg-card p-4 shadow-sm">
+                <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-border/55 bg-foreground/10">
                   {displayJob.thumbnailUrl ? (
                     <Image
                       src={displayJob.thumbnailUrl}
@@ -303,11 +303,11 @@ export default function ClipperPage() {
                   ) : null}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-heading font-semibold text-black">
+                  <p className="font-heading font-semibold text-foreground">
                     {displayJob.videoTitle}
                   </p>
-                  <p className="text-sm text-neutral-500">{displayJob.channelName}</p>
-                  <p className="text-xs text-neutral-500">
+                  <p className="text-sm text-muted-foreground">{displayJob.channelName}</p>
+                  <p className="text-xs text-muted-foreground">
                     {formatSeconds(displayJob.videoDuration ?? 0)}
                   </p>
                 </div>
@@ -315,20 +315,20 @@ export default function ClipperPage() {
                   href={displayJob.youtubeUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="shrink-0 rounded-lg border border-neutral-200 px-3 py-2 text-sm font-semibold text-primary hover:bg-neutral-50"
+                  className="shrink-0 rounded-lg border border-border px-3 py-2 text-sm font-semibold text-primary hover:bg-muted"
                 >
                   View on YouTube
                 </a>
               </div>
 
-              <div className="flex gap-2 border-b border-neutral-200 pb-2">
+              <div className="flex gap-2 border-b border-border pb-2">
                 <button
                   type="button"
                   onClick={() => setTab("clips")}
                   className={
                     tab === "clips"
-                      ? "rounded-lg bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
-                      : "rounded-lg px-4 py-2 text-sm font-semibold text-neutral-600 hover:bg-neutral-100"
+                      ? "rounded-lg bg-foreground px-4 py-2 text-sm font-semibold text-background"
+                      : "rounded-lg px-4 py-2 text-sm font-semibold text-muted-foreground hover:bg-foreground/10"
                   }
                 >
                   ✂ Viral Clips ({clips.length})
@@ -338,8 +338,8 @@ export default function ClipperPage() {
                   onClick={() => setTab("blog")}
                   className={
                     tab === "blog"
-                      ? "rounded-lg bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
-                      : "rounded-lg px-4 py-2 text-sm font-semibold text-neutral-600 hover:bg-neutral-100"
+                      ? "rounded-lg bg-foreground px-4 py-2 text-sm font-semibold text-background"
+                      : "rounded-lg px-4 py-2 text-sm font-semibold text-muted-foreground hover:bg-foreground/10"
                   }
                 >
                   📝 Blog Post
@@ -372,7 +372,7 @@ export default function ClipperPage() {
                 <button
                   type="button"
                   onClick={() => void deleteJob()}
-                  className="rounded-lg border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50"
+                  className="rounded-lg border border-red-200 bg-card px-4 py-2.5 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50"
                 >
                   Delete This Job
                 </button>

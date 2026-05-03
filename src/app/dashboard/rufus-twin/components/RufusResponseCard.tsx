@@ -49,7 +49,7 @@ const TYPE_BADGES: Record<
 function typeBadge(queryType: string) {
   const fallback = {
     label: queryType.replace(/_/g, " "),
-    className: "border-neutral-200 bg-neutral-50 text-neutral-800",
+    className: "border-border bg-muted text-foreground",
   };
   return TYPE_BADGES[queryType] ?? fallback;
 }
@@ -64,15 +64,15 @@ export function RufusResponseCard({ queryType, body }: RufusResponseCardProps) {
   const paragraphs = body.split(/\n+/).filter(Boolean);
 
   return (
-    <section className="relative overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-2 border-b border-neutral-100 bg-neutral-50/80 px-4 py-3">
+    <section className="relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border/55 bg-muted/80 px-4 py-3">
         <div className="flex min-w-0 items-center gap-2">
           <Sparkle />
           <div>
             <p className="font-heading text-lg font-bold" style={{ color: "#FF9900" }}>
               Rufus
             </p>
-            <p className="text-[11px] text-neutral-500">Amazon Shopping Assistant</p>
+            <p className="text-[11px] text-muted-foreground">Amazon Shopping Assistant</p>
           </div>
         </div>
         <span
@@ -84,12 +84,12 @@ export function RufusResponseCard({ queryType, body }: RufusResponseCardProps) {
           {meta.label}
         </span>
       </div>
-      <div className="space-y-3 px-4 py-4 text-sm leading-relaxed text-neutral-800">
+      <div className="space-y-3 px-4 py-4 text-sm leading-relaxed text-foreground">
         {paragraphs.map((p, i) => (
           <p key={i}>{p}</p>
         ))}
       </div>
-      <p className="pointer-events-none px-4 pb-3 text-right text-[10px] text-neutral-400">
+      <p className="pointer-events-none px-4 pb-3 text-right text-[10px] text-muted-foreground/75">
         ⚠ AI simulation — not actual Rufus output
       </p>
     </section>

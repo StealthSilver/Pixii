@@ -1,17 +1,39 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  color-scheme: light;
   --background: rgb(251 249 247);
-  --foreground: #000000;
+  --foreground: rgb(10 10 10);
   --primary: rgb(191 79 48);
+  --card: rgb(255 255 255);
+  --border: rgb(229 229 229);
+  --muted: rgb(245 245 244);
+  --muted-foreground: rgb(82 82 91);
   --font-switzer: "Switzer", ui-sans-serif, system-ui, sans-serif;
   --font-cabinet: "Cabinet Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: rgb(14 14 16);
+  --foreground: rgb(244 244 245);
+  --primary: rgb(224 122 85);
+  --card: rgb(28 28 31);
+  --border: rgb(63 63 70 / 0.72);
+  --muted: rgb(39 39 42 / 0.65);
+  --muted-foreground: rgb(161 161 170);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --font-sans: var(--font-switzer);
   --font-heading: var(--font-cabinet);
 }

@@ -282,7 +282,7 @@ export default function PhotoUpgraderPage() {
   );
 
   const inputClass =
-    "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+    "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
   const dropHandlers = {
     onDragOver: (e: React.DragEvent) => {
@@ -309,23 +309,23 @@ export default function PhotoUpgraderPage() {
         <div className="space-y-6">
           {view === "upload" && (
             <section
-              className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
+              className="rounded-xl border border-border bg-card p-5 shadow-sm"
               aria-labelledby="pu-upload-heading"
             >
               <h2
                 id="pu-upload-heading"
-                className="font-heading text-lg font-semibold text-black"
+                className="font-heading text-lg font-semibold text-foreground"
               >
                 Upload product photo
               </h2>
-              <p className="mt-1 text-sm text-neutral-600">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Drop an image or paste an image URL. We upload to secure storage
                 and run the enhancement pipeline when you start.
               </p>
 
               <div
                 {...dropHandlers}
-                className="mt-5 flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50/80 px-4 py-8 text-center transition-colors hover:border-neutral-300"
+                className="mt-5 flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/80 px-4 py-8 text-center transition-colors hover:border-muted-foreground/35"
               >
                 <label className="cursor-pointer text-sm font-semibold text-primary">
                   <input
@@ -341,13 +341,13 @@ export default function PhotoUpgraderPage() {
                   />
                   Choose file
                 </label>
-                <p className="mt-2 text-xs text-neutral-500">
+                <p className="mt-2 text-xs text-muted-foreground">
                   or drag and drop here · PNG, JPG, WebP
                 </p>
               </div>
 
               <div className="mt-5">
-                <label className="block text-sm font-medium text-neutral-700">
+                <label className="block text-sm font-medium text-foreground/90">
                   Image URL
                   <input
                     type="url"
@@ -361,14 +361,14 @@ export default function PhotoUpgraderPage() {
                   type="button"
                   disabled={uploading}
                   onClick={() => void onUploadFromUrl()}
-                  className="mt-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 shadow-sm transition-colors hover:bg-neutral-50 disabled:opacity-60"
+                  className="mt-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted disabled:opacity-60"
                 >
                   Import from URL
                 </button>
               </div>
 
               {previewUrl && (
-                <div className="mt-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
+                <div className="mt-5 overflow-hidden rounded-lg border border-border bg-muted">
                   <div className="relative mx-auto aspect-square max-h-72 w-full max-w-sm">
                     <Image
                       src={previewUrl}
@@ -382,7 +382,7 @@ export default function PhotoUpgraderPage() {
               )}
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <label className="block text-sm font-medium text-neutral-700">
+                <label className="block text-sm font-medium text-foreground/90">
                   Background style
                   <select
                     value={backgroundStyle}
@@ -398,7 +398,7 @@ export default function PhotoUpgraderPage() {
                     ))}
                   </select>
                 </label>
-                <label className="block text-sm font-medium text-neutral-700">
+                <label className="block text-sm font-medium text-foreground/90">
                   Output size (px)
                   <select
                     value={outputSize}
@@ -416,22 +416,22 @@ export default function PhotoUpgraderPage() {
                 </label>
               </div>
 
-              <label className="mt-4 flex cursor-pointer items-center gap-2 text-sm font-medium text-neutral-700">
+              <label className="mt-4 flex cursor-pointer items-center gap-2 text-sm font-medium text-foreground/90">
                 <input
                   type="checkbox"
                   checked={useAiBackground}
                   onChange={(e) => setUseAiBackground(e.target.checked)}
-                  className="size-4 rounded border-neutral-300 text-primary focus:ring-primary"
+                  className="size-4 rounded border-border text-primary focus:ring-primary"
                 />
                 AI-generated studio background (Fal.ai)
               </label>
 
-              <label className="mt-3 flex cursor-pointer items-center gap-2 text-sm font-medium text-neutral-700">
+              <label className="mt-3 flex cursor-pointer items-center gap-2 text-sm font-medium text-foreground/90">
                 <input
                   type="checkbox"
                   checked={relightEnabled}
                   onChange={(e) => setRelightEnabled(e.target.checked)}
-                  className="size-4 rounded border-neutral-300 text-primary focus:ring-primary"
+                  className="size-4 rounded border-border text-primary focus:ring-primary"
                 />
                 Relight & polish (Clipdrop)
               </label>
@@ -448,15 +448,15 @@ export default function PhotoUpgraderPage() {
           )}
 
           {view === "processing" && (
-            <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-              <h2 className="font-heading text-lg font-semibold text-black">
+            <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+              <h2 className="font-heading text-lg font-semibold text-foreground">
                 Processing
               </h2>
-              <p className="mt-1 text-sm text-neutral-600">
+              <p className="mt-1 text-sm text-muted-foreground">
                 This usually takes a minute or two. You can leave this tab open.
               </p>
 
-              <ol className="mt-4 space-y-2 rounded-lg border border-neutral-200 bg-white/80 px-3 py-3 text-sm">
+              <ol className="mt-4 space-y-2 rounded-lg border border-border bg-card/80 px-3 py-3 text-sm">
                 {STEP_LABELS.map((label, i) => {
                   const done =
                     progress.allComplete ||
@@ -466,17 +466,17 @@ export default function PhotoUpgraderPage() {
                     !progress.failed &&
                     i === progress.activeIndex;
                   return (
-                    <li key={label} className="flex items-center gap-2 text-neutral-700">
-                      <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-white">
+                    <li key={label} className="flex items-center gap-2 text-foreground/90">
+                      <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card">
                         {done ? (
                           <FaCheck className="size-3 text-emerald-600" aria-hidden />
                         ) : running ? (
                           <FaSpinner className="size-3 animate-spin text-primary" aria-hidden />
                         ) : (
-                          <span className="size-2 rounded-full bg-neutral-200" aria-hidden />
+                          <span className="size-2 rounded-full bg-border" aria-hidden />
                         )}
                       </span>
-                      <span className={done ? "font-medium text-black" : ""}>
+                      <span className={done ? "font-medium text-foreground" : ""}>
                         {label}
                       </span>
                     </li>
@@ -493,7 +493,7 @@ export default function PhotoUpgraderPage() {
               <button
                 type="button"
                 onClick={resetUpload}
-                className="mt-5 text-sm font-semibold text-neutral-600 underline-offset-2 hover:text-black hover:underline"
+                className="mt-5 text-sm font-semibold text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
               >
                 Cancel and upload a different image
               </button>
@@ -501,17 +501,17 @@ export default function PhotoUpgraderPage() {
           )}
 
           {view === "result" && statusPayload?.outputUrl && (
-            <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-              <h2 className="font-heading text-lg font-semibold text-black">
+            <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+              <h2 className="font-heading text-lg font-semibold text-foreground">
                 Result
               </h2>
-              <p className="mt-1 text-sm text-neutral-600">
+              <p className="mt-1 text-sm text-muted-foreground">
                 {statusPayload.processingTimeMs != null
                   ? `Done in ${(statusPayload.processingTimeMs / 1000).toFixed(1)}s · `
                   : null}
                 Background: {statusPayload.backgroundStyle}
               </p>
-              <div className="mt-4 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
+              <div className="mt-4 overflow-hidden rounded-lg border border-border bg-muted">
                 <div className="relative mx-auto aspect-square max-h-[min(80vh,560px)] w-full">
                   <Image
                     src={statusPayload.outputUrl}
@@ -536,7 +536,7 @@ export default function PhotoUpgraderPage() {
                 <button
                   type="button"
                   onClick={resetUpload}
-                  className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                  className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
                 >
                   Process another photo
                 </button>
@@ -546,8 +546,8 @@ export default function PhotoUpgraderPage() {
         </div>
 
         <aside className="space-y-4">
-          <section className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-            <h3 className="font-heading text-sm font-semibold text-black">
+          <section className="rounded-xl border border-border bg-card p-4 shadow-sm">
+            <h3 className="font-heading text-sm font-semibold text-foreground">
               Recent outputs
             </h3>
             {historyError ? (
@@ -558,12 +558,12 @@ export default function PhotoUpgraderPage() {
                 {[0, 1, 2].map((i) => (
                   <div
                     key={i}
-                    className="h-16 animate-pulse rounded-lg bg-neutral-100"
+                    className="h-16 animate-pulse rounded-lg bg-foreground/10"
                   />
                 ))}
               </div>
             ) : !historyData?.items?.length ? (
-              <p className="mt-2 text-sm text-neutral-600">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Completed jobs will appear here.
               </p>
             ) : (
@@ -571,9 +571,9 @@ export default function PhotoUpgraderPage() {
                 {historyData.items.map((item) => (
                   <li
                     key={item._id}
-                    className="flex gap-3 rounded-lg border border-neutral-100 p-2"
+                    className="flex gap-3 rounded-lg border border-border/55 p-2"
                   >
-                    <div className="relative size-14 shrink-0 overflow-hidden rounded-md bg-neutral-100">
+                    <div className="relative size-14 shrink-0 overflow-hidden rounded-md bg-foreground/10">
                       {item.outputUrl ? (
                         <Image
                           src={item.outputUrl}
@@ -586,13 +586,13 @@ export default function PhotoUpgraderPage() {
                       ) : null}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-semibold text-neutral-800">
+                      <p className="truncate text-xs font-semibold text-foreground">
                         {item.backgroundStyle} ·{" "}
                         {item.processingTimeMs != null
                           ? `${(item.processingTimeMs / 1000).toFixed(1)}s`
                           : "—"}
                       </p>
-                      <p className="text-[11px] text-neutral-500">
+                      <p className="text-[11px] text-muted-foreground">
                         {formatRelativeTime(item.createdAt)}
                       </p>
                       <button
@@ -609,8 +609,8 @@ export default function PhotoUpgraderPage() {
             )}
           </section>
 
-          <section className="rounded-xl border border-dashed border-neutral-200 bg-white/60 px-4 py-4 text-sm text-neutral-600">
-            <p className="font-heading font-semibold text-black">Pipeline</p>
+          <section className="rounded-xl border border-dashed border-border bg-card/60 px-4 py-4 text-sm text-muted-foreground">
+            <p className="font-heading font-semibold text-foreground">Pipeline</p>
             <ol className="mt-2 list-decimal space-y-1 pl-4">
               <li>Upscale (Replicate Real-ESRGAN)</li>
               <li>Background removal (Remove.bg)</li>

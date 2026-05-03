@@ -131,7 +131,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
   }, [url, runPreview]);
 
   const inputClass =
-    "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+    "mt-1.5 w-full rounded-lg border border-border bg-card px-3 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
   const durationSec = meta?.duration ?? 0;
   const tooLong = durationSec > 3600;
@@ -141,30 +141,30 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
 
   return (
     <section
-      className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
+      className="rounded-xl border border-border bg-card p-5 shadow-sm"
       aria-labelledby="vc-input-heading"
     >
       <h2
         id="vc-input-heading"
-        className="font-heading text-lg font-semibold text-black"
+        className="font-heading text-lg font-semibold text-foreground"
       >
         Paste a YouTube link
       </h2>
-      <p className="mt-1 text-sm text-neutral-600">
+      <p className="mt-1 text-sm text-muted-foreground">
         We download audio, transcribe with Whisper, find viral moments, and draft an SEO
         article.
       </p>
 
       {!url.trim() ? (
         <div className="mt-5">
-          <p className="text-sm font-medium text-neutral-700">Try with an example:</p>
+          <p className="text-sm font-medium text-foreground/90">Try with an example:</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {EXAMPLES.map((ex) => (
               <button
                 key={ex.url}
                 type="button"
                 onClick={() => setUrl(ex.url)}
-                className="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-xs font-semibold text-neutral-800 shadow-sm transition-colors hover:bg-neutral-100"
+                className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-colors hover:bg-foreground/10"
               >
                 {ex.label}
               </button>
@@ -173,7 +173,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
         </div>
       ) : null}
 
-      <label className="mt-5 block text-sm font-medium text-neutral-700">
+      <label className="mt-5 block text-sm font-medium text-foreground/90">
         YouTube URL
         <input
           type="text"
@@ -193,7 +193,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
       ) : null}
 
       {previewLoading ? (
-        <p className="mt-4 inline-flex items-center gap-2 text-sm text-neutral-600">
+        <p className="mt-4 inline-flex items-center gap-2 text-sm text-muted-foreground">
           <FaSpinner className="size-4 animate-spin text-primary" aria-hidden />
           Loading preview…
         </p>
@@ -210,11 +210,11 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
       ) : null}
 
       {meta && extractVideoId(url) && !tooLong ? (
-        <div className="mt-6 border-t border-neutral-100 pt-6">
-          <p className="text-sm font-semibold text-neutral-800">Output Settings</p>
+        <div className="mt-6 border-t border-border/55 pt-6">
+          <p className="text-sm font-semibold text-foreground">Output Settings</p>
           <div className="mt-4 grid gap-6 sm:grid-cols-2">
             <div>
-              <p className="text-xs font-medium text-neutral-600">Number of clips</p>
+              <p className="text-xs font-medium text-muted-foreground">Number of clips</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {([3, 5, 8] as const).map((n) => (
                   <button
@@ -224,7 +224,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
                     className={
                       numberOfClips === n
                         ? "rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm"
-                        : "rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                        : "rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
                     }
                   >
                     {n}
@@ -233,7 +233,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
               </div>
             </div>
             <div className="flex flex-col justify-end">
-              <label className="flex cursor-pointer items-center gap-3 text-sm font-medium text-neutral-700">
+              <label className="flex cursor-pointer items-center gap-3 text-sm font-medium text-foreground/90">
                 <button
                   type="button"
                   role="switch"
@@ -243,12 +243,12 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
                     "relative inline-flex h-7 w-12 shrink-0 rounded-full border transition-colors " +
                     (includeBlogPost
                       ? "border-primary/40 bg-primary"
-                      : "border-neutral-200 bg-neutral-200")
+                      : "border-border bg-border")
                   }
                 >
                   <span
                     className={
-                      "inline-block size-6 translate-y-0.5 rounded-full bg-white shadow transition-transform " +
+                      "inline-block size-6 translate-y-0.5 rounded-full bg-card shadow transition-transform " +
                       (includeBlogPost ? "translate-x-6" : "translate-x-1")
                     }
                   />

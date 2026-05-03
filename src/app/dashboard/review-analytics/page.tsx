@@ -355,7 +355,7 @@ export default function ReviewAnalyticsPage() {
     `rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
       active
         ? "bg-primary text-white shadow-sm"
-        : "border border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50"
+        : "border border-border bg-card text-foreground hover:bg-muted"
     }`;
 
   return (
@@ -368,7 +368,7 @@ export default function ReviewAnalyticsPage() {
               <button
                 type="button"
                 onClick={() => setView("history")}
-                className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm hover:bg-neutral-50"
+                className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm hover:bg-muted"
               >
                 History
               </button>
@@ -397,7 +397,7 @@ export default function ReviewAnalyticsPage() {
 
               {resumeOffer && !resumeDismissed ? (
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-sm">
-                  <p className="font-medium text-neutral-900">
+                  <p className="font-medium text-foreground">
                     Resume last analysis:{" "}
                     <span className="font-semibold text-primary">{resumeOffer.title}</span>
                   </p>
@@ -412,7 +412,7 @@ export default function ReviewAnalyticsPage() {
                     <button
                       type="button"
                       onClick={() => setResumeDismissed(true)}
-                      className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm hover:bg-neutral-50"
+                      className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm hover:bg-muted"
                     >
                       Dismiss
                     </button>
@@ -423,31 +423,31 @@ export default function ReviewAnalyticsPage() {
               <URLInput value={urlInput} onChange={setUrlInput} />
 
               <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-                  <p className="font-heading text-sm font-semibold text-black">
+                <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                  <p className="font-heading text-sm font-semibold text-foreground">
                     🔍 Competitor Discovery
                   </p>
-                  <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                     Auto-finds 9 competing products from &apos;customers also bought&apos; data
                   </p>
                 </div>
-                <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-                  <p className="font-heading text-sm font-semibold text-black">
+                <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                  <p className="font-heading text-sm font-semibold text-foreground">
                     💬 Review Intelligence
                   </p>
-                  <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                     1000+ reviews analyzed for purchase criteria and sentiment patterns
                   </p>
                 </div>
-                <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-                  <p className="font-heading text-sm font-semibold text-black">📋 Action Plan</p>
-                  <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+                <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                  <p className="font-heading text-sm font-semibold text-foreground">📋 Action Plan</p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                     Specific listing improvements based on what customers love about competitors
                   </p>
                 </div>
               </div>
 
-              <p className="text-center text-xs text-neutral-500">
+              <p className="text-center text-xs text-muted-foreground">
                 ⏱ ~3-5 minutes · 💬 1000+ reviews · 🏆 10 listings · 🤖 AI-powered analysis
               </p>
 
@@ -490,15 +490,15 @@ export default function ReviewAnalyticsPage() {
 
           {view === "result" && job && job.status === "complete" ? (
             <>
-              <div className="flex flex-wrap items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50/80 px-4 py-3 text-sm">
-                <p className="font-semibold text-black">{titleHead}</p>
+              <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-muted/80 px-4 py-3 text-sm">
+                <p className="font-semibold text-foreground">{titleHead}</p>
                 {job.userAsin ? (
                   <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
                     {job.userAsin}
                   </span>
                 ) : null}
               </div>
-              <p className="text-xs text-neutral-600">
+              <p className="text-xs text-muted-foreground">
                 {job.totalReviewsScraped} reviews · {job.totalListingsScraped} listings
                 {competitorCount < 3 ? (
                   <span className="ml-2 text-amber-800">
@@ -507,7 +507,7 @@ export default function ReviewAnalyticsPage() {
                 ) : null}
               </p>
 
-              <div className="flex flex-wrap gap-2 border-b border-neutral-200 pb-2">
+              <div className="flex flex-wrap gap-2 border-b border-border pb-2">
                 <button
                   type="button"
                   className={tabBtn(tab === "criteria")}
@@ -561,7 +561,7 @@ export default function ReviewAnalyticsPage() {
               <button
                 type="button"
                 onClick={resetToInput}
-                className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
               >
                 ← Analyze Another Product
               </button>
@@ -579,7 +579,7 @@ export default function ReviewAnalyticsPage() {
               <button
                 type="button"
                 onClick={() => setView("input")}
-                className="text-sm font-semibold text-neutral-600 hover:text-black"
+                className="text-sm font-semibold text-muted-foreground hover:text-foreground"
               >
                 ← Back to analyze
               </button>

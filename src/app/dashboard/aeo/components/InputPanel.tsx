@@ -28,51 +28,51 @@ export function InputPanel({
 }: InputPanelProps) {
   return (
     <section
-      className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
+      className="rounded-xl border border-border bg-card p-5 shadow-sm"
       aria-labelledby="aeo-input-heading"
     >
       <h2
         id="aeo-input-heading"
-        className="font-heading text-lg font-semibold text-black"
+        className="font-heading text-lg font-semibold text-foreground"
       >
         Run diagnostic
       </h2>
-      <p className="mt-1 text-sm text-neutral-600">
+      <p className="mt-1 text-sm text-muted-foreground">
         Compare how GPT-4o, GPT-4o mini, and Gemini answer a shopper-style query
         and surface your brand versus competitors.
       </p>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        <label className="block text-sm font-medium text-neutral-700">
+        <label className="block text-sm font-medium text-foreground/90">
           Your brand name
           <input
             required
             value={brandName}
             onChange={(e) => onBrandChange(e.target.value)}
             placeholder="e.g. Garden of Life"
-            className="mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+            className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
           />
         </label>
-        <label className="block text-sm font-medium text-neutral-700">
+        <label className="block text-sm font-medium text-foreground/90">
           Product name{" "}
-          <span className="font-normal text-neutral-500">(optional)</span>
+          <span className="font-normal text-muted-foreground">(optional)</span>
           <input
             value={productName}
             onChange={(e) => onProductChange(e.target.value)}
             placeholder="e.g. Magnesium Glycinate 400mg"
-            className="mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+            className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
           />
         </label>
       </div>
 
-      <label className="mt-4 block text-sm font-medium text-neutral-700">
+      <label className="mt-4 block text-sm font-medium text-foreground/90">
         Shopper query
         <textarea
           value={queryText}
           onChange={(e) => onQueryChange(e.target.value)}
           placeholder='e.g. "best magnesium supplement for seniors"'
           rows={3}
-          className="mt-1.5 w-full resize-y rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+          className="mt-1.5 w-full resize-y rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
         />
       </label>
 
@@ -82,7 +82,7 @@ export function InputPanel({
             key={q}
             type="button"
             onClick={() => onQueryChange(q)}
-            className="rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 transition-colors hover:border-neutral-300 hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+            className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 transition-colors hover:border-muted-foreground/35 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
           >
             {q}
           </button>

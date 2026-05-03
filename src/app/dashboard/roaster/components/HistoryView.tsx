@@ -34,8 +34,8 @@ export function HistoryView({
 }: HistoryViewProps) {
   if (!items.length) {
     return (
-      <section className="rounded-xl border border-neutral-200 bg-white p-8 text-center shadow-sm">
-        <p className="text-sm text-neutral-600">
+      <section className="rounded-xl border border-border bg-card p-8 text-center shadow-sm">
+        <p className="text-sm text-muted-foreground">
           No listings roasted yet. Paste a product URL to get started.
         </p>
       </section>
@@ -43,17 +43,17 @@ export function HistoryView({
   }
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <h2 className="font-heading text-lg font-semibold text-black">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <h2 className="font-heading text-lg font-semibold text-foreground">
         Roast history
       </h2>
-      <ul className="mt-4 divide-y divide-neutral-100">
+      <ul className="mt-4 divide-y divide-border/50">
         {items.map((h) => (
           <li
             key={h._id}
             className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center"
           >
-            <div className="relative size-[50px] shrink-0 overflow-hidden rounded-lg bg-neutral-200">
+            <div className="relative size-[50px] shrink-0 overflow-hidden rounded-lg bg-border">
               {h.thumbUrl ? (
                 <Image
                   src={h.thumbUrl}
@@ -65,20 +65,20 @@ export function HistoryView({
               ) : null}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="line-clamp-2 font-semibold text-neutral-900">
+              <p className="line-clamp-2 font-semibold text-foreground">
                 {h.title || "Listing"}
               </p>
-              <p className="mt-0.5 text-xs text-neutral-500">{h.brand}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{h.brand}</p>
               <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
                 <span
                   className={`rounded-full px-2 py-0.5 font-bold ${gradeBadgeClass(h.letterGrade)}`}
                 >
                   {h.letterGrade}
                 </span>
-                <span className="font-semibold text-neutral-700">
+                <span className="font-semibold text-foreground/90">
                   {h.overallScore}/100
                 </span>
-                <span className="text-neutral-500">
+                <span className="text-muted-foreground">
                   {formatRelativeTime(h.createdAt)}
                 </span>
               </div>
@@ -103,7 +103,7 @@ export function HistoryView({
                     onDelete(h._id);
                   }
                 }}
-                className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50 disabled:opacity-60"
+                className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50 disabled:opacity-60"
               >
                 Delete
               </button>

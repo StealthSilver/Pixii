@@ -36,22 +36,22 @@ const pill =
   "rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors";
 const pillActive = "border-primary bg-primary text-white";
 const pillIdle =
-  "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-300";
+  "border-border bg-card text-foreground hover:border-muted-foreground/35";
 
 export function PersonaSelector({ persona, onChange }: PersonaSelectorProps) {
   const inputClass =
-    "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+    "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <h2 className="font-heading text-lg font-semibold text-black">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <h2 className="font-heading text-lg font-semibold text-foreground">
         Creator Persona
       </h2>
-      <p className="mt-1 text-sm text-neutral-600">Who is creating this video?</p>
+      <p className="mt-1 text-sm text-muted-foreground">Who is creating this video?</p>
 
       <div className="mt-5 space-y-5">
         <div>
-          <p className="text-sm font-medium text-neutral-700">Gender</p>
+          <p className="text-sm font-medium text-foreground/90">Gender</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {(
               [
@@ -73,7 +73,7 @@ export function PersonaSelector({ persona, onChange }: PersonaSelectorProps) {
         </div>
 
         <div>
-          <p className="text-sm font-medium text-neutral-700">Age Range</p>
+          <p className="text-sm font-medium text-foreground/90">Age Range</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {(
               [
@@ -96,7 +96,7 @@ export function PersonaSelector({ persona, onChange }: PersonaSelectorProps) {
         </div>
 
         <div>
-          <p className="text-sm font-medium text-neutral-700">Creator Style</p>
+          <p className="text-sm font-medium text-foreground/90">Creator Style</p>
           <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
             {STYLES.map((s) => (
               <button
@@ -107,18 +107,18 @@ export function PersonaSelector({ persona, onChange }: PersonaSelectorProps) {
                   "flex flex-col items-start rounded-lg border p-3 text-left text-sm transition-colors " +
                   (persona.style === s.id
                     ? "border-primary bg-primary/5 ring-1 ring-primary/25"
-                    : "border-neutral-200 bg-white hover:border-neutral-300")
+                    : "border-border bg-card hover:border-muted-foreground/35")
                 }
               >
                 <span className="text-lg">{s.emoji}</span>
-                <span className="mt-1 font-semibold text-black">{s.label}</span>
+                <span className="mt-1 font-semibold text-foreground">{s.label}</span>
               </button>
             ))}
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-neutral-700">
+          <label className="block text-sm font-medium text-foreground/90">
             Representation
             <select
               value={persona.ethnicity}
@@ -134,7 +134,7 @@ export function PersonaSelector({ persona, onChange }: PersonaSelectorProps) {
               ))}
             </select>
           </label>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             Select for authentic representation
           </p>
         </div>

@@ -9,7 +9,6 @@ export type Persona = {
   tone: string;
   voiceId: string;
   voiceDescription: string;
-  emoji: string;
   color: string;
   avatarPrompt: string;
 };
@@ -24,7 +23,6 @@ export const PERSONAS: Record<InfluencerPersonaId, Persona> = {
       "brutally sarcastic, funny, uses gen-z slang, says 'bestie' and 'not gonna lie'",
     voiceId: "EXAVITQu4vr4xnSDxMaL",
     voiceDescription: "Young female, energetic",
-    emoji: "🔥",
     color: "pink",
     avatarPrompt:
       "Young woman in her mid-20s, casual streetwear, ring light setup, bedroom with aesthetic decorations, expressive and animated facial expressions, phone visible, authentic TikTok creator vibe",
@@ -38,7 +36,6 @@ export const PERSONAS: Record<InfluencerPersonaId, Persona> = {
       "deadpan, matter-of-fact, uses business jargon ironically, occasionally exasperated",
     voiceId: "nPczCjzI2devNBz1zQrb",
     voiceDescription: "Male, mid-30s, authoritative",
-    emoji: "💀",
     color: "blue",
     avatarPrompt:
       "Man in his mid-30s, business casual shirt, home office setup, good lighting, slightly tired expression, occasional eye roll, YouTube creator setup with bookshelf background",
@@ -52,7 +49,6 @@ export const PERSONAS: Record<InfluencerPersonaId, Persona> = {
       "professional but entertaining, uses marketing terminology correctly, teaches as she critiques, empowering not mean",
     voiceId: "jBpfuIE2acCO8z3wKNLl",
     voiceDescription: "Female, professional, clear",
-    emoji: "📊",
     color: "purple",
     avatarPrompt:
       "Woman in her late-20s, professional blouse, clean modern home office, good ring light, confident presenter energy, occasional knowing smile, notepad visible, polished creator aesthetic",
@@ -66,7 +62,6 @@ export const PERSONAS: Record<InfluencerPersonaId, Persona> = {
       "enthusiastic, uses conversion rate optimization terms, gets genuinely excited about good copy and horrified by bad copy",
     voiceId: "onwK4e9ZLuTAKqWW03F9",
     voiceDescription: "Male, energetic, confident",
-    emoji: "👑",
     color: "amber",
     avatarPrompt:
       "Man in his early-30s, stylish casual outfit, modern apartment background, animated hand gestures, whiteboard visible in background, high energy presenter vibe",
@@ -80,7 +75,6 @@ export const PERSONAS: Record<InfluencerPersonaId, Persona> = {
       "relatable, uses shopper language, represents the confused customer perfectly, often says what confused her about the listing",
     voiceId: "XB0fDUnXU5powFXDhCwa",
     voiceDescription: "Female, conversational, warm",
-    emoji: "✨",
     color: "teal",
     avatarPrompt:
       "Woman in her mid-20s, trendy casual outfit, cozy living room, soft lighting, shopping bags visible in background, relatable and warm expression, lifestyle influencer vibe",
@@ -94,7 +88,6 @@ export const PERSONAS: Record<InfluencerPersonaId, Persona> = {
       "analytical, references Amazon algorithm, mentions A9 and A10, uses data and percentages, surprisingly funny when things are really bad",
     voiceId: "N2lVS1w4EtoT3dr4eOWO",
     voiceDescription: "Male, measured, intelligent",
-    emoji: "📈",
     color: "green",
     avatarPrompt:
       "Man in his late-30s, smart casual, tech company hoodie, minimalist home office, multiple monitors visible, calm delivery with occasional head shake at bad listings, data visualization visible on screen behind",

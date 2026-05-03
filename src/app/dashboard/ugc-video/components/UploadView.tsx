@@ -35,7 +35,7 @@ export function UploadView({
   };
 
   const inputClass =
-    "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+    "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
   return (
     <div className="mt-8 space-y-6">
@@ -51,18 +51,18 @@ export function UploadView({
         </span>
       </div>
 
-      <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <h2 className="font-heading text-lg font-semibold text-black">
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h2 className="font-heading text-lg font-semibold text-foreground">
           Upload product photo
         </h2>
-        <p className="mt-1 text-sm text-neutral-600">
+        <p className="mt-1 text-sm text-muted-foreground">
           Drop a clear photo of your product. We analyze it to write your script
           and visuals.
         </p>
 
         <div
           {...dropHandlers}
-          className="mt-5 flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50/80 px-4 py-8 text-center transition-colors hover:border-neutral-300"
+          className="mt-5 flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/80 px-4 py-8 text-center transition-colors hover:border-muted-foreground/35"
         >
           <label className="cursor-pointer text-sm font-semibold text-primary">
             <input
@@ -78,13 +78,13 @@ export function UploadView({
             />
             Choose image
           </label>
-          <p className="mt-2 text-xs text-neutral-500">
+          <p className="mt-2 text-xs text-muted-foreground">
             or drag and drop · JPEG, PNG, WebP · max 10MB
           </p>
         </div>
 
         {previewUrl && (
-          <div className="mt-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
+          <div className="mt-5 overflow-hidden rounded-lg border border-border bg-muted">
             <div className="relative mx-auto aspect-square max-h-72 w-full max-w-sm">
               <Image
                 src={previewUrl}
@@ -97,7 +97,7 @@ export function UploadView({
           </div>
         )}
 
-        <label className="mt-5 block text-sm font-medium text-neutral-700">
+        <label className="mt-5 block text-sm font-medium text-foreground/90">
           Product Name (optional)
           <input
             type="text"
@@ -107,7 +107,7 @@ export function UploadView({
             className={inputClass}
           />
         </label>
-        <p className="mt-1 text-xs text-neutral-500">
+        <p className="mt-1 text-xs text-muted-foreground">
           We&apos;ll detect this from your photo if left blank
         </p>
       </section>

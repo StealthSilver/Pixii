@@ -88,90 +88,90 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-          <p className="font-heading text-2xl font-bold tracking-tight text-black">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+          <p className="font-heading text-2xl font-bold tracking-tight text-foreground">
             {formatRevenue(m.totalMarketSizeMonthly)}
           </p>
-          <p className="mt-1 text-sm font-semibold text-neutral-800">
+          <p className="mt-1 text-sm font-semibold text-foreground">
             Est. Monthly Market Size
           </p>
-          <p className="text-xs text-neutral-500">Top 10 combined revenue</p>
+          <p className="text-xs text-muted-foreground">Top 10 combined revenue</p>
         </div>
-        <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-          <p className="font-heading text-2xl font-bold tracking-tight text-black">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+          <p className="font-heading text-2xl font-bold tracking-tight text-foreground">
             {formatRevenue(m.totalMarketSizeAnnual)}
           </p>
-          <p className="mt-1 text-sm font-semibold text-neutral-800">
+          <p className="mt-1 text-sm font-semibold text-foreground">
             Est. Annual Market Size
           </p>
-          <p className="text-xs text-neutral-500">Extrapolated from top 10</p>
+          <p className="text-xs text-muted-foreground">Extrapolated from top 10</p>
         </div>
-        <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
           <p
             className={`font-heading text-2xl font-bold tracking-tight ${opportunityColor(m.opportunityScore)}`}
           >
             {m.opportunityScore}/100
           </p>
-          <p className="mt-1 text-sm font-semibold text-neutral-800">
+          <p className="mt-1 text-sm font-semibold text-foreground">
             Opportunity Score
           </p>
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-muted-foreground">
             Based on entry difficulty and concentration
           </p>
         </div>
       </div>
 
-      <p className="text-[11px] text-neutral-500">
+      <p className="text-[11px] text-muted-foreground">
         * Estimates based on Best Sellers Rank position. For directional research only.
       </p>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50/80 px-3 py-3">
-          <p className="text-xs font-medium text-neutral-600">💵 Avg Price</p>
-          <p className="mt-1 font-heading text-lg font-semibold text-black">
+        <div className="rounded-lg border border-border bg-muted/80 px-3 py-3">
+          <p className="text-xs font-medium text-muted-foreground">💵 Avg Price</p>
+          <p className="mt-1 font-heading text-lg font-semibold text-foreground">
             ${m.averagePrice.toFixed(2)}
           </p>
         </div>
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50/80 px-3 py-3">
-          <p className="text-xs font-medium text-neutral-600">⭐ Avg Rating</p>
-          <p className="mt-1 font-heading text-lg font-semibold text-black">
+        <div className="rounded-lg border border-border bg-muted/80 px-3 py-3">
+          <p className="text-xs font-medium text-muted-foreground">⭐ Avg Rating</p>
+          <p className="mt-1 font-heading text-lg font-semibold text-foreground">
             {m.averageRating.toFixed(1)} / 5.0
           </p>
         </div>
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50/80 px-3 py-3">
-          <p className="text-xs font-medium text-neutral-600">💬 Avg Reviews</p>
-          <p className="mt-1 font-heading text-lg font-semibold text-black">
+        <div className="rounded-lg border border-border bg-muted/80 px-3 py-3">
+          <p className="text-xs font-medium text-muted-foreground">💬 Avg Reviews</p>
+          <p className="mt-1 font-heading text-lg font-semibold text-foreground">
             {fmtReviews(m.averageReviewCount)}
           </p>
         </div>
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50/80 px-3 py-3">
-          <p className="text-xs font-medium text-neutral-600">
+        <div className="rounded-lg border border-border bg-muted/80 px-3 py-3">
+          <p className="text-xs font-medium text-muted-foreground">
             📊 Market Concentration
           </p>
-          <p className="mt-1 font-heading text-lg font-semibold text-black">
+          <p className="mt-1 font-heading text-lg font-semibold text-foreground">
             {m.marketConcentrationScore}%
           </p>
-          <p className="text-[11px] text-neutral-500">of revenue in top 3</p>
+          <p className="text-[11px] text-muted-foreground">of revenue in top 3</p>
         </div>
       </div>
 
-      <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-        <p className="text-sm font-semibold text-black">Entry Difficulty</p>
+      <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+        <p className="text-sm font-semibold text-foreground">Entry Difficulty</p>
         <p className={`mt-1 text-xs ${entry.color}`}>{entry.text}</p>
-        <div className="mt-3 h-3 overflow-hidden rounded-full bg-neutral-100">
+        <div className="mt-3 h-3 overflow-hidden rounded-full bg-foreground/10">
           <div
-            className="h-full rounded-full bg-neutral-800"
+            className="h-full rounded-full bg-foreground/80"
             style={{ width: `${m.entryDifficultyScore}%` }}
           />
         </div>
-        <p className="mt-1 text-right text-xs text-neutral-500">
+        <p className="mt-1 text-right text-xs text-muted-foreground">
           {m.entryDifficultyScore}/100
         </p>
       </div>
 
-      <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-        <p className="text-sm font-semibold text-black">Revenue Distribution</p>
-        <p className="mt-1 text-xs text-neutral-500">
+      <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+        <p className="text-sm font-semibold text-foreground">Revenue Distribution</p>
+        <p className="mt-1 text-xs text-muted-foreground">
           Top 10 by Best Sellers rank · bar width vs top earner
         </p>
         <ul className="mt-4 space-y-2">
@@ -179,14 +179,14 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
             const pct = (p.estimatedMonthlyRevenue / maxRev) * 100;
             return (
               <li key={p.asin + p.rank} className="flex items-center gap-2 text-sm">
-                <span className="w-6 shrink-0 text-xs font-bold text-neutral-500">
+                <span className="w-6 shrink-0 text-xs font-bold text-muted-foreground">
                   #{p.rank}
                 </span>
-                <span className="min-w-0 flex-1 truncate text-xs text-neutral-800">
+                <span className="min-w-0 flex-1 truncate text-xs text-foreground">
                   {p.title}
                 </span>
                 <div className="hidden min-w-0 flex-[2] sm:block">
-                  <div className="h-2 overflow-hidden rounded-full bg-neutral-100">
+                  <div className="h-2 overflow-hidden rounded-full bg-foreground/10">
                     <div
                       className="h-full rounded-full bg-primary/80"
                       style={{ width: `${pct}%` }}

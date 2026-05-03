@@ -78,7 +78,7 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
         <div className="flex flex-col items-center text-center">
           <div
             className={
@@ -89,17 +89,17 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
           >
             {lg}
           </div>
-          <p className="mt-3 font-heading text-2xl font-bold text-black">
+          <p className="mt-3 font-heading text-2xl font-bold text-foreground">
             {listingScore.overallScore}/100
           </p>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Estimated conversion rate: {listingScore.conversionEstimate || "—"}
           </p>
         </div>
       </section>
 
       {hasVideo ? (
-        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
           <video
             controls
             style={{ maxWidth: 400 }}
@@ -118,14 +118,14 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
             <button
               type="button"
               onClick={() => void copyShareLink()}
-              className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-black hover:bg-neutral-50"
+              className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
             >
               {copyShare ? "Copied!" : "Copy Share Link"}
             </button>
             <button
               type="button"
               onClick={downloadScript}
-              className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-black hover:bg-neutral-50"
+              className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
             >
               Download Script
             </button>
@@ -134,7 +134,7 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
       ) : (
         <div className="space-y-6">
           <div className="rounded-xl border border-violet-200 bg-violet-50/40 p-5 shadow-sm">
-            <h3 className="font-heading text-lg font-semibold text-black">
+            <h3 className="font-heading text-lg font-semibold text-foreground">
               🎬 Your Critique Package
             </h3>
             <div className="mx-auto mt-4 flex max-w-[300px] justify-center">
@@ -148,7 +148,7 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
                   className="max-h-[400px] w-full max-w-[300px] rounded-xl object-cover shadow-md"
                 />
               ) : (
-                <div className="flex h-[280px] w-[220px] items-center justify-center rounded-xl bg-neutral-200 text-xs text-neutral-600">
+                <div className="flex h-[280px] w-[220px] items-center justify-center rounded-xl bg-border text-xs text-muted-foreground">
                   No preview image
                 </div>
               )}
@@ -165,14 +165,14 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
               <button
                 type="button"
                 onClick={() => void copyShareLink()}
-                className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-neutral-50"
+                className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
               >
                 {copyShare ? "Copied!" : "Copy Share Link"}
               </button>
               <button
                 type="button"
                 onClick={() => void downloadMp3()}
-                className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-neutral-50"
+                className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
               >
                 Download MP3
               </button>
@@ -180,7 +180,7 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
                 <button
                   type="button"
                   onClick={() => void zipFrames()}
-                  className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-neutral-50"
+                  className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
                 >
                   Download Avatar Frames (ZIP)
                 </button>
@@ -192,7 +192,7 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
                     download
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-primary hover:bg-neutral-50"
+                    className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-primary hover:bg-muted"
                   >
                     Frame {i + 1}
                   </a>
@@ -201,17 +201,17 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
             <button
               type="button"
               onClick={() => setCapOpen((o) => !o)}
-              className="flex w-full items-center justify-between text-left font-heading text-sm font-semibold text-black"
+              className="flex w-full items-center justify-between text-left font-heading text-sm font-semibold text-foreground"
             >
               Assemble in CapCut — 4 steps
-              <span className="text-neutral-400">{capOpen ? "▲" : "▼"}</span>
+              <span className="text-muted-foreground/75">{capOpen ? "▲" : "▼"}</span>
             </button>
             {capOpen ? (
-              <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm text-neutral-700">
+              <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm text-foreground/90">
                 <li>
                   Import the avatar image as a photo clip, set duration to match
                   audio length
@@ -225,14 +225,14 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
         </div>
       )}
 
-      <div className="rounded-xl border-y border-r border-neutral-200 border-l-4 border-l-primary bg-white p-5 shadow-sm">
-        <p className="font-heading text-sm font-semibold text-black">
+      <div className="rounded-xl border-y border-r border-border border-l-4 border-l-primary bg-card p-5 shadow-sm">
+        <p className="font-heading text-sm font-semibold text-foreground">
           What the presenter says:
         </p>
-        <p className="mt-2 text-base italic text-neutral-800">
+        <p className="mt-2 text-base italic text-foreground">
           {critiqueScript.intro}
         </p>
-        <p className="mt-2 text-xs text-neutral-500">
+        <p className="mt-2 text-xs text-muted-foreground">
           Full script available in the Rewrites tab
         </p>
       </div>

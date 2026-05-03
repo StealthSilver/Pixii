@@ -11,7 +11,7 @@ function importancePill(imp: ResponseFactor["importance"]): string {
   if (imp === "medium") {
     return base + "border-amber-200 bg-amber-50 text-amber-900";
   }
-  return base + "border-neutral-200 bg-neutral-50 text-neutral-600";
+  return base + "border-border bg-muted text-muted-foreground";
 }
 
 type RankingFactorsProps = {
@@ -27,10 +27,10 @@ export function RankingFactors({ factors }: RankingFactorsProps) {
       {factors.map((f) => (
         <li
           key={f.factor}
-          className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm"
+          className="rounded-xl border border-border bg-card p-4 shadow-sm"
         >
           <div className="flex flex-wrap items-center gap-2">
-            <h4 className="font-heading text-sm font-semibold text-black">
+            <h4 className="font-heading text-sm font-semibold text-foreground">
               {f.factor}
             </h4>
             <span className={importancePill(f.importance)}>
@@ -41,7 +41,7 @@ export function RankingFactors({ factors }: RankingFactorsProps) {
                   : "Low"}
             </span>
           </div>
-          <p className="mt-2 text-xs leading-relaxed text-neutral-600">
+          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
             {f.explanation}
           </p>
           <div className="mt-3 rounded-lg border border-amber-100 bg-amber-50/80 px-3 py-2 text-sm text-amber-950">

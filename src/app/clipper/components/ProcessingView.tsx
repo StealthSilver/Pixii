@@ -54,11 +54,11 @@ export function ProcessingView({
 
   if (status === "failed") {
     return (
-      <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <h2 className="font-heading text-lg font-semibold text-black">
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h2 className="font-heading text-lg font-semibold text-foreground">
           Something went wrong
         </h2>
-        <p className="mt-2 text-sm text-neutral-600">
+        <p className="mt-2 text-sm text-muted-foreground">
           {errorMessage ?? "Processing failed. Try another video."}
         </p>
         <button
@@ -73,21 +73,21 @@ export function ProcessingView({
   }
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
       <div className="flex gap-4">
-        <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100">
+        <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-border bg-foreground/10">
           {thumbnailUrl ? (
             <Image src={thumbnailUrl} alt="" fill className="object-cover" unoptimized />
           ) : null}
         </div>
         <div className="min-w-0 flex-1">
-          <h2 className="font-heading text-lg font-semibold leading-snug text-black">
+          <h2 className="font-heading text-lg font-semibold leading-snug text-foreground">
             {title || "Your video"}
           </h2>
-          <p className="mt-1 text-sm text-neutral-600">
+          <p className="mt-1 text-sm text-muted-foreground">
             Processing for {timeStr}
             {stillProcessingHint ? (
-              <span className="mt-1 block text-xs text-neutral-500">
+              <span className="mt-1 block text-xs text-muted-foreground">
                 Still processing… transcription can take a while for longer videos.
               </span>
             ) : null}
@@ -95,7 +95,7 @@ export function ProcessingView({
         </div>
       </div>
 
-      <div className="mt-6 h-2 overflow-hidden rounded-full bg-neutral-100">
+      <div className="mt-6 h-2 overflow-hidden rounded-full bg-foreground/10">
         <div
           className="h-full rounded-full bg-emerald-500 transition-[width] duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
@@ -128,8 +128,8 @@ export function ProcessingView({
                       : done
                         ? "border-emerald-500 bg-emerald-500 text-white"
                         : active
-                          ? "border-primary bg-white text-primary"
-                          : "border-neutral-200 bg-white text-neutral-400")
+                          ? "border-primary bg-card text-primary"
+                          : "border-border bg-card text-muted-foreground/75")
                   }
                 >
                   {done ? (
@@ -146,7 +146,7 @@ export function ProcessingView({
                       "absolute left-1/2 top-10 z-0 h-[calc(100%-0.25rem)] w-0.5 -translate-x-1/2 " +
                       (effStep > stepNum || status === "complete"
                         ? "bg-emerald-400"
-                        : "bg-neutral-200")
+                        : "bg-border")
                     }
                     aria-hidden
                   />
@@ -156,19 +156,19 @@ export function ProcessingView({
                 <p
                   className={
                     "text-sm font-semibold " +
-                    (active ? "text-black" : done ? "text-neutral-900" : "text-neutral-500")
+                    (active ? "text-foreground" : done ? "text-foreground" : "text-muted-foreground")
                   }
                 >
                   {clipLabel}
                 </p>
                 {active && isClipStep ? (
-                  <p className="mt-1 text-xs text-neutral-500">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Clips may show as preview thumbnails when automatic cutting isn&apos;t
                     available on this host.
                   </p>
                 ) : null}
                 {active && i === 1 ? (
-                  <p className="mt-1 text-xs text-neutral-500">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Whisper is transcribing your audio (often 2–5 minutes for long videos).
                   </p>
                 ) : null}
@@ -184,7 +184,7 @@ export function ProcessingView({
           the background — you can leave this page and come back.
         </div>
       ) : (
-        <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+        <div className="mt-4 rounded-lg border border-border bg-muted px-4 py-3 text-sm text-foreground/90">
           ⏱ Transcription takes 2-5 minutes for longer videos. We&apos;ll process everything in
           the background — you can leave this page and come back.
         </div>

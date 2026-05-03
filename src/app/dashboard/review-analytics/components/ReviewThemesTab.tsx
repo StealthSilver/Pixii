@@ -63,14 +63,14 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
     <div className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-2">
         <div>
-          <h3 className="font-heading text-sm font-semibold text-black">
+          <h3 className="font-heading text-sm font-semibold text-foreground">
             🌟 What Customers Love
           </h3>
           <ul className="mt-3 space-y-2">
             {features.map((f) => (
               <li
                 key={f}
-                className="flex gap-2 rounded-lg border border-emerald-200/80 border-l-4 border-l-emerald-500 bg-white px-3 py-2.5 text-sm text-neutral-800 shadow-sm"
+                className="flex gap-2 rounded-lg border border-emerald-200/80 border-l-4 border-l-emerald-500 bg-card px-3 py-2.5 text-sm text-foreground shadow-sm"
               >
                 <FaCheck className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
                 <span>{f}</span>
@@ -79,14 +79,14 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
           </ul>
         </div>
         <div>
-          <h3 className="font-heading text-sm font-semibold text-black">
+          <h3 className="font-heading text-sm font-semibold text-foreground">
             😤 What Customers Complain About
           </h3>
           <ul className="mt-3 space-y-2">
             {complaints.map((f) => (
               <li
                 key={f}
-                className="flex gap-2 rounded-lg border border-red-200/80 border-l-4 border-l-red-500 bg-white px-3 py-2.5 text-sm text-neutral-800 shadow-sm"
+                className="flex gap-2 rounded-lg border border-red-200/80 border-l-4 border-l-red-500 bg-card px-3 py-2.5 text-sm text-foreground shadow-sm"
               >
                 <FaTimes className="mt-0.5 size-4 shrink-0 text-red-600" aria-hidden />
                 <span>{f}</span>
@@ -104,7 +104,7 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
           {needs.map((n) => (
             <span
               key={n}
-              className="rounded-full border border-amber-300/80 bg-white px-3 py-1 text-xs font-medium text-amber-950 shadow-sm"
+              className="rounded-full border border-amber-300/80 bg-card px-3 py-1 text-xs font-medium text-amber-950 shadow-sm"
             >
               {n}
             </span>
@@ -112,34 +112,34 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
         </div>
       </section>
 
-      <section className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-        <p className="text-sm font-semibold text-neutral-900">
+      <section className="rounded-xl border border-border bg-card p-4 shadow-sm">
+        <p className="text-sm font-semibold text-foreground">
           Overall Market Sentiment: {Math.round(score)}/100
         </p>
-        <div className="mt-2 h-3 overflow-hidden rounded-full bg-neutral-100">
+        <div className="mt-2 h-3 overflow-hidden rounded-full bg-foreground/10">
           <div
             className={`h-full rounded-full ${barClass(score)}`}
             style={{ width: `${Math.min(100, score)}%` }}
           />
         </div>
-        <p className="mt-2 text-xs text-neutral-600">{sub}</p>
+        <p className="mt-2 text-xs text-muted-foreground">{sub}</p>
         <div className="mt-4">
-          <p className="text-xs font-medium text-neutral-700">Review Trend</p>
+          <p className="text-xs font-medium text-foreground/90">Review Trend</p>
           <div className="mt-2">{trendBadge}</div>
         </div>
       </section>
 
-      <section className="rounded-xl border border-neutral-200 bg-neutral-50/80 p-4">
+      <section className="rounded-xl border border-border bg-muted/80 p-4">
         <button
           type="button"
           onClick={toggle}
-          className="flex w-full items-center justify-between text-left font-heading text-sm font-semibold text-black"
+          className="flex w-full items-center justify-between text-left font-heading text-sm font-semibold text-foreground"
         >
           Browse Raw Reviews
           {open ? (
-            <FaChevronUp className="size-4 text-neutral-500" aria-hidden />
+            <FaChevronUp className="size-4 text-muted-foreground" aria-hidden />
           ) : (
-            <FaChevronDown className="size-4 text-neutral-500" aria-hidden />
+            <FaChevronDown className="size-4 text-muted-foreground" aria-hidden />
           )}
         </button>
         {open ? (

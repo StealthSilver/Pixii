@@ -44,7 +44,7 @@ function tabButtonClass(active: boolean): string {
     "rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
     (active
       ? "bg-primary/10 text-primary"
-      : "text-neutral-600 hover:bg-black/[0.04] hover:text-black")
+      : "text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground")
   );
 }
 
@@ -158,7 +158,7 @@ export default function HooksDashboardPage() {
       >
         <div className="mt-8 max-w-6xl">
           <div
-            className="flex flex-wrap gap-2 border-b border-neutral-200 pb-3"
+            className="flex flex-wrap gap-2 border-b border-border pb-3"
             role="tablist"
             aria-label="Hooks sections"
           >
@@ -208,7 +208,7 @@ export default function HooksDashboardPage() {
                           "rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
                           (platformFilter === p
                             ? "border-primary/30 bg-primary/10 text-primary"
-                            : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:text-black")
+                            : "border-border bg-card text-muted-foreground hover:border-muted-foreground/35 hover:text-foreground")
                         }
                       >
                         {p}
@@ -216,8 +216,8 @@ export default function HooksDashboardPage() {
                     ))}
                   </div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <label className="flex items-center gap-2 text-sm font-medium text-neutral-700">
-                      <span className="text-neutral-500">Sort by</span>
+                    <label className="flex items-center gap-2 text-sm font-medium text-foreground/90">
+                      <span className="text-muted-foreground">Sort by</span>
                       <select
                         value={sortKey}
                         onChange={(e) =>
@@ -225,7 +225,7 @@ export default function HooksDashboardPage() {
                             e.target.value as (typeof SORT_OPTIONS)[number]["value"],
                           )
                         }
-                        className="rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+                        className="rounded-lg border border-border bg-card px-2.5 py-1.5 text-sm font-semibold text-foreground shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
                       >
                         {SORT_OPTIONS.map((o) => (
                           <option key={o.value} value={o.value}>
@@ -238,7 +238,7 @@ export default function HooksDashboardPage() {
                       type="button"
                       disabled={seeding}
                       onClick={() => void handleSeed()}
-                      className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-800 shadow-sm transition-colors hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+                      className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-foreground/[0.06] disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
                     >
                       {seeding ? (
                         <FaSpinner className="size-4 animate-spin text-primary" aria-hidden />
@@ -259,23 +259,23 @@ export default function HooksDashboardPage() {
                     {[0, 1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="animate-pulse rounded-xl border border-neutral-200/80 bg-white p-4"
+                        className="animate-pulse rounded-xl border border-border/80 bg-card p-4"
                       >
-                        <div className="h-5 w-2/3 rounded bg-neutral-200" />
-                        <div className="mt-3 h-3 w-full rounded bg-neutral-100" />
-                        <div className="mt-2 h-3 w-5/6 rounded bg-neutral-100" />
+                        <div className="h-5 w-2/3 rounded bg-border" />
+                        <div className="mt-3 h-3 w-full rounded bg-foreground/10" />
+                        <div className="mt-2 h-3 w-5/6 rounded bg-foreground/10" />
                       </div>
                     ))}
                   </div>
                 ) : null}
 
                 {!patternsLoading && !patterns.length && !patternsError ? (
-                  <div className="mt-10 flex min-h-[220px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-neutral-200 bg-white/60 px-6 py-10 text-center">
-                    <FaBookOpen className="size-12 text-neutral-300" aria-hidden />
-                    <p className="font-heading text-base font-semibold text-black">
+                  <div className="mt-10 flex min-h-[220px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/60 px-6 py-10 text-center">
+                    <FaBookOpen className="size-12 text-muted-foreground/55" aria-hidden />
+                    <p className="font-heading text-base font-semibold text-foreground">
                       No hook patterns yet
                     </p>
-                    <p className="max-w-md text-sm text-neutral-600">
+                    <p className="max-w-md text-sm text-muted-foreground">
                       Seed demo data to load twelve curated viral hook templates
                       with trends and examples.
                     </p>

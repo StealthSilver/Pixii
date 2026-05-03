@@ -22,7 +22,7 @@ function competitionPill(level: string): string {
     case "very_high":
       return "bg-red-100 text-red-900";
     default:
-      return "bg-neutral-100 text-neutral-800";
+      return "bg-foreground/10 text-foreground";
   }
 }
 
@@ -34,8 +34,8 @@ export function HistoryView({
 }: HistoryViewProps) {
   if (!items.length) {
     return (
-      <section className="rounded-xl border border-neutral-200 bg-white p-8 text-center shadow-sm">
-        <p className="text-sm text-neutral-600">
+      <section className="rounded-xl border border-border bg-card p-8 text-center shadow-sm">
+        <p className="text-sm text-muted-foreground">
           No analyses yet. Paste a Best Sellers URL to get started.
         </p>
       </section>
@@ -43,26 +43,26 @@ export function HistoryView({
   }
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <h2 className="font-heading text-lg font-semibold text-black">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <h2 className="font-heading text-lg font-semibold text-foreground">
         Analysis history
       </h2>
-      <ul className="mt-4 divide-y divide-neutral-100">
+      <ul className="mt-4 divide-y divide-border/50">
         {items.map((h) => (
           <li
             key={h._id}
             className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
           >
             <div className="min-w-0 flex-1">
-              <p className="font-semibold text-neutral-900">{h.category}</p>
-              <p className="mt-0.5 truncate text-xs text-neutral-500" title={h.amazonUrl}>
+              <p className="font-semibold text-foreground">{h.category}</p>
+              <p className="mt-0.5 truncate text-xs text-muted-foreground" title={h.amazonUrl}>
                 {h.amazonUrl}
               </p>
               <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
                 <span className="font-semibold text-emerald-700">
                   {formatRevenue(h.marketAnalysis.totalMarketSizeMonthly)} / mo
                 </span>
-                <span className="text-neutral-600">
+                <span className="text-muted-foreground">
                   Opportunity {h.marketAnalysis.opportunityScore}/100
                 </span>
                 <span
@@ -70,7 +70,7 @@ export function HistoryView({
                 >
                   {h.marketAnalysis.competitionLevel.replace(/_/g, " ")}
                 </span>
-                <span className="text-neutral-500">
+                <span className="text-muted-foreground">
                   {h.createdAt ? formatRelativeTime(h.createdAt) : ""}
                 </span>
               </div>
@@ -95,7 +95,7 @@ export function HistoryView({
                     onDelete(h._id);
                   }
                 }}
-                className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50 disabled:opacity-60"
+                className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50 disabled:opacity-60"
               >
                 Delete
               </button>

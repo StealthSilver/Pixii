@@ -187,8 +187,8 @@ function navItemClassNames(
   isActive: boolean,
 ): string {
   const base = collapsed
-    ? "group flex size-10 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-black/[0.04] hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
-    : "group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm font-medium text-neutral-700 transition-colors hover:bg-black/[0.04] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+    ? "group flex size-10 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+    : "group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm font-medium text-foreground/90 transition-colors hover:bg-foreground/[0.06] hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
   const active = isActive
     ? collapsed
       ? " bg-primary/12 text-primary"
@@ -204,11 +204,11 @@ export function Sidebar({ collapsed }: SidebarProps) {
   return (
     <aside
       className={
-        "flex h-full min-h-0 shrink-0 flex-col border-r border-neutral-200/80 bg-background transition-[width] duration-200 ease-out " +
+        "flex h-full min-h-0 shrink-0 flex-col border-r border-border/80 bg-background transition-[width] duration-200 ease-out " +
         (collapsed ? "w-[72px]" : "w-60")
       }
     >
-      <div className="flex h-14 shrink-0 items-center border-b border-neutral-200/80 px-3">
+      <div className="flex h-14 shrink-0 items-center border-b border-border/80 px-3">
         {!collapsed ? (
           <Link
             href="/"
@@ -253,13 +253,13 @@ export function Sidebar({ collapsed }: SidebarProps) {
           <div
             key={section.id}
             className={
-              sectionIndex > 0 ? "mt-5 border-t border-neutral-200/70 pt-5" : ""
+              sectionIndex > 0 ? "mt-5 border-t border-border/70 pt-5" : ""
             }
           >
             {!collapsed && (
               <div className="mb-2 flex items-center gap-2 px-2">
                 <SectionIcon sectionId={section.id} />
-                <h2 className="font-heading text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
+                <h2 className="font-heading text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                   {section.title}
                 </h2>
               </div>
@@ -288,7 +288,7 @@ export function Sidebar({ collapsed }: SidebarProps) {
                             : "size-[17px] shrink-0 transition-colors " +
                               (isActive
                                 ? "text-primary"
-                                : "text-neutral-500 group-hover:text-primary")
+                                : "text-muted-foreground group-hover:text-primary")
                         }
                         aria-hidden
                       />
@@ -304,7 +304,7 @@ export function Sidebar({ collapsed }: SidebarProps) {
         ))}
       </nav>
 
-      <div className="shrink-0 border-t border-neutral-200/80 p-3">
+      <div className="shrink-0 border-t border-border/80 p-3">
         <div
           className={
             "flex items-center gap-3 " + (collapsed ? "justify-center" : "")
@@ -319,7 +319,7 @@ export function Sidebar({ collapsed }: SidebarProps) {
             height={40}
           />
           {!collapsed && (
-            <p className="min-w-0 flex-1 truncate text-sm font-medium text-black">
+            <p className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
               {DEMO_USER_NAME}
             </p>
           )}

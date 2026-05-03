@@ -23,7 +23,7 @@ type ProductListProps = {
 };
 
 const inputClass =
-  "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+  "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
 export function ProductList({
   products,
@@ -41,9 +41,9 @@ export function ProductList({
     : products;
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <h2 className="font-heading text-lg font-semibold text-black">Select a Product</h2>
-      <label className="mt-4 block text-sm font-medium text-neutral-700">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <h2 className="font-heading text-lg font-semibold text-foreground">Select a Product</h2>
+      <label className="mt-4 block text-sm font-medium text-foreground/90">
         <span className="sr-only">Search products</span>
         <input
           type="search"
@@ -71,11 +71,11 @@ export function ProductList({
         {loading ? (
           <>
             {[0, 1, 2].map((i) => (
-              <div key={i} className="h-16 animate-pulse rounded-lg bg-neutral-100" />
+              <div key={i} className="h-16 animate-pulse rounded-lg bg-foreground/10" />
             ))}
           </>
         ) : !filtered.length ? (
-          <p className="py-8 text-center text-sm text-neutral-600">
+          <p className="py-8 text-center text-sm text-muted-foreground">
             {products.length === 0
               ? "No active products found in your store"
               : "No products match your search."}
@@ -94,22 +94,22 @@ export function ProductList({
                   "flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-colors " +
                   (selected
                     ? "border-primary/50 bg-primary/5 shadow-sm"
-                    : "border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50/80")
+                    : "border-border bg-card hover:border-muted-foreground/35 hover:bg-muted/80")
                 }
               >
-                <div className="relative size-10 shrink-0 overflow-hidden rounded-md bg-neutral-100">
+                <div className="relative size-10 shrink-0 overflow-hidden rounded-md bg-foreground/10">
                   {src ? (
                     <Image src={src} alt="" fill sizes="40px" className="object-cover" />
                   ) : (
-                    <span className="flex size-10 items-center justify-center text-neutral-400">
+                    <span className="flex size-10 items-center justify-center text-muted-foreground/75">
                       <FaBox className="size-4" aria-hidden />
                     </span>
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-bold text-black">{p.title}</p>
+                  <p className="truncate text-sm font-bold text-foreground">{p.title}</p>
                   {p.product_type ? (
-                    <span className="mt-0.5 inline-block rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-neutral-600">
+                    <span className="mt-0.5 inline-block rounded-full bg-foreground/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
                       {p.product_type}
                     </span>
                   ) : null}

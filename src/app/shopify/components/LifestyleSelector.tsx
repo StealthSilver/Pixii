@@ -26,7 +26,7 @@ type LifestyleSelectorProps = {
 export function LifestyleSelector({ value, onChange }: LifestyleSelectorProps) {
   return (
     <div>
-      <p className="text-sm font-medium text-neutral-700">Lifestyle Scene</p>
+      <p className="text-sm font-medium text-foreground/90">Lifestyle Scene</p>
       <div className="mt-2 grid grid-cols-3 gap-2">
         {LIFESTYLE_OPTIONS.map((opt) => {
           const sel = value === opt.id;
@@ -39,13 +39,13 @@ export function LifestyleSelector({ value, onChange }: LifestyleSelectorProps) {
                 "flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-colors " +
                 (sel
                   ? "border-primary/60 bg-primary/5 shadow-sm"
-                  : "border-neutral-200 bg-white hover:border-neutral-300")
+                  : "border-border bg-card hover:border-muted-foreground/35")
               }
             >
               <span className="text-xl" aria-hidden>
                 {opt.emoji}
               </span>
-              <span className="text-[11px] font-semibold leading-tight text-neutral-800">
+              <span className="text-[11px] font-semibold leading-tight text-foreground">
                 {opt.label}
               </span>
             </button>

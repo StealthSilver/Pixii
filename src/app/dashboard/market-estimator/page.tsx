@@ -320,7 +320,7 @@ export default function MarketEstimatorPage() {
     `rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
       active
         ? "bg-primary text-white shadow-sm"
-        : "border border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50"
+        : "border border-border bg-card text-foreground hover:bg-muted"
     }`;
 
   return (
@@ -333,7 +333,7 @@ export default function MarketEstimatorPage() {
               <button
                 type="button"
                 onClick={() => setView("history")}
-                className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm hover:bg-neutral-50"
+                className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm hover:bg-muted"
               >
                 History
               </button>
@@ -359,7 +359,7 @@ export default function MarketEstimatorPage() {
 
               {resumeOffer && !resumeDismissed ? (
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-sm">
-                  <p className="font-medium text-neutral-900">
+                  <p className="font-medium text-foreground">
                     Resume last analysis:{" "}
                     <span className="font-semibold text-primary">
                       {resumeOffer.category}
@@ -376,7 +376,7 @@ export default function MarketEstimatorPage() {
                     <button
                       type="button"
                       onClick={() => setResumeDismissed(true)}
-                      className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm hover:bg-neutral-50"
+                      className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm hover:bg-muted"
                     >
                       Dismiss
                     </button>
@@ -387,34 +387,34 @@ export default function MarketEstimatorPage() {
               <URLInput value={urlInput} onChange={setUrlInput} />
 
               <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-                  <p className="font-heading text-sm font-semibold text-black">
+                <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                  <p className="font-heading text-sm font-semibold text-foreground">
                     🏆 Top 10 Products
                   </p>
-                  <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                     Ranked by estimated monthly revenue with real pricing data
                   </p>
                 </div>
-                <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-                  <p className="font-heading text-sm font-semibold text-black">
+                <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                  <p className="font-heading text-sm font-semibold text-foreground">
                     💰 Market Size
                   </p>
-                  <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                     Total monthly revenue of the top 10 and annualized market
                     estimate
                   </p>
                 </div>
-                <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-                  <p className="font-heading text-sm font-semibold text-black">
+                <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                  <p className="font-heading text-sm font-semibold text-foreground">
                     🤖 AI Insights
                   </p>
-                  <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                     Opportunity gaps, entry difficulty, and recommended strategy
                   </p>
                 </div>
               </div>
 
-              <p className="text-center text-xs text-neutral-500">
+              <p className="text-center text-xs text-muted-foreground">
                 ⏱ ~1-2 minutes · 📊 Top 10 analysis · 🔍 4-step research pipeline
               </p>
 
@@ -427,7 +427,7 @@ export default function MarketEstimatorPage() {
                 Analyze Market →
               </button>
 
-              <p className="text-center text-[11px] text-neutral-500">
+              <p className="text-center text-[11px] text-muted-foreground">
                 * Estimates based on Best Sellers Rank position. For directional
                 research only.
               </p>
@@ -453,14 +453,14 @@ export default function MarketEstimatorPage() {
 
           {view === "result" && job && job.status === "complete" ? (
             <>
-              <div className="rounded-xl border border-neutral-200 bg-neutral-50/80 px-4 py-3 text-sm">
-                <p className="font-semibold text-black">{job.category}</p>
-                <p className="mt-1 truncate text-xs text-neutral-600" title={job.amazonUrl}>
+              <div className="rounded-xl border border-border bg-muted/80 px-4 py-3 text-sm">
+                <p className="font-semibold text-foreground">{job.category}</p>
+                <p className="mt-1 truncate text-xs text-muted-foreground" title={job.amazonUrl}>
                   {job.amazonUrl}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-2 border-b border-neutral-200 pb-2">
+              <div className="flex flex-wrap gap-2 border-b border-border pb-2">
                 <button
                   type="button"
                   className={tabBtn(tab === "overview")}
@@ -491,7 +491,7 @@ export default function MarketEstimatorPage() {
               <button
                 type="button"
                 onClick={resetToInput}
-                className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
               >
                 ← Analyze Another Market
               </button>
@@ -509,7 +509,7 @@ export default function MarketEstimatorPage() {
               <button
                 type="button"
                 onClick={() => setView("input")}
-                className="text-sm font-semibold text-neutral-600 hover:text-black"
+                className="text-sm font-semibold text-muted-foreground hover:text-foreground"
               >
                 ← Back to analyze
               </button>

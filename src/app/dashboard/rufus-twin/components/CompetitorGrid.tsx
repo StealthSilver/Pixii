@@ -9,7 +9,7 @@ type CompetitorGridProps = {
 export function CompetitorGrid({ items }: CompetitorGridProps) {
   if (!items.length) {
     return (
-      <p className="text-sm text-neutral-500">
+      <p className="text-sm text-muted-foreground">
         No competitor suggestions for this query.
       </p>
     );
@@ -20,18 +20,18 @@ export function CompetitorGrid({ items }: CompetitorGridProps) {
       {items.map((c) => (
         <article
           key={`${c.estimatedRank}-${c.name}`}
-          className="relative rounded-xl border border-neutral-200 bg-white p-4 shadow-sm"
+          className="relative rounded-xl border border-border bg-card p-4 shadow-sm"
         >
-          <span className="absolute left-3 top-3 inline-flex rounded-full border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11px] font-bold text-neutral-700">
+          <span className="absolute left-3 top-3 inline-flex rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-bold text-foreground/90">
             #{c.estimatedRank}
           </span>
           <div className="mt-7">
-            <h4 className="font-heading text-sm font-semibold text-black">
+            <h4 className="font-heading text-sm font-semibold text-foreground">
               {c.name}
             </h4>
-            <p className="mt-0.5 text-xs text-neutral-500">{c.brand}</p>
-            <p className="mt-3 text-sm leading-relaxed text-neutral-700">
-              <span className="font-medium text-neutral-800">
+            <p className="mt-0.5 text-xs text-muted-foreground">{c.brand}</p>
+            <p className="mt-3 text-sm leading-relaxed text-foreground/90">
+              <span className="font-medium text-foreground">
                 Why Rufus likes this:
               </span>{" "}
               {c.whyRufusLikes}
@@ -41,7 +41,7 @@ export function CompetitorGrid({ items }: CompetitorGridProps) {
                 {c.keyAttributes.map((a) => (
                   <span
                     key={a}
-                    className="inline-flex rounded-full border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11px] font-medium text-neutral-700"
+                    className="inline-flex rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground/90"
                   >
                     {a}
                   </span>

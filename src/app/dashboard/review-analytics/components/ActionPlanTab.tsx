@@ -67,15 +67,15 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
     <div className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-2">
         <div>
-          <h3 className="font-heading text-sm font-semibold text-black">✅ Your Listing Wins</h3>
-          <p className="mt-1 text-xs text-neutral-600">
+          <h3 className="font-heading text-sm font-semibold text-foreground">✅ Your Listing Wins</h3>
+          <p className="mt-1 text-xs text-muted-foreground">
             Based on review sentiment vs competitors
           </p>
           <ul className="mt-3 space-y-2">
             {strengths.map((s) => (
               <li
                 key={s}
-                className="flex gap-2 rounded-lg border border-emerald-200/70 bg-emerald-50/60 px-3 py-2.5 text-sm text-neutral-900"
+                className="flex gap-2 rounded-lg border border-emerald-200/70 bg-emerald-50/60 px-3 py-2.5 text-sm text-foreground"
               >
                 <FaCheck className="mt-0.5 size-4 shrink-0 text-emerald-700" aria-hidden />
                 {s}
@@ -84,17 +84,17 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
           </ul>
         </div>
         <div>
-          <h3 className="font-heading text-sm font-semibold text-black">
+          <h3 className="font-heading text-sm font-semibold text-foreground">
             ⚠️ Competitors Win Here
           </h3>
-          <p className="mt-1 text-xs text-neutral-600">
+          <p className="mt-1 text-xs text-muted-foreground">
             Areas where competitor reviews outperform yours
           </p>
           <ul className="mt-3 space-y-2">
             {weaknesses.map((s) => (
               <li
                 key={s}
-                className="flex gap-2 rounded-lg border border-amber-200/80 bg-amber-50/50 px-3 py-2.5 text-sm text-neutral-900"
+                className="flex gap-2 rounded-lg border border-amber-200/80 bg-amber-50/50 px-3 py-2.5 text-sm text-foreground"
               >
                 <FaExclamationTriangle
                   className="mt-0.5 size-4 shrink-0 text-amber-700"
@@ -108,21 +108,21 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
       </div>
 
       <section>
-        <h3 className="font-heading text-base font-semibold text-black">
+        <h3 className="font-heading text-base font-semibold text-foreground">
           📋 Recommended Listing Improvements
         </h3>
-        <p className="mt-1 text-sm text-neutral-600">
+        <p className="mt-1 text-sm text-muted-foreground">
           In order of impact — based on what customers love about your top competitors
         </p>
         <ol className="mt-4 space-y-3">
           {improvements.map((text, i) => {
             const n = i + 1;
-            const color = COLORS[i] ?? "bg-neutral-600";
+            const color = COLORS[i] ?? "bg-muted-foreground";
             const impact = n <= 2 ? "High" : n <= 4 ? "Medium" : "Low";
             return (
               <li
                 key={text}
-                className="flex gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm"
+                className="flex gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
               >
                 <span
                   className={`flex size-10 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white ${color}`}
@@ -130,8 +130,8 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
                   {n}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-neutral-900">{text}</p>
-                  <p className="mt-1 text-[11px] font-semibold text-neutral-500">
+                  <p className="text-sm font-medium text-foreground">{text}</p>
+                  <p className="mt-1 text-[11px] font-semibold text-muted-foreground">
                     Impact: {impact}
                   </p>
                 </div>
@@ -144,7 +144,7 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
       <button
         type="button"
         onClick={onExport}
-        className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+        className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
       >
         Export Action Plan
       </button>

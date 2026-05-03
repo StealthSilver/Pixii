@@ -489,8 +489,8 @@ export default function UgcVideoPage() {
                 ← Back
               </button>
 
-              <div className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-3 py-2 shadow-sm">
-                <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
+              <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2 shadow-sm">
+                <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border bg-foreground/10">
                   {imageUrl ? (
                     <Image
                       src={imageUrl}
@@ -501,7 +501,7 @@ export default function UgcVideoPage() {
                     />
                   ) : null}
                 </div>
-                <p className="text-sm font-semibold text-black">
+                <p className="text-sm font-semibold text-foreground">
                   {productName.trim() || "Your product"}
                 </p>
               </div>
@@ -550,7 +550,7 @@ export default function UgcVideoPage() {
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <div className="relative size-10 overflow-hidden rounded-md border border-neutral-200 bg-neutral-100">
+                  <div className="relative size-10 overflow-hidden rounded-md border border-border bg-foreground/10">
                     {job.productImageUrl ? (
                       <Image
                         src={job.productImageUrl}
@@ -561,7 +561,7 @@ export default function UgcVideoPage() {
                       />
                     ) : null}
                   </div>
-                  <span className="text-sm font-semibold text-black">
+                  <span className="text-sm font-semibold text-foreground">
                     {job.productName || "Product"}
                   </span>
                 </div>
@@ -577,13 +577,13 @@ export default function UgcVideoPage() {
                     setSelectedFile(null);
                     setResultTab("video");
                   }}
-                  className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+                  className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
                 >
                   Create Another
                 </button>
               </div>
 
-              <div className="flex gap-2 border-b border-neutral-200 pb-2">
+              <div className="flex gap-2 border-b border-border pb-2">
                 <button
                   type="button"
                   onClick={() => setResultTab("video")}
@@ -591,7 +591,7 @@ export default function UgcVideoPage() {
                     "rounded-lg px-3 py-2 text-sm font-semibold " +
                     (resultTab === "video"
                       ? "bg-primary text-white"
-                      : "text-neutral-700 hover:bg-neutral-100")
+                      : "text-foreground/90 hover:bg-foreground/10")
                   }
                 >
                   🎬 Video & Frames
@@ -603,7 +603,7 @@ export default function UgcVideoPage() {
                     "rounded-lg px-3 py-2 text-sm font-semibold " +
                     (resultTab === "script"
                       ? "bg-primary text-white"
-                      : "text-neutral-700 hover:bg-neutral-100")
+                      : "text-foreground/90 hover:bg-foreground/10")
                   }
                 >
                   📝 Script & Captions

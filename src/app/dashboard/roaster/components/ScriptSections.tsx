@@ -15,7 +15,7 @@ const SECTIONS: {
   { key: "imageCritique", title: "📸 Images", border: "border-purple-300" },
   { key: "pricingCritique", title: "💰 Pricing", border: "border-emerald-300" },
   { key: "quickWins", title: "⚡ Quick Wins", border: "border-teal-300" },
-  { key: "closingChallenge", title: "🎯 Challenge", border: "border-neutral-300" },
+  { key: "closingChallenge", title: "🎯 Challenge", border: "border-border" },
 ];
 
 type ScriptSectionsProps = {
@@ -36,24 +36,24 @@ export function ScriptSections({ job }: ScriptSectionsProps) {
   };
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between text-left font-heading text-sm font-semibold text-black"
+        className="flex w-full items-center justify-between text-left font-heading text-sm font-semibold text-foreground"
       >
         📜 Full Critique Script
-        <span className="text-neutral-400">{open ? "▲" : "▼"}</span>
+        <span className="text-muted-foreground/75">{open ? "▲" : "▼"}</span>
       </button>
       {open ? (
         <div className="mt-4 space-y-3">
           {SECTIONS.map(({ key, title, border }) => (
             <div
               key={key}
-              className={`rounded-lg border border-neutral-200 bg-neutral-50/50 p-3 border-l-4 ${border}`}
+              className={`rounded-lg border border-border bg-muted/50 p-3 border-l-4 ${border}`}
             >
-              <p className="text-xs font-semibold text-neutral-700">{title}</p>
-              <p className="mt-1 text-sm text-neutral-900">
+              <p className="text-xs font-semibold text-foreground/90">{title}</p>
+              <p className="mt-1 text-sm text-foreground">
                 {String(cs[key] ?? "")}
               </p>
             </div>
@@ -61,7 +61,7 @@ export function ScriptSections({ job }: ScriptSectionsProps) {
           <button
             type="button"
             onClick={downloadFull}
-            className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-neutral-50"
+            className="w-full rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
           >
             Download Full Script
           </button>

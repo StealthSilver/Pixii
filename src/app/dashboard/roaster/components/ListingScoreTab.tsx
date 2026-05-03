@@ -92,7 +92,7 @@ export function ListingScoreTab({ job }: ListingScoreTabProps) {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-center sm:gap-10">
           <div className="relative flex size-36 items-center justify-center">
             <svg
@@ -123,30 +123,30 @@ export function ListingScoreTab({ job }: ListingScoreTabProps) {
               <span className={`font-heading text-4xl font-bold ${formatScore(overall)}`}>
                 {overall}
               </span>
-              <span className="rounded-md border border-neutral-200 bg-neutral-50 px-1.5 py-0.5 font-heading text-sm font-bold text-black">
+              <span className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-heading text-sm font-bold text-foreground">
                 {listingScore.letterGrade}
               </span>
             </div>
           </div>
           <div className="max-w-md text-center sm:text-left">
-            <p className="font-heading text-lg font-semibold text-black">
+            <p className="font-heading text-lg font-semibold text-foreground">
               Overall listing score
             </p>
-            <p className="mt-2 text-sm text-neutral-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               Estimated conversion rate:{" "}
               <span className="font-semibold">
                 {listingScore.conversionEstimate || "—"}
               </span>
             </p>
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-muted-foreground">
               Industry average: 3–5% for well-optimized listings
             </p>
           </div>
         </div>
       </section>
 
-      <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <h3 className="font-heading text-lg font-semibold text-black">
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h3 className="font-heading text-lg font-semibold text-foreground">
           Score breakdown
         </h3>
         <div className="mt-4 space-y-3">
@@ -159,19 +159,19 @@ export function ListingScoreTab({ job }: ListingScoreTabProps) {
                 }
                 className="flex w-full items-center justify-between text-left"
               >
-                <span className="text-sm font-medium text-neutral-800">
+                <span className="text-sm font-medium text-foreground">
                   {row.label}
                 </span>
                 <span className="flex items-center gap-2">
                   <span className={`text-sm font-semibold ${formatScore(row.score)}`}>
                     {row.score}/100
                   </span>
-                  <span className="text-neutral-400" aria-hidden>
+                  <span className="text-muted-foreground/75" aria-hidden>
                     ▼
                   </span>
                 </span>
               </button>
-              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-neutral-100">
+              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-foreground/10">
                 <div
                   className={`h-full rounded-full ${barClass(row.score)}`}
                   style={{ width: `${Math.min(100, row.score)}%` }}
@@ -202,13 +202,13 @@ export function ListingScoreTab({ job }: ListingScoreTabProps) {
             .map((text, i) => (
               <li
                 key={i}
-                className="flex gap-3 rounded-lg border border-emerald-100 bg-white/80 p-3"
+                className="flex gap-3 rounded-lg border border-emerald-100 bg-card/80 p-3"
               >
                 <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white">
                   {i + 1}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-neutral-900">{text || "—"}</p>
+                  <p className="text-sm text-foreground">{text || "—"}</p>
                   <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-700">
                     High Impact
                   </p>

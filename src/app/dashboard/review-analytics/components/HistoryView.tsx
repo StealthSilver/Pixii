@@ -14,26 +14,26 @@ type Props = {
 export function HistoryView({ items, onView, onDelete, busyId }: Props) {
   if (!items.length) {
     return (
-      <p className="rounded-xl border border-neutral-200 bg-white p-6 text-center text-sm text-neutral-600 shadow-sm">
+      <p className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground shadow-sm">
         No analyses yet. Paste a product listing URL to get started.
       </p>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
+    <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
       <table className="min-w-[720px] w-full border-collapse text-sm">
-        <thead className="border-b border-neutral-200 bg-neutral-50/90">
+        <thead className="border-b border-border bg-muted/90">
           <tr>
-            <th className="px-3 py-2 text-left text-xs font-semibold text-neutral-600">
+            <th className="px-3 py-2 text-left text-xs font-semibold text-muted-foreground">
               Product
             </th>
-            <th className="px-3 py-2 text-left text-xs font-semibold text-neutral-600">ASIN</th>
-            <th className="px-3 py-2 text-left text-xs font-semibold text-neutral-600">Reviews</th>
-            <th className="px-3 py-2 text-left text-xs font-semibold text-neutral-600">Listings</th>
-            <th className="px-3 py-2 text-left text-xs font-semibold text-neutral-600">Sentiment</th>
-            <th className="px-3 py-2 text-left text-xs font-semibold text-neutral-600">Date</th>
-            <th className="px-3 py-2 text-left text-xs font-semibold text-neutral-600">Actions</th>
+            <th className="px-3 py-2 text-left text-xs font-semibold text-muted-foreground">ASIN</th>
+            <th className="px-3 py-2 text-left text-xs font-semibold text-muted-foreground">Reviews</th>
+            <th className="px-3 py-2 text-left text-xs font-semibold text-muted-foreground">Listings</th>
+            <th className="px-3 py-2 text-left text-xs font-semibold text-muted-foreground">Sentiment</th>
+            <th className="px-3 py-2 text-left text-xs font-semibold text-muted-foreground">Date</th>
+            <th className="px-3 py-2 text-left text-xs font-semibold text-muted-foreground">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -41,10 +41,10 @@ export function HistoryView({ items, onView, onDelete, busyId }: Props) {
             const l = h.listings?.[0];
             const score = h.marketIntelligence?.marketSentimentScore ?? 0;
             return (
-              <tr key={h._id} className="border-b border-neutral-100">
+              <tr key={h._id} className="border-b border-border/55">
                 <td className="px-3 py-2">
                   <div className="flex max-w-[240px] items-center gap-2">
-                    <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-neutral-50">
+                    <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-border/55 bg-muted">
                       {l?.imageUrl ? (
                         <Image
                           src={l.imageUrl}
@@ -56,7 +56,7 @@ export function HistoryView({ items, onView, onDelete, busyId }: Props) {
                         />
                       ) : null}
                     </div>
-                    <span className="line-clamp-2 text-xs font-medium text-neutral-900">
+                    <span className="line-clamp-2 text-xs font-medium text-foreground">
                       {l?.title ?? h.category}
                     </span>
                   </div>
@@ -65,7 +65,7 @@ export function HistoryView({ items, onView, onDelete, busyId }: Props) {
                 <td className="px-3 py-2 text-xs">{h.totalReviewsScraped}</td>
                 <td className="px-3 py-2 text-xs">{h.totalListingsScraped}</td>
                 <td className="px-3 py-2 text-xs font-semibold">{Math.round(score)}</td>
-                <td className="px-3 py-2 text-xs text-neutral-600">
+                <td className="px-3 py-2 text-xs text-muted-foreground">
                   {h.createdAt ? formatRelativeTime(h.createdAt as string) : ""}
                 </td>
                 <td className="px-3 py-2">
@@ -89,7 +89,7 @@ export function HistoryView({ items, onView, onDelete, busyId }: Props) {
                           onDelete(h._id);
                         }
                       }}
-                      className="rounded-lg border border-neutral-200 px-2 py-1 text-[11px] font-semibold text-neutral-800 hover:bg-neutral-50 disabled:opacity-60"
+                      className="rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-foreground hover:bg-muted disabled:opacity-60"
                     >
                       Delete
                     </button>

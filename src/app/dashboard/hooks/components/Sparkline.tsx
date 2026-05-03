@@ -76,8 +76,8 @@ export function Sparkline({ values, className }: SparklineProps) {
           y2={gy}
           className={
             gy === axisY
-              ? "stroke-neutral-200"
-              : "stroke-neutral-100 [stroke-dasharray:3_3]"
+              ? "stroke-border"
+              : "stroke-border/50 [stroke-dasharray:3_3]"
           }
           strokeWidth={gy === axisY ? 1 : 0.85}
           vectorEffect="non-scaling-stroke"

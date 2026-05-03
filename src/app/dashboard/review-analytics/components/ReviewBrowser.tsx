@@ -91,14 +91,14 @@ export function ReviewBrowser({ jobId, listings }: Props) {
   };
 
   return (
-    <div className="space-y-4 rounded-lg border border-neutral-200 bg-white p-4">
+    <div className="space-y-4 rounded-lg border border-border bg-card p-4">
       <div className="flex flex-wrap items-end gap-3">
-        <label className="text-xs font-semibold text-neutral-700">
+        <label className="text-xs font-semibold text-foreground/90">
           ASIN
           <select
             value={asin}
             onChange={(e) => setAsin(e.target.value)}
-            className="mt-1 block rounded-lg border border-neutral-200 bg-white px-2 py-1.5 text-sm"
+            className="mt-1 block rounded-lg border border-border bg-card px-2 py-1.5 text-sm"
           >
             <option value="">All listings</option>
             {listings.map((l) => (
@@ -109,7 +109,7 @@ export function ReviewBrowser({ jobId, listings }: Props) {
           </select>
         </label>
         <div>
-          <p className="text-xs font-semibold text-neutral-700">Star rating</p>
+          <p className="text-xs font-semibold text-foreground/90">Star rating</p>
           <div className="mt-1 flex flex-wrap gap-2">
             {[1, 2, 3, 4, 5].map((n) => (
               <label key={n} className="flex items-center gap-1 text-xs">
@@ -133,7 +133,7 @@ export function ReviewBrowser({ jobId, listings }: Props) {
       </div>
 
       {err ? <p className="text-sm text-red-700">{err}</p> : null}
-      {loading ? <p className="text-sm text-neutral-600">Loading…</p> : null}
+      {loading ? <p className="text-sm text-muted-foreground">Loading…</p> : null}
 
       <ul className="space-y-3">
         {shown.map((r, i) => (
@@ -145,7 +145,7 @@ export function ReviewBrowser({ jobId, listings }: Props) {
         <button
           type="button"
           onClick={() => setVisible((v) => v + 20)}
-          className="w-full rounded-lg border border-neutral-200 py-2 text-sm font-semibold text-neutral-800 hover:bg-neutral-50"
+          className="w-full rounded-lg border border-border py-2 text-sm font-semibold text-foreground hover:bg-muted"
         >
           Load more
         </button>
@@ -159,7 +159,7 @@ function ReviewCard({ r }: { r: ReviewRow }) {
   const body = r.body ?? "";
   const short = body.length > 220 ? `${body.slice(0, 220)}…` : body;
   return (
-    <li className="rounded-lg border border-neutral-100 bg-neutral-50/80 p-3 text-sm">
+    <li className="rounded-lg border border-border/55 bg-muted/80 p-3 text-sm">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1 font-semibold text-amber-600">
           {r.rating}
@@ -170,12 +170,12 @@ function ReviewCard({ r }: { r: ReviewRow }) {
             Verified
           </span>
         ) : null}
-        <span className="text-xs text-neutral-500">
+        <span className="text-xs text-muted-foreground">
           {r.reviewDate ? new Date(r.reviewDate).toLocaleDateString() : ""}
         </span>
       </div>
-      <p className="mt-1 font-medium text-neutral-900">{r.title}</p>
-      <p className="mt-1 text-xs text-neutral-700">{expanded ? body : short}</p>
+      <p className="mt-1 font-medium text-foreground">{r.title}</p>
+      <p className="mt-1 text-xs text-foreground/90">{expanded ? body : short}</p>
       {body.length > 220 ? (
         <button
           type="button"

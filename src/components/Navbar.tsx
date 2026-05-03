@@ -1,6 +1,8 @@
 "use client";
 
 import { SidebarCollapseIcon } from "@/components/icons/SidebarCollapseIcon";
+import { NavbarSearch } from "@/components/NavbarSearch";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type NavbarProps = {
   sidebarCollapsed: boolean;
@@ -9,11 +11,11 @@ type NavbarProps = {
 
 export function Navbar({ sidebarCollapsed, onToggleSidebar }: NavbarProps) {
   return (
-    <header className="z-10 flex h-14 shrink-0 items-center gap-2 border-b border-neutral-200 bg-background pl-1.5 pr-4">
+    <header className="z-10 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background pl-1.5 pr-4">
       <button
         type="button"
         onClick={onToggleSidebar}
-        className="group inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-black/5 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+        className="group inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
         aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         aria-expanded={!sidebarCollapsed}
       >
@@ -22,10 +24,12 @@ export function Navbar({ sidebarCollapsed, onToggleSidebar }: NavbarProps) {
           flipHorizontal={sidebarCollapsed}
         />
       </button>
+      <ThemeToggle />
       <div className="min-w-0 flex-1" />
+      <NavbarSearch />
       <button
         type="button"
-        className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-black transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+        className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
         aria-label="Notifications"
       >
         <BellIcon className="size-5" />

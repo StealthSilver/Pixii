@@ -84,7 +84,7 @@ export function ScoreOverview({
     if (t === "bad") {
       return base + "border-red-200 bg-red-50 text-red-900";
     }
-    return base + "border-neutral-200 bg-neutral-50 text-neutral-600";
+    return base + "border-border bg-muted text-muted-foreground";
   };
 
   const rankLine =
@@ -93,7 +93,7 @@ export function ScoreOverview({
       : `Across AI engines, up to ${brandsMentionedCount} brands were surfaced for this query.`;
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+    <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-center sm:gap-10">
         <div className="relative flex size-36 items-center justify-center">
           <svg
@@ -121,35 +121,35 @@ export function ScoreOverview({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-heading text-4xl font-bold text-black">
+            <span className="font-heading text-4xl font-bold text-foreground">
               {overallScore === null ? "—" : display}
             </span>
-            <span className="text-xs font-semibold text-neutral-500">
+            <span className="text-xs font-semibold text-muted-foreground">
               Overall AEO
             </span>
           </div>
         </div>
         <div className="max-w-md text-center sm:text-left">
           <div className="flex flex-wrap items-end justify-center gap-3 sm:justify-start">
-            <p className="font-heading text-2xl font-semibold text-black">
+            <p className="font-heading text-2xl font-semibold text-foreground">
               Score overview
             </p>
-            <span className="rounded-lg border border-neutral-200 bg-neutral-50 px-2.5 py-1 font-heading text-xl font-bold text-black">
+            <span className="rounded-lg border border-border bg-muted px-2.5 py-1 font-heading text-xl font-bold text-foreground">
               {letterGrade(overallScore)}
             </span>
           </div>
-          <p className="mt-2 text-sm text-neutral-600">{rankLine}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{rankLine}</p>
           <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
             <span className={pillClass(gptScore)}>
-              <span className="text-neutral-500">GPT</span>{" "}
+              <span className="text-muted-foreground">GPT</span>{" "}
               {gptScore ?? "—"}
             </span>
             <span className={pillClass(claudeScore)}>
-              <span className="text-neutral-500">Mini</span>{" "}
+              <span className="text-muted-foreground">Mini</span>{" "}
               {claudeScore ?? "—"}
             </span>
             <span className={pillClass(geminiScore)}>
-              <span className="text-neutral-500">Gemini</span>{" "}
+              <span className="text-muted-foreground">Gemini</span>{" "}
               {geminiScore ?? "—"}
             </span>
           </div>

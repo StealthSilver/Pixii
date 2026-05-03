@@ -34,10 +34,10 @@ export function UploadZone({
     <div className="space-y-3">
       <div
         {...dropHandlers}
-        className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50/80 px-4 py-10 text-center transition-colors hover:border-neutral-300"
+        className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/80 px-4 py-10 text-center transition-colors hover:border-muted-foreground/35"
       >
         <svg
-          className="mx-auto size-14 text-neutral-400"
+          className="mx-auto size-14 text-muted-foreground/75"
           viewBox="0 0 56 64"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -61,10 +61,10 @@ export function UploadZone({
             PDF
           </text>
         </svg>
-        <p className="mt-4 text-sm font-semibold text-black">
+        <p className="mt-4 text-sm font-semibold text-foreground">
           Drop your dieline PDF here
         </p>
-        <p className="mt-1 text-xs text-neutral-500">
+        <p className="mt-1 text-xs text-muted-foreground">
           Supports single and multi-page PDFs up to 20MB
         </p>
         <label className="mt-5">
@@ -79,7 +79,7 @@ export function UploadZone({
               e.target.value = "";
             }}
           />
-          <span className="inline-flex cursor-pointer rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800 shadow-sm transition-colors hover:bg-neutral-50 disabled:opacity-60">
+          <span className="inline-flex cursor-pointer rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted disabled:opacity-60">
             Choose PDF
           </span>
         </label>
@@ -93,23 +93,23 @@ export function UploadZone({
 
       {file ? (
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm shadow-sm">
-            <span className="max-w-[200px] truncate font-semibold text-neutral-800">
+          <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm">
+            <span className="max-w-[200px] truncate font-semibold text-foreground">
               {file.name}
             </span>
-            <span className="text-xs text-neutral-500">
+            <span className="text-xs text-muted-foreground">
               {(file.size / (1024 * 1024)).toFixed(2)} MB
             </span>
             <button
               type="button"
               onClick={() => onFile(null)}
-              className="rounded-md p-1 text-neutral-500 hover:bg-black/5 hover:text-black"
+              className="rounded-md p-1 text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
               aria-label="Remove file"
             >
               ×
             </button>
           </div>
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-muted-foreground">
             We&apos;ll extract the artwork from page 1
           </p>
         </div>

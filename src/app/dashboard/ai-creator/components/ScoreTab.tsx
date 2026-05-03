@@ -72,7 +72,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-center sm:gap-10">
           <div className="relative flex size-36 items-center justify-center">
             <svg
@@ -100,24 +100,24 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="font-heading text-4xl font-bold text-black">
+              <span className="font-heading text-4xl font-bold text-foreground">
                 {overall}
               </span>
-              <span className="text-xs font-semibold text-neutral-500">
+              <span className="text-xs font-semibold text-muted-foreground">
                 Overall score
               </span>
             </div>
           </div>
           <div className="max-w-md text-center sm:text-left">
             <div className="flex flex-wrap items-end justify-center gap-3 sm:justify-start">
-              <p className="font-heading text-2xl font-semibold text-black">
+              <p className="font-heading text-2xl font-semibold text-foreground">
                 Listing scorecard
               </p>
-              <span className="rounded-lg border border-neutral-200 bg-neutral-50 px-2.5 py-1 font-heading text-xl font-bold text-black">
+              <span className="rounded-lg border border-border bg-muted px-2.5 py-1 font-heading text-xl font-bold text-foreground">
                 {letterGrade(overall)}
               </span>
             </div>
-            <p className="mt-2 text-sm text-neutral-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               Your listing converts at roughly{" "}
               <span className="font-semibold">{roughCv}%</span> — rough
               estimate only; industry average is often cited around 3–5%.
@@ -126,20 +126,20 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
         </div>
       </section>
 
-      <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <h3 className="font-heading text-lg font-semibold text-black">
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h3 className="font-heading text-lg font-semibold text-foreground">
           Score breakdown
         </h3>
         <div className="mt-4 space-y-4">
           {rows.map((row) => (
             <div key={row.label}>
               <div className="flex justify-between text-sm">
-                <span className="font-medium text-neutral-800">
+                <span className="font-medium text-foreground">
                   {row.label}
                 </span>
-                <span className="font-semibold text-black">{row.v}/100</span>
+                <span className="font-semibold text-foreground">{row.v}/100</span>
               </div>
-              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-neutral-100">
+              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-foreground/10">
                 <div
                   className={`h-full rounded-full ${barClass(row.v)}`}
                   style={{ width: `${Math.min(100, row.v)}%` }}
@@ -152,7 +152,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <section>
-          <h3 className="font-heading text-base font-semibold text-black">
+          <h3 className="font-heading text-base font-semibold text-foreground">
             Conversion killers 🚨
           </h3>
           <ul className="mt-3 space-y-2">
@@ -177,7 +177,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
           </ul>
         </section>
         <section>
-          <h3 className="font-heading text-base font-semibold text-black">
+          <h3 className="font-heading text-base font-semibold text-foreground">
             What&apos;s working ✅
           </h3>
           <ul className="mt-3 space-y-2">
@@ -203,8 +203,8 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
         </section>
       </div>
 
-      <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-        <h3 className="font-heading text-lg font-semibold text-black">
+      <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <h3 className="font-heading text-lg font-semibold text-foreground">
           Keywords you&apos;re missing
         </h3>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -218,7 +218,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
             </span>
           ))}
         </div>
-        <p className="mt-3 text-xs text-neutral-600">
+        <p className="mt-3 text-xs text-muted-foreground">
           Consider adding these to your title, bullets, or description.
         </p>
       </section>

@@ -53,7 +53,7 @@ export default function ShareCreatorRoastPage() {
   if (err) {
     return (
       <div className="min-h-screen bg-[rgb(251_249_247)] px-4 py-16 text-center">
-        <p className="text-sm text-neutral-600">{err}</p>
+        <p className="text-sm text-muted-foreground">{err}</p>
         <Link
           href="/dashboard/ai-creator"
           className="mt-4 inline-block text-sm font-semibold text-primary"
@@ -66,7 +66,7 @@ export default function ShareCreatorRoastPage() {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-[rgb(251_249_247)] px-4 py-16 text-center text-sm text-neutral-600">
+      <div className="min-h-screen bg-[rgb(251_249_247)] px-4 py-16 text-center text-sm text-muted-foreground">
         Loading…
       </div>
     );
@@ -81,7 +81,7 @@ export default function ShareCreatorRoastPage() {
   return (
     <div className="min-h-screen bg-[rgb(251_249_247)] px-4 py-10">
       <div className="mx-auto max-w-lg">
-        <p className="text-center font-heading text-xl font-bold text-black">
+        <p className="text-center font-heading text-xl font-bold text-foreground">
           Pixii AI Creator
         </p>
 
@@ -105,23 +105,23 @@ export default function ShareCreatorRoastPage() {
           ) : null}
 
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <h1 className="text-center font-heading text-lg font-semibold text-black">
+            <h1 className="text-center font-heading text-lg font-semibold text-foreground">
               {data.listingTitle ?? "Amazon listing"}
             </h1>
-            <span className="rounded-full bg-neutral-200 px-2.5 py-0.5 text-xs font-bold text-neutral-900">
+            <span className="rounded-full bg-border px-2.5 py-0.5 text-xs font-bold text-foreground">
               {data.overallScore ?? 0}/100
             </span>
           </div>
 
           {persona ? (
-            <p className="text-center text-sm text-neutral-600">
+            <p className="text-center text-sm text-muted-foreground">
               {persona.name}{" "}
-              <span className="text-neutral-400">{persona.handle}</span>
+              <span className="text-muted-foreground/75">{persona.handle}</span>
             </p>
           ) : null}
 
           {topWeak.length > 0 ? (
-            <ul className="mx-auto max-w-md list-disc space-y-2 pl-5 text-sm text-neutral-800">
+            <ul className="mx-auto max-w-md list-disc space-y-2 pl-5 text-sm text-foreground">
               {topWeak.map((w, i) => (
                 <li key={i}>{w}</li>
               ))}

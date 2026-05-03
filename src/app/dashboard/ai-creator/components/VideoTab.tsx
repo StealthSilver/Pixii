@@ -79,7 +79,7 @@ export function VideoTab({
   return (
     <div className="space-y-6">
       {hasVideo ? (
-        <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
           <video
             controls
             width="100%"
@@ -101,14 +101,14 @@ export function VideoTab({
               onClick={() => {
                 void navigator.clipboard.writeText(shareableLink);
               }}
-              className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-black hover:bg-neutral-50"
+              className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
             >
               Copy share link
             </button>
             <button
               type="button"
               onClick={downloadScript}
-              className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-black hover:bg-neutral-50"
+              className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
             >
               Download script
             </button>
@@ -117,7 +117,7 @@ export function VideoTab({
       ) : (
         <div className="space-y-6">
           <div className="rounded-xl border border-violet-200 bg-violet-50/40 p-5 shadow-sm">
-            <h3 className="font-heading text-lg font-semibold text-black">
+            <h3 className="font-heading text-lg font-semibold text-foreground">
               🎬 Your Roast Package
             </h3>
             <div className="mx-auto mt-4 flex max-w-[300px] justify-center">
@@ -131,20 +131,20 @@ export function VideoTab({
               />
             </div>
             <div className="mt-4 text-center">
-              <p className="font-heading text-lg font-semibold text-black">
+              <p className="font-heading text-lg font-semibold text-foreground">
                 Meet {persona.name}
               </p>
-              <p className="text-sm text-neutral-500">{persona.handle}</p>
+              <p className="text-sm text-muted-foreground">{persona.handle}</p>
             </div>
           </div>
 
-          <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <h3 className="font-heading text-base font-semibold text-black">
+          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <h3 className="font-heading text-base font-semibold text-foreground">
               📦 Download package
             </h3>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-lg border border-neutral-200 bg-neutral-50/50 p-4">
-                <p className="text-sm font-semibold text-black">🎙 Voiceover</p>
+              <div className="rounded-lg border border-border bg-muted/50 p-4">
+                <p className="text-sm font-semibold text-foreground">🎙 Voiceover</p>
                 <audio
                   ref={audioRef}
                   controls
@@ -158,7 +158,7 @@ export function VideoTab({
                     setProgress((a.currentTime / a.duration) * 100);
                   }}
                 />
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-100">
+                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-foreground/10">
                   <div
                     className="h-full rounded-full bg-violet-500 transition-[width]"
                     style={{ width: `${progress}%` }}
@@ -173,8 +173,8 @@ export function VideoTab({
                 </button>
               </div>
 
-              <div className="rounded-lg border border-neutral-200 bg-neutral-50/50 p-4">
-                <p className="text-sm font-semibold text-black">
+              <div className="rounded-lg border border-border bg-muted/50 p-4">
+                <p className="text-sm font-semibold text-foreground">
                   🖼 Avatar frames ({avatarFrameUrls.length})
                 </p>
                 <div className="mt-3 grid grid-cols-2 gap-2">
@@ -198,11 +198,11 @@ export function VideoTab({
               </div>
             </div>
 
-            <div className="mt-6 rounded-lg border border-neutral-100 bg-white p-4">
-              <p className="text-sm font-semibold text-black">
+            <div className="mt-6 rounded-lg border border-border/55 bg-card p-4">
+              <p className="text-sm font-semibold text-foreground">
                 📱 CapCut assembly — 5 steps
               </p>
-              <ol className="mt-2 list-decimal space-y-1 pl-4 text-xs text-neutral-700">
+              <ol className="mt-2 list-decimal space-y-1 pl-4 text-xs text-foreground/90">
                 <li>Open CapCut → New Project</li>
                 <li>Import your frames</li>
                 <li>Set timing to match your voiceover (~60s)</li>
@@ -215,20 +215,20 @@ export function VideoTab({
       )}
 
       <div
-        className={`rounded-xl border-y border-r border-neutral-200 bg-white p-5 shadow-sm border-l-4 ${left}`}
+        className={`rounded-xl border-y border-r border-border bg-card p-5 shadow-sm border-l-4 ${left}`}
       >
         <div className="flex items-start gap-3">
           <span className="text-[32px] leading-none" aria-hidden>
             {persona.emoji}
           </span>
           <div>
-            <p className="font-heading text-sm font-semibold text-black">
+            <p className="font-heading text-sm font-semibold text-foreground">
               {persona.name} says:
             </p>
-            <p className="mt-2 text-base italic text-neutral-800">
+            <p className="mt-2 text-base italic text-foreground">
               {roastScript?.hook ?? ""}
             </p>
-            <p className="mt-2 text-xs text-neutral-500">{persona.handle}</p>
+            <p className="mt-2 text-xs text-muted-foreground">{persona.handle}</p>
           </div>
         </div>
       </div>

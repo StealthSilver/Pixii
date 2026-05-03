@@ -45,10 +45,10 @@ export function PhotoGrid({
             <div
               key={url + i}
               className={
-                "group relative overflow-hidden rounded-xl border-2 bg-neutral-100 shadow-sm transition-all " +
+                "group relative overflow-hidden rounded-xl border-2 bg-foreground/10 shadow-sm transition-all " +
                 (selectedUrl === url
                   ? "border-primary ring-2 ring-primary/30"
-                  : "border-neutral-200")
+                  : "border-border")
               }
             >
               <div className="relative aspect-[4/3] w-full">
@@ -65,7 +65,7 @@ export function PhotoGrid({
                     ✓
                   </span>
                 ) : null}
-                <div className="absolute inset-0 flex flex-col justify-end gap-2 bg-black/0 p-3 opacity-0 transition-all group-hover:bg-black/55 group-hover:opacity-100">
+                <div className="absolute inset-0 flex flex-col justify-end gap-2 bg-black/0 p-3 opacity-0 transition-all group-hover:bg-foreground/55 group-hover:opacity-100">
                   <button
                     type="button"
                     onClick={() => onSelect(url)}
@@ -76,7 +76,7 @@ export function PhotoGrid({
                   <button
                     type="button"
                     onClick={() => void download(url, i)}
-                    className="w-full rounded-lg border border-white/40 bg-white/90 px-3 py-2 text-xs font-semibold text-neutral-900 hover:bg-white"
+                    className="w-full rounded-lg border border-white/40 bg-card/90 px-3 py-2 text-xs font-semibold text-foreground hover:bg-card"
                   >
                     Download
                   </button>
@@ -86,14 +86,14 @@ export function PhotoGrid({
           ) : (
             <div
               key={`empty-${i}`}
-              className="flex aspect-[4/3] items-center justify-center rounded-xl border border-dashed border-neutral-200 bg-neutral-50 text-xs text-neutral-400"
+              className="flex aspect-[4/3] items-center justify-center rounded-xl border border-dashed border-border bg-muted text-xs text-muted-foreground/75"
             >
               —
             </div>
           ),
         )}
       </div>
-      <p className="mt-3 text-left text-xs text-neutral-500">
+      <p className="mt-3 text-left text-xs text-muted-foreground">
         Generated using {lifestyleKey.replace(/_/g, " ")} scene
         {processingTimeMs != null ? ` · ${(processingTimeMs / 1000).toFixed(1)}s` : ""}
       </p>

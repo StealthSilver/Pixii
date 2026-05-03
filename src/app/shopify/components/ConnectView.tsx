@@ -28,11 +28,11 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
   }, [trimmed, onShopRemember]);
 
   const inputClass =
-    "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+    "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
   return (
     <div className="max-w-[480px]">
-      <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+      <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
         <div className="flex flex-col items-start text-left">
           <span
             className="rounded-lg px-3 py-1 text-xs font-bold tracking-wide text-white"
@@ -40,16 +40,16 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
           >
             Shopify
           </span>
-          <h2 className="font-heading mt-4 text-lg font-semibold text-black">
+          <h2 className="font-heading mt-4 text-lg font-semibold text-foreground">
             Connect your store
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             Enter your Shopify store URL to get started. You&apos;ll be redirected to Shopify
             to approve the connection.
           </p>
         </div>
 
-        <label className="mt-6 block text-sm font-medium text-neutral-700">
+        <label className="mt-6 block text-sm font-medium text-foreground/90">
           Your Shopify store URL
           <input
             type="text"
@@ -62,7 +62,7 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
             }
           />
         </label>
-        <p className="mt-1 text-xs text-neutral-500">
+        <p className="mt-1 text-xs text-muted-foreground">
           Enter just your store subdomain, e.g. mystore.myshopify.com
         </p>
         {invalid ? (
@@ -81,7 +81,7 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
         </button>
       </div>
 
-      <p className="mt-6 text-left text-xs leading-relaxed text-neutral-600">
+      <p className="mt-6 text-left text-xs leading-relaxed text-muted-foreground">
         🔒 Your store data is never stored without your permission. We only request access to
         read and update product images.
       </p>
@@ -94,7 +94,7 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
         ].map((t) => (
           <span
             key={t}
-            className="rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 shadow-sm"
+            className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground/90 shadow-sm"
           >
             {t}
           </span>

@@ -61,14 +61,14 @@ export function VideoSettings({
   const [previewOpen, setPreviewOpen] = useState(false);
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <h2 className="font-heading text-lg font-semibold text-black">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <h2 className="font-heading text-lg font-semibold text-foreground">
         Video Settings
       </h2>
 
       <div className="mt-5 space-y-6">
         <div>
-          <p className="text-sm font-medium text-neutral-700">Video Style</p>
+          <p className="text-sm font-medium text-foreground/90">Video Style</p>
           <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {SCRIPT_OPTIONS.map((o) => (
               <button
@@ -79,13 +79,13 @@ export function VideoSettings({
                   "flex gap-3 rounded-lg border p-3 text-left transition-colors " +
                   (scriptStyle === o.id
                     ? "border-primary bg-primary/5 ring-1 ring-primary/25"
-                    : "border-neutral-200 bg-white hover:border-neutral-300")
+                    : "border-border bg-card hover:border-muted-foreground/35")
                 }
               >
                 <span className="text-xl">{o.emoji}</span>
                 <span>
-                  <span className="block font-semibold text-black">{o.name}</span>
-                  <span className="mt-0.5 block text-xs text-neutral-600">
+                  <span className="block font-semibold text-foreground">{o.name}</span>
+                  <span className="mt-0.5 block text-xs text-muted-foreground">
                     {o.desc}
                   </span>
                 </span>
@@ -95,7 +95,7 @@ export function VideoSettings({
         </div>
 
         <div>
-          <p className="text-sm font-medium text-neutral-700">Platform</p>
+          <p className="text-sm font-medium text-foreground/90">Platform</p>
           <div className="mt-2 flex flex-wrap gap-2">
             <button
               type="button"
@@ -103,8 +103,8 @@ export function VideoSettings({
                 pill +
                 " " +
                 (platform === "tiktok"
-                  ? "border-black bg-black text-white"
-                  : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-300")
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border bg-card text-foreground hover:border-muted-foreground/35")
               }
               onClick={() => onPlatformChange("tiktok")}
             >
@@ -117,7 +117,7 @@ export function VideoSettings({
                 " " +
                 (platform === "instagram_reels"
                   ? "border-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white"
-                  : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-300")
+                  : "border-border bg-card text-foreground hover:border-muted-foreground/35")
               }
               onClick={() => onPlatformChange("instagram_reels")}
             >
@@ -130,7 +130,7 @@ export function VideoSettings({
                 " " +
                 (platform === "youtube_shorts"
                   ? "border-red-600 bg-red-600 text-white"
-                  : "border-neutral-200 bg-white text-neutral-800 hover:border-neutral-300")
+                  : "border-border bg-card text-foreground hover:border-muted-foreground/35")
               }
               onClick={() => onPlatformChange("youtube_shorts")}
             >
@@ -139,7 +139,7 @@ export function VideoSettings({
           </div>
         </div>
 
-        <div className="rounded-lg border border-neutral-100 bg-neutral-50 p-4">
+        <div className="rounded-lg border border-border/55 bg-muted p-4">
           <button
             type="button"
             onClick={() => setPreviewOpen((v) => !v)}
@@ -148,7 +148,7 @@ export function VideoSettings({
             {previewOpen ? "Hide script outline" : "Preview Script"}
           </button>
           {previewOpen ? (
-            <p className="mt-3 whitespace-pre-line text-sm text-neutral-700">
+            <p className="mt-3 whitespace-pre-line text-sm text-foreground/90">
               Your script will include:{"\n"}
               🎣 Hook (0-3s): Attention-grabbing opener{"\n"}
               😤 Problem (3-8s): Relatable pain point{"\n"}
@@ -158,7 +158,7 @@ export function VideoSettings({
           ) : null}
         </div>
 
-        <p className="text-center text-xs text-neutral-600">
+        <p className="text-center text-xs text-muted-foreground">
           ⏱ ~3-5 minutes · 🎬 4 visual frames · 🎙 30-sec voiceover · 💰 ~$0.15
         </p>
       </div>

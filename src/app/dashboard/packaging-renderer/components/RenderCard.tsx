@@ -22,7 +22,7 @@ export function RenderCard({
 
   return (
     <div
-      className="group relative overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 shadow-sm"
+      className="group relative overflow-hidden rounded-xl border border-border bg-muted shadow-sm"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
@@ -37,14 +37,14 @@ export function RenderCard({
         />
         <div
           className={
-            "absolute inset-0 flex items-center justify-center gap-3 bg-black/45 transition-opacity " +
+            "absolute inset-0 flex items-center justify-center gap-3 bg-foreground/50 transition-opacity " +
             (hover ? "opacity-100" : "opacity-0 pointer-events-none")
           }
         >
           <button
             type="button"
             onClick={onDownload}
-            className="rounded-lg bg-white/95 px-3 py-2 text-xs font-semibold text-black shadow hover:bg-white"
+            className="rounded-lg bg-card/95 px-3 py-2 text-xs font-semibold text-foreground shadow hover:bg-card"
             aria-label="Download render"
           >
             <svg className="mx-auto size-5" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -59,7 +59,7 @@ export function RenderCard({
           <button
             type="button"
             onClick={onExpand}
-            className="rounded-lg bg-white/95 px-3 py-2 text-xs font-semibold text-black shadow hover:bg-white"
+            className="rounded-lg bg-card/95 px-3 py-2 text-xs font-semibold text-foreground shadow hover:bg-card"
             aria-label="Expand render"
           >
             <svg className="mx-auto size-5" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -73,7 +73,7 @@ export function RenderCard({
           </button>
         </div>
       </div>
-      <p className="border-t border-neutral-100 px-2 py-2 text-center text-[11px] text-neutral-500">
+      <p className="border-t border-border/55 px-2 py-2 text-center text-[11px] text-muted-foreground">
         {angleLabel} · {styleLabel}
       </p>
     </div>

@@ -72,17 +72,17 @@ export function PersonaGrid({ selected, onSelect }: PersonaGridProps) {
               "rounded-xl border p-4 text-left shadow-sm transition-colors " +
               (active
                 ? `${a.border} ${a.bg} border-l-4 ${a.left}`
-                : "border-neutral-200 bg-white hover:border-neutral-300")
+                : "border-border bg-card hover:border-muted-foreground/35")
             }
           >
             <div className="text-3xl" aria-hidden>
               {p.emoji}
             </div>
-            <p className="mt-2 font-heading text-base font-bold text-black">
+            <p className="mt-2 font-heading text-base font-bold text-foreground">
               {p.name}
             </p>
-            <p className="text-xs text-neutral-500">{p.handle}</p>
-            <p className="mt-2 line-clamp-2 text-xs text-neutral-600">
+            <p className="text-xs text-muted-foreground">{p.handle}</p>
+            <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">
               {p.description}
             </p>
             <span

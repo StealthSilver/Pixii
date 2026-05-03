@@ -18,8 +18,8 @@ type VideoPreviewCardProps = {
 
 export function VideoPreviewCard({ meta, tooLong, longWarning }: VideoPreviewCardProps) {
   return (
-    <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
-      <div className="relative aspect-video w-full bg-neutral-100">
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      <div className="relative aspect-video w-full bg-foreground/10">
         <Image
           src={meta.thumbnailUrl}
           alt=""
@@ -30,11 +30,11 @@ export function VideoPreviewCard({ meta, tooLong, longWarning }: VideoPreviewCar
         />
       </div>
       <div className="p-4">
-        <p className="line-clamp-2 font-heading text-base font-semibold text-black">
+        <p className="line-clamp-2 font-heading text-base font-semibold text-foreground">
           {meta.title}
         </p>
-        <p className="mt-1 text-sm text-neutral-500">{meta.channelName}</p>
-        <p className="mt-2 text-sm font-medium text-neutral-700">
+        <p className="mt-1 text-sm text-muted-foreground">{meta.channelName}</p>
+        <p className="mt-2 text-sm font-medium text-foreground/90">
           Duration: {formatSeconds(meta.duration)}
         </p>
         {tooLong ? (

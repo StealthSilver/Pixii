@@ -29,7 +29,7 @@ function scorePill(score: number | null): string {
   const base =
     "inline-flex rounded-full border px-2 py-0.5 text-[11px] font-semibold ";
   if (score === null || score === undefined) {
-    return base + "border-neutral-200 bg-neutral-50 text-neutral-600";
+    return base + "border-border bg-muted text-muted-foreground";
   }
   if (score >= 70) {
     return base + "border-emerald-200 bg-emerald-50 text-emerald-900";
@@ -75,10 +75,10 @@ export function HistoryList({
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="animate-pulse rounded-xl border border-neutral-200 bg-white p-4"
+            className="animate-pulse rounded-xl border border-border bg-card p-4"
           >
-            <div className="h-4 w-2/3 rounded bg-neutral-200" />
-            <div className="mt-3 h-3 w-1/3 rounded bg-neutral-100" />
+            <div className="h-4 w-2/3 rounded bg-border" />
+            <div className="mt-3 h-3 w-1/3 rounded bg-foreground/10" />
           </div>
         ))}
       </div>
@@ -87,8 +87,8 @@ export function HistoryList({
 
   if (!items?.length) {
     return (
-      <div className="rounded-xl border border-dashed border-neutral-200 bg-white/60 px-6 py-12 text-center">
-        <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-neutral-200 bg-neutral-50 text-neutral-500">
+      <div className="rounded-xl border border-dashed border-border bg-card/60 px-6 py-12 text-center">
+        <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
           <svg
             viewBox="0 0 24 24"
             className="size-6"
@@ -101,10 +101,10 @@ export function HistoryList({
             <path d="M20 20l-3-3" strokeLinecap="round" />
           </svg>
         </div>
-        <p className="mt-4 font-heading text-sm font-semibold text-black">
+        <p className="mt-4 font-heading text-sm font-semibold text-foreground">
           No queries yet
         </p>
-        <p className="mt-1 text-sm text-neutral-600">
+        <p className="mt-1 text-sm text-muted-foreground">
           Run your first Rufus simulation above
         </p>
         <button
@@ -123,13 +123,13 @@ export function HistoryList({
       {items.map((row) => {
         const typeClass =
           TYPE_BADGE[row.queryType] ??
-          "border-neutral-200 bg-neutral-50 text-neutral-800";
+          "border-border bg-muted text-foreground";
         return (
           <li
             key={row._id}
-            className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm"
+            className="rounded-xl border border-border bg-card p-4 shadow-sm"
           >
-            <p className="line-clamp-2 font-heading text-sm font-semibold text-black">
+            <p className="line-clamp-2 font-heading text-sm font-semibold text-foreground">
               {row.queryText}
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -142,7 +142,7 @@ export function HistoryList({
                 {row.queryType.replace(/_/g, " ")}
               </span>
               {row.category ? (
-                <span className="inline-flex rounded-full border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11px] font-medium text-neutral-600">
+                <span className="inline-flex rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
                   {row.category}
                 </span>
               ) : null}
@@ -151,7 +151,7 @@ export function HistoryList({
                   Score {row.overallScore}
                 </span>
               ) : null}
-              <span className="ml-auto text-xs text-neutral-500">
+              <span className="ml-auto text-xs text-muted-foreground">
                 {formatRelativeTime(row.createdAt)}
               </span>
             </div>
@@ -164,7 +164,7 @@ export function HistoryList({
                 View
               </button>
               {confirmId === row._id ? (
-                <span className="inline-flex items-center gap-2 text-xs text-neutral-700">
+                <span className="inline-flex items-center gap-2 text-xs text-foreground/90">
                   Sure?
                   <button
                     type="button"
@@ -194,7 +194,7 @@ export function HistoryList({
                   </button>
                   <button
                     type="button"
-                    className="rounded-md border border-neutral-200 bg-white px-2 py-1 font-semibold text-neutral-800"
+                    className="rounded-md border border-border bg-card px-2 py-1 font-semibold text-foreground"
                     onClick={() => setConfirmId(null)}
                   >
                     Cancel
@@ -204,7 +204,7 @@ export function HistoryList({
                 <button
                   type="button"
                   onClick={() => setConfirmId(row._id)}
-                  className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800 shadow-sm hover:bg-black/[0.03]"
+                  className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm hover:bg-foreground/[0.06]"
                 >
                   Delete
                 </button>

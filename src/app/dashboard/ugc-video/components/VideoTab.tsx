@@ -45,7 +45,7 @@ export function VideoTab({
         <div className="flex flex-col items-center">
           <video
             controls
-            className="w-full max-w-[400px] overflow-hidden rounded-xl border border-neutral-200 bg-black shadow-sm"
+            className="w-full max-w-[400px] overflow-hidden rounded-xl border border-border bg-black shadow-sm"
             style={{ maxWidth: 400 }}
           >
             <source src={finalVideoUrl} type="video/mp4" />
@@ -61,7 +61,7 @@ export function VideoTab({
             <button
               type="button"
               onClick={onDownloadWithCaptionsZip}
-              className="flex-1 rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+              className="flex-1 rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
             >
               Download with Captions
             </button>

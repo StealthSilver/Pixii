@@ -17,7 +17,7 @@ type AngleSelectorProps = {
 export function AngleSelector({ value, onChange }: AngleSelectorProps) {
   return (
     <div>
-      <p className="text-sm font-medium text-neutral-700">Camera Angle</p>
+      <p className="text-sm font-medium text-foreground/90">Camera Angle</p>
       <div className="mt-2 flex flex-wrap gap-2">
         {OPTIONS.map((o) => {
           const active = value === o.id;
@@ -29,8 +29,8 @@ export function AngleSelector({ value, onChange }: AngleSelectorProps) {
               className={
                 "rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm transition-colors " +
                 (active
-                  ? "border-primary bg-primary/10 text-black ring-2 ring-primary/25"
-                  : "border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50")
+                  ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/25"
+                  : "border-border bg-card text-foreground hover:bg-muted")
               }
             >
               {o.label}

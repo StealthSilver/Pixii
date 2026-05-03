@@ -71,7 +71,7 @@ function tabBtn(active: boolean): string {
     "rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
     (active
       ? "bg-primary/10 text-primary"
-      : "text-neutral-600 hover:bg-black/[0.04] hover:text-black")
+      : "text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground")
   );
 }
 
@@ -280,7 +280,7 @@ export default function AiCreatorPage() {
         </span>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-2 border-b border-neutral-100 pb-4">
+      <div className="mt-6 flex flex-wrap gap-2 border-b border-border/55 pb-4">
         <button
           type="button"
           className={tabBtn(view === "input")}
@@ -299,15 +299,15 @@ export default function AiCreatorPage() {
 
       {view === "input" ? (
         <div className="mt-8 max-w-3xl space-y-8">
-          <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
             <URLInput value={url} onChange={setUrl} />
           </section>
 
           <section>
-            <h2 className="font-heading text-lg font-semibold text-black">
+            <h2 className="font-heading text-lg font-semibold text-foreground">
               Choose your roaster
             </h2>
-            <p className="mt-1 text-sm text-neutral-600">
+            <p className="mt-1 text-sm text-muted-foreground">
               Each persona has a different critique style and delivery
             </p>
             <div className="mt-4">
@@ -315,37 +315,37 @@ export default function AiCreatorPage() {
             </div>
           </section>
 
-          <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <h3 className="font-heading text-base font-semibold text-black">
+          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <h3 className="font-heading text-base font-semibold text-foreground">
               What you&apos;ll get
             </h3>
             <div className="mt-4 grid gap-4 md:grid-cols-3">
               <div>
-                <p className="text-sm font-semibold text-black">
+                <p className="text-sm font-semibold text-foreground">
                   📊 Listing scorecard
                 </p>
-                <p className="mt-1 text-xs text-neutral-600">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Title, bullets, images, and description scored 0–100
                 </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-black">
+                <p className="text-sm font-semibold text-foreground">
                   🎬 Critique video
                 </p>
-                <p className="mt-1 text-xs text-neutral-600">
+                <p className="mt-1 text-xs text-muted-foreground">
                   ~60-second roast from your chosen influencer persona
                 </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-black">
+                <p className="text-sm font-semibold text-foreground">
                   ✅ Fix list
                 </p>
-                <p className="mt-1 text-xs text-neutral-600">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Actionable improvements for every weakness found
                 </p>
               </div>
             </div>
-            <p className="mt-6 text-xs text-neutral-500">
+            <p className="mt-6 text-xs text-muted-foreground">
               ⏱ ~4–6 minutes · 🎬 ~60-sec video · 💰 ~$0.12 per roast (estimate)
             </p>
             <button
@@ -362,7 +362,7 @@ export default function AiCreatorPage() {
 
       {view === "history" ? (
         <div className="mt-8 max-w-4xl">
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted-foreground">
             Select a past roast to open results.
           </p>
           <ul className="mt-4 space-y-2">
@@ -371,12 +371,12 @@ export default function AiCreatorPage() {
                 <button
                   type="button"
                   onClick={() => void loadJobForResult(h._id)}
-                  className="flex w-full items-center justify-between rounded-xl border border-neutral-200 bg-white px-4 py-3 text-left shadow-sm hover:border-primary/25"
+                  className="flex w-full items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-left shadow-sm hover:border-primary/25"
                 >
-                  <span className="line-clamp-1 text-sm font-semibold text-black">
+                  <span className="line-clamp-1 text-sm font-semibold text-foreground">
                     {h.title || "Listing"}
                   </span>
-                  <span className="ml-3 shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-bold">
+                  <span className="ml-3 shrink-0 rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-bold">
                     {h.overallScore}/100
                   </span>
                 </button>
@@ -384,7 +384,7 @@ export default function AiCreatorPage() {
             ))}
           </ul>
           {(historyData?.items ?? []).length === 0 ? (
-            <p className="mt-4 text-sm text-neutral-500">No roasts yet.</p>
+            <p className="mt-4 text-sm text-muted-foreground">No roasts yet.</p>
           ) : null}
         </div>
       ) : null}
@@ -405,16 +405,16 @@ export default function AiCreatorPage() {
 
       {view === "result" && job && job.status === "complete" ? (
         <div className="mt-8 max-w-3xl space-y-8">
-          <div className="flex flex-wrap items-center gap-2 border-b border-neutral-100 pb-4">
-            <p className="font-heading text-lg font-semibold text-black">
+          <div className="flex flex-wrap items-center gap-2 border-b border-border/55 pb-4">
+            <p className="font-heading text-lg font-semibold text-foreground">
               {job.listingData?.title ?? "Your listing"}
             </p>
-            <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-semibold text-neutral-700">
+            <span className="rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-semibold text-foreground/90">
               {job.asin}
             </span>
-            <span className="rounded-full border border-neutral-200 bg-white px-2 py-0.5 text-xs font-medium text-neutral-700">
+            <span className="rounded-full border border-border bg-card px-2 py-0.5 text-xs font-medium text-foreground/90">
               {PERSONAS[personaId].emoji} {PERSONAS[personaId].name}{" "}
-              <span className="text-neutral-500">
+              <span className="text-muted-foreground">
                 {PERSONAS[personaId].handle}
               </span>
             </span>
@@ -482,7 +482,7 @@ export default function AiCreatorPage() {
           <button
             type="button"
             onClick={resetInput}
-            className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-black hover:bg-neutral-50"
+            className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
           >
             Start another roast
           </button>

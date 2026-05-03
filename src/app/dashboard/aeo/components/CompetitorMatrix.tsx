@@ -31,7 +31,7 @@ function sentBadge(s: string): string {
   if (s === "neutral") {
     return base + "border-amber-200 bg-amber-50 text-amber-900";
   }
-  return base + "border-neutral-200 bg-neutral-50 text-neutral-600";
+  return base + "border-border bg-muted text-muted-foreground";
 }
 
 function avgTone(score: number): "good" | "mid" | "bad" {
@@ -47,26 +47,26 @@ function avgTone(score: number): "good" | "mid" | "bad" {
 export function CompetitorMatrix({ brandName, rows }: CompetitorMatrixProps) {
   const bn = brandName.trim().toLowerCase();
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <h2 className="font-heading text-lg font-semibold text-black">
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <h2 className="font-heading text-lg font-semibold text-foreground">
         Competitor matrix
       </h2>
-      <p className="mt-1 text-sm text-neutral-600">
+      <p className="mt-1 text-sm text-muted-foreground">
         Rankings are parsed mentions within each model&apos;s answer (max eight
         rows).
       </p>
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-full border-separate border-spacing-0 text-left text-sm">
           <thead>
-            <tr className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              <th className="border-b border-neutral-200 px-3 py-2">Brand</th>
-              <th className="border-b border-neutral-200 px-3 py-2">GPT rank</th>
-              <th className="border-b border-neutral-200 px-3 py-2">Mini rank</th>
-              <th className="border-b border-neutral-200 px-3 py-2">
+            <tr className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <th className="border-b border-border px-3 py-2">Brand</th>
+              <th className="border-b border-border px-3 py-2">GPT rank</th>
+              <th className="border-b border-border px-3 py-2">Mini rank</th>
+              <th className="border-b border-border px-3 py-2">
                 Gemini rank
               </th>
-              <th className="border-b border-neutral-200 px-3 py-2">Avg score</th>
-              <th className="border-b border-neutral-200 px-3 py-2">Sentiment</th>
+              <th className="border-b border-border px-3 py-2">Avg score</th>
+              <th className="border-b border-border px-3 py-2">Sentiment</th>
             </tr>
           </thead>
           <tbody>
@@ -85,13 +85,13 @@ export function CompetitorMatrix({ brandName, rows }: CompetitorMatrixProps) {
                   key={rowName ? rowName : `row-${rowIdx}`}
                   className={
                     isUser
-                      ? "bg-primary/[0.06] text-black ring-1 ring-inset ring-primary/15"
-                      : "hover:bg-black/[0.02]"
+                      ? "bg-primary/[0.06] text-foreground ring-1 ring-inset ring-primary/15"
+                      : "hover:bg-foreground/[0.05]"
                   }
                 >
                   <td
                     className={
-                      "border-b border-neutral-100 px-3 py-2.5 font-semibold " +
+                      "border-b border-border/55 px-3 py-2.5 font-semibold " +
                       (isUser ? "border-l-4 border-l-primary pl-2" : "")
                     }
                   >
@@ -104,19 +104,19 @@ export function CompetitorMatrix({ brandName, rows }: CompetitorMatrixProps) {
                       ) : null}
                     </span>
                   </td>
-                  <td className="border-b border-neutral-100 px-3 py-2.5 text-neutral-800">
+                  <td className="border-b border-border/55 px-3 py-2.5 text-foreground">
                     {rankCell(r.gptRank)}
                   </td>
-                  <td className="border-b border-neutral-100 px-3 py-2.5 text-neutral-800">
+                  <td className="border-b border-border/55 px-3 py-2.5 text-foreground">
                     {rankCell(r.claudeRank)}
                   </td>
-                  <td className="border-b border-neutral-100 px-3 py-2.5 text-neutral-800">
+                  <td className="border-b border-border/55 px-3 py-2.5 text-foreground">
                     {rankCell(r.geminiRank)}
                   </td>
-                  <td className={"border-b border-neutral-100 px-3 py-2.5 " + scoreCls}>
+                  <td className={"border-b border-border/55 px-3 py-2.5 " + scoreCls}>
                     {r.avgScore}
                   </td>
-                  <td className="border-b border-neutral-100 px-3 py-2.5">
+                  <td className="border-b border-border/55 px-3 py-2.5">
                     <span className={sentBadge(r.sentiment)}>
                       {r.sentiment.replaceAll("_", " ")}
                     </span>

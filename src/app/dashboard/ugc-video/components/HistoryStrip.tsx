@@ -20,8 +20,8 @@ export function HistoryStrip({ items, onSelect }: HistoryStripProps) {
     return null;
   }
   return (
-    <div className="mt-10 border-t border-neutral-200 pt-8">
-      <h3 className="font-heading text-base font-semibold text-black">
+    <div className="mt-10 border-t border-border pt-8">
+      <h3 className="font-heading text-base font-semibold text-foreground">
         Previous Videos
       </h3>
       <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
@@ -38,7 +38,7 @@ export function HistoryStrip({ items, onSelect }: HistoryStripProps) {
               onClick={() => onSelect(h._id)}
               className="w-[88px] shrink-0 text-left"
             >
-              <div className="relative size-20 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
+              <div className="relative size-20 overflow-hidden rounded-lg border border-border bg-foreground/10">
                 <Image
                   src={thumb}
                   alt=""
@@ -47,7 +47,7 @@ export function HistoryStrip({ items, onSelect }: HistoryStripProps) {
                   unoptimized
                 />
               </div>
-              <p className="mt-1 truncate text-center text-xs text-neutral-600">
+              <p className="mt-1 truncate text-center text-xs text-muted-foreground">
                 {label}
               </p>
             </button>

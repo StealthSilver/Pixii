@@ -21,8 +21,8 @@ Working on fixing these now 🔧
 #Amazon #ecommerce #productlisting`;
 
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <p className="text-sm font-semibold text-black">Share this roast:</p>
+    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <p className="text-sm font-semibold text-foreground">Share this roast:</p>
       <div className="mt-3 flex flex-wrap gap-2">
         <button
           type="button"
@@ -40,7 +40,7 @@ Working on fixing these now 🔧
             void navigator.clipboard.writeText(linkedIn);
             onToast("LinkedIn text copied.", "success");
           }}
-          className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-black hover:bg-neutral-50"
+          className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
         >
           Copy for LinkedIn
         </button>

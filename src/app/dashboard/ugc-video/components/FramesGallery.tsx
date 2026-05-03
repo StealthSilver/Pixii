@@ -21,7 +21,7 @@ export function FramesGallery({
   return (
     <div className="mt-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="font-heading text-base font-semibold text-black">
+        <h3 className="font-heading text-base font-semibold text-foreground">
           Generated Frames
         </h3>
         <button
@@ -36,14 +36,14 @@ export function FramesGallery({
 
       <div className="relative mt-4">
         {regenerating ? (
-          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-white/70">
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-card/70">
             <FaSpinner className="size-8 animate-spin text-primary" aria-hidden />
           </div>
         ) : null}
         <div className="flex flex-wrap gap-4">
           {frameUrls.slice(0, 4).map((url, i) => (
             <div key={`${url}-${i}`} className="w-[140px] shrink-0">
-              <div className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
+              <div className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-border bg-foreground/10">
                 <Image
                   src={url}
                   alt={`Frame ${i + 1}`}
@@ -51,17 +51,17 @@ export function FramesGallery({
                   className="object-cover"
                   unoptimized
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-opacity group-hover:bg-black/35 group-hover:opacity-100">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-opacity group-hover:bg-foreground/40 group-hover:opacity-100">
                   <button
                     type="button"
                     onClick={() => onDownloadFrame(url, i)}
-                    className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-black shadow"
+                    className="rounded-lg bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow"
                   >
                     Download
                   </button>
                 </div>
               </div>
-              <p className="mt-1 text-center text-xs text-neutral-600">
+              <p className="mt-1 text-center text-xs text-muted-foreground">
                 Frame {i + 1}: {LABELS[i] ?? `Shot ${i + 1}`}
               </p>
             </div>

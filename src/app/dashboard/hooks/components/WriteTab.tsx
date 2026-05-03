@@ -30,16 +30,16 @@ function pillClass(active: boolean): string {
     "rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
     (active
       ? "border-primary/30 bg-primary/10 text-primary"
-      : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:text-black")
+      : "border-border bg-card text-muted-foreground hover:border-muted-foreground/35 hover:text-foreground")
   );
 }
 
 function VariationSkeleton() {
   return (
-    <div className="space-y-2 rounded-xl border border-neutral-200/80 bg-neutral-50/80 p-4 animate-pulse">
-            <div className="h-3 w-[75%] rounded bg-neutral-200" />
-      <div className="h-3 w-full rounded bg-neutral-200" />
-            <div className="h-3 w-[83%] rounded bg-neutral-200" />
+    <div className="space-y-2 rounded-xl border border-border/80 bg-muted/80 p-4 animate-pulse">
+            <div className="h-3 w-[75%] rounded bg-border" />
+      <div className="h-3 w-full rounded bg-border" />
+            <div className="h-3 w-[83%] rounded bg-border" />
     </div>
   );
 }
@@ -176,7 +176,7 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
         <div className="grid gap-6 lg:grid-cols-5 lg:gap-8">
           <div className="lg:col-span-2 space-y-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Pattern
               </label>
               <div className="mt-1.5 flex flex-wrap items-center gap-2">
@@ -187,7 +187,7 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
                     const p = patterns.find((x) => x._id === id) ?? null;
                     onSelectPattern(p);
                   }}
-                  className="min-h-10 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+                  className="min-h-10 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
                 >
                   <option value="">Choose a pattern…</option>
                   {patterns.map((p) => (
@@ -207,7 +207,7 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
                 ) : null}
               </div>
               {selectedPattern ? (
-                <p className="mt-2 text-sm text-neutral-600">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {selectedPattern.description}
                 </p>
               ) : null}
@@ -216,7 +216,7 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
             <div>
               <label
                 htmlFor="hook-topic"
-                className="block text-xs font-semibold uppercase tracking-wide text-neutral-500"
+                className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground"
               >
                 Topic
               </label>
@@ -225,12 +225,12 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 placeholder="e.g. Pixii's AI photo tool"
-                className="mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+                className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
               />
             </div>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Platform
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
@@ -248,7 +248,7 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
             </div>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Tone
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
@@ -275,17 +275,17 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
               type="button"
               disabled={generating}
               onClick={() => void handleGenerate()}
-              className="inline-flex w-full items-center justify-center rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              className="inline-flex w-full items-center justify-center rounded-lg bg-foreground px-4 py-2.5 text-sm font-semibold text-background shadow-sm transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
             >
               {generating ? "Generating…" : "Generate Posts →"}
             </button>
           </div>
 
           <div className="lg:col-span-3">
-            <div className="rounded-xl border border-neutral-200/80 bg-white p-4 shadow-sm min-h-[280px]">
+            <div className="rounded-xl border border-border/80 bg-card p-4 shadow-sm min-h-[280px]">
               {generating ? (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-neutral-600">
+                  <p className="text-sm font-medium text-muted-foreground">
                     Crafting variations…
                   </p>
                   <VariationSkeleton />
@@ -300,9 +300,9 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
                     return (
                       <li
                         key={idx}
-                        className="rounded-xl border border-neutral-200/80 bg-background p-4"
+                        className="rounded-xl border border-border/80 bg-background p-4"
                       >
-                        <p className="whitespace-pre-wrap text-sm leading-relaxed text-black">
+                        <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
                           {text}
                         </p>
                         <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -311,7 +311,7 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
                               "rounded-full border px-2 py-0.5 text-[11px] font-semibold tabular-nums " +
                               (overTwitter
                                 ? "border-red-200 bg-red-50 text-red-800"
-                                : "border-neutral-200 bg-neutral-50 text-neutral-700")
+                                : "border-border bg-muted text-foreground/90")
                             }
                           >
                             {count} chars
@@ -319,7 +319,7 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
                           <button
                             type="button"
                             onClick={() => void copyText(text, idx)}
-                            className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800 transition-colors hover:bg-black/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+                            className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-foreground/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
                           >
                             {copiedIdx === idx ? "Copied!" : "Copy"}
                           </button>
@@ -339,7 +339,7 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
               ) : showEmpty ? (
                 <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 px-4 text-center">
                   <svg
-                    className="size-10 text-neutral-300"
+                    className="size-10 text-muted-foreground/55"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -349,10 +349,10 @@ export const WriteTab = forwardRef<WriteTabHandle, WriteTabProps>(
                     <path d="M12 20h9" />
                     <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
                   </svg>
-                  <p className="font-heading text-base font-semibold text-black">
+                  <p className="font-heading text-base font-semibold text-foreground">
                     Select a pattern and topic to generate posts
                   </p>
-                  <p className="max-w-sm text-sm text-neutral-600">
+                  <p className="max-w-sm text-sm text-muted-foreground">
                     Pick a hook from the dropdown, describe what you want to
                     talk about, then generate three platform-native drafts.
                   </p>

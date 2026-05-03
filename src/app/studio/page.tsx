@@ -9,11 +9,11 @@ export default function StudioPage() {
       description="Enhance low-quality images into professional studio-grade product photos."
     >
       <section className="mt-8 max-w-2xl">
-        <article className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
-          <h2 className="font-heading text-lg font-semibold text-black">
+        <article className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <h2 className="font-heading text-lg font-semibold text-foreground">
             Photo Upgrader
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             Turn rough marketplace snapshots into clean studio shots: upscale with
             Real-ESRGAN, remove the background, apply a seamless backdrop, then
             relight for commercial polish.

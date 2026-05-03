@@ -45,16 +45,16 @@ export function ProcessingView({
   };
 
   return (
-    <section className="mt-4 max-w-xl rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-      <div className="flex items-center gap-3 border-b border-neutral-100 pb-4">
-        <div className="relative size-[60px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+    <section className="mt-4 max-w-xl rounded-xl border border-border bg-card p-6 shadow-sm">
+      <div className="flex items-center gap-3 border-b border-border/55 pb-4">
+        <div className="relative size-[60px] shrink-0 overflow-hidden rounded-lg bg-foreground/10">
           {productThumbUrl ? (
             <Image src={productThumbUrl} alt="" fill sizes="60px" className="object-cover" />
           ) : null}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-heading text-sm font-semibold text-black">{productTitle}</p>
-          <p className="mt-1 text-xs font-medium text-neutral-600">{lifestyleLabel}</p>
+          <p className="truncate font-heading text-sm font-semibold text-foreground">{productTitle}</p>
+          <p className="mt-1 text-xs font-medium text-muted-foreground">{lifestyleLabel}</p>
         </div>
       </div>
 
@@ -73,9 +73,9 @@ export function ProcessingView({
         </div>
       ) : (
         <>
-          <ol className="mt-5 space-y-3 rounded-lg border border-neutral-200 bg-white/80 px-3 py-3 text-sm">
-            <li className="flex items-start gap-3 text-neutral-700">
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-white text-xs font-bold">
+          <ol className="mt-5 space-y-3 rounded-lg border border-border bg-card/80 px-3 py-3 text-sm">
+            <li className="flex items-start gap-3 text-foreground/90">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-xs font-bold">
                 {step1Done && !step1Active ? (
                   <FaCheck className="size-3.5 text-emerald-600" aria-hidden />
                 ) : step1Active ? (
@@ -85,19 +85,19 @@ export function ProcessingView({
                 )}
               </span>
               <div className="flex-1">
-                <p className={step1Done ? "font-medium text-black" : ""}>
+                <p className={step1Done ? "font-medium text-foreground" : ""}>
                   Analyzing product & crafting AI prompt
                 </p>
                 {step1Active ? (
-                  <p className="mt-1 text-xs text-neutral-500">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Working… Reading your product details and building the perfect photography
                     prompt...
                   </p>
                 ) : null}
               </div>
             </li>
-            <li className="flex items-start gap-3 text-neutral-700">
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-white text-xs font-bold">
+            <li className="flex items-start gap-3 text-foreground/90">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-xs font-bold">
                 {step2Done ? (
                   <FaCheck className="size-3.5 text-emerald-600" aria-hidden />
                 ) : step2Active ? (
@@ -107,11 +107,11 @@ export function ProcessingView({
                 )}
               </span>
               <div className="flex-1">
-                <p className={step2Done ? "font-medium text-black" : ""}>
+                <p className={step2Done ? "font-medium text-foreground" : ""}>
                   Generating 4 lifestyle photos
                 </p>
                 {step2Active ? (
-                  <p className="mt-1 text-xs text-neutral-500">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Working… Your lifestyle photos are being generated. This takes about 30–40
                     seconds...
                   </p>
@@ -121,13 +121,13 @@ export function ProcessingView({
           </ol>
 
           <div className="mt-4">
-            <div className="h-2 overflow-hidden rounded-full bg-neutral-100">
+            <div className="h-2 overflow-hidden rounded-full bg-foreground/10">
               <div
                 className="h-full rounded-full bg-emerald-500 transition-[width] duration-700 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="mt-2 text-left text-xs text-neutral-500">
+            <p className="mt-2 text-left text-xs text-muted-foreground">
               Generating for {fmt(elapsedSeconds)}...
             </p>
           </div>

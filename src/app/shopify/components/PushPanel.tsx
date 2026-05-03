@@ -79,11 +79,11 @@ export function PushPanel({
             />
           </svg>
         </div>
-        <h3 className="font-heading mt-4 text-lg font-semibold text-black">Published to Shopify!</h3>
-        <p className="mt-2 text-sm text-neutral-700">
+        <h3 className="font-heading mt-4 text-lg font-semibold text-foreground">Published to Shopify!</h3>
+        <p className="mt-2 text-sm text-foreground/90">
           Your lifestyle photo has been added to{" "}
-          <span className="font-semibold text-black">{productTitle}</span> on{" "}
-          <span className="font-semibold text-black">{shopName}</span>.
+          <span className="font-semibold text-foreground">{productTitle}</span> on{" "}
+          <span className="font-semibold text-foreground">{shopName}</span>.
         </p>
         <a
           href={adminProductUrl}
@@ -96,7 +96,7 @@ export function PushPanel({
         <button
           type="button"
           onClick={() => onGenerateMore()}
-          className="mt-6 w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 shadow-sm hover:bg-neutral-50"
+          className="mt-6 w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
         >
           Generate More Photos
         </button>
@@ -105,14 +105,14 @@ export function PushPanel({
   }
 
   return (
-    <div className="mt-8 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+    <div className="mt-8 rounded-xl border border-border bg-card p-5 shadow-sm">
       {!selectedImageUrl ? (
-        <p className="py-6 text-left text-sm text-neutral-500">
+        <p className="py-6 text-left text-sm text-muted-foreground">
           Select a photo above to publish it to your listing
         </p>
       ) : (
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-          <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
+          <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
             <Image
               src={selectedImageUrl}
               alt=""
@@ -122,10 +122,10 @@ export function PushPanel({
             />
           </div>
           <div className="min-w-0 flex-1 text-left">
-            <p className="font-heading text-sm font-semibold text-black">
+            <p className="font-heading text-sm font-semibold text-foreground">
               Ready to publish to {productTitle}
             </p>
-            <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
               This photo will be added as image #2 on your Shopify product listing. Your original
               photos won&apos;t be affected.
             </p>

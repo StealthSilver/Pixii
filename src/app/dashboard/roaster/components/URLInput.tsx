@@ -33,7 +33,7 @@ type URLInputProps = {
 };
 
 const inputClass =
-  "mt-1.5 h-13 min-h-[52px] w-full rounded-lg border border-neutral-200 bg-white px-3 py-3 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+  "mt-1.5 h-13 min-h-[52px] w-full rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
 
 export function URLInput({ value, onChange, disabled }: URLInputProps) {
   const [debounced, setDebounced] = useState(value);
@@ -67,16 +67,16 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
 
   return (
     <section
-      className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
+      className="rounded-xl border border-border bg-card p-5 shadow-sm"
       aria-labelledby="roaster-url-heading"
     >
       <h2
         id="roaster-url-heading"
-        className="font-heading text-lg font-semibold text-black"
+        className="font-heading text-lg font-semibold text-foreground"
       >
         Your Amazon Product Listing URL
       </h2>
-      <label className="mt-4 block text-sm font-medium text-neutral-700">
+      <label className="mt-4 block text-sm font-medium text-foreground/90">
         Paste a direct product page link
         <input
           type="url"
@@ -113,7 +113,7 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
             type="button"
             disabled={disabled}
             onClick={() => onChip(c.url)}
-            className="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-xs font-semibold text-neutral-800 shadow-sm transition-colors hover:bg-white disabled:opacity-60"
+            className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-colors hover:bg-card disabled:opacity-60"
           >
             {c.label}
           </button>

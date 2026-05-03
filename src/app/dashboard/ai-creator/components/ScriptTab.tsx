@@ -45,7 +45,7 @@ const SECTIONS: {
     title: "✨ Good Stuff",
     border: "border-teal-300",
   },
-  { key: "callToAction", title: "👋 Sign Off", border: "border-neutral-300" },
+  { key: "callToAction", title: "👋 Sign Off", border: "border-border" },
 ];
 
 export function ScriptTab({
@@ -91,19 +91,19 @@ export function ScriptTab({
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="font-heading text-lg font-semibold text-black">
+        <h3 className="font-heading text-lg font-semibold text-foreground">
           The roast script
         </h3>
         <div className="mt-4 space-y-3">
           {SECTIONS.map(({ key, title, border }) => (
             <div
               key={key}
-              className={`rounded-xl border-l-4 ${border} border-y border-r border-neutral-200 bg-white p-4 shadow-sm`}
+              className={`rounded-xl border-l-4 ${border} border-y border-r border-border bg-card p-4 shadow-sm`}
             >
-              <p className="text-xs font-bold uppercase tracking-wide text-neutral-500">
+              <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
                 {title}
               </p>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-800">
+              <p className="mt-2 text-sm leading-relaxed text-foreground">
                 {String(roastScript?.[key] ?? "")}
               </p>
             </div>
@@ -114,7 +114,7 @@ export function ScriptTab({
           <button
             type="button"
             onClick={() => void copyFull()}
-            className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-black hover:bg-neutral-50"
+            className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
           >
             Copy full script
           </button>
@@ -132,7 +132,7 @@ export function ScriptTab({
           <input
             type="text"
             placeholder="Optional feedback for rewrite..."
-            className="h-11 flex-1 rounded-lg border border-neutral-200 px-3 text-sm"
+            className="h-11 flex-1 rounded-lg border border-border px-3 text-sm"
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
           />

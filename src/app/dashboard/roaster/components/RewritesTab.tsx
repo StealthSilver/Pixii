@@ -47,41 +47,41 @@ export function RewritesTab({ job }: RewritesTabProps) {
 
   return (
     <div className="space-y-8">
-      <p className="text-sm text-neutral-600">
+      <p className="text-sm text-muted-foreground">
         These are Claude&apos;s suggested rewrites based on your score. Copy and
         test them.
       </p>
 
       <section>
-        <h3 className="font-heading text-base font-semibold text-black">
+        <h3 className="font-heading text-base font-semibold text-foreground">
           📝 Title Rewrite
         </h3>
         <div className="mt-3 grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-            <p className="text-xs font-semibold text-neutral-500">Current Title</p>
-            <p className="mt-2 text-sm text-neutral-800">{title}</p>
+          <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+            <p className="text-xs font-semibold text-muted-foreground">Current Title</p>
+            <p className="mt-2 text-sm text-foreground">{title}</p>
             <p className={`mt-2 text-xs font-semibold ${formatScore(listingScore.titleScore)}`}>
               Score: {listingScore.titleScore}/100
             </p>
             <p className="mt-1 text-xs text-red-800/90">
               Issues: {listingScore.titleIssues.join(", ") || "—"}
             </p>
-            <p className="mt-2 text-xs text-neutral-500">
+            <p className="mt-2 text-xs text-muted-foreground">
               {titleWords} words · {title.length} characters
             </p>
           </div>
           <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
             <p className="text-xs font-semibold text-emerald-900">Suggested Rewrite</p>
-            <p className="mt-2 text-sm text-neutral-900">
+            <p className="mt-2 text-sm text-foreground">
               {listingScore.titleRewrite}
             </p>
-            <p className="mt-2 text-xs text-neutral-500">
+            <p className="mt-2 text-xs text-muted-foreground">
               {listingScore.titleRewrite.length} characters
             </p>
             <button
               type="button"
               onClick={() => void copyText("title", listingScore.titleRewrite)}
-              className="mt-3 rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50"
+              className="mt-3 rounded-lg border border-emerald-300 bg-card px-3 py-1.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50"
             >
               {copiedKey === "title" ? "Copied!" : "Copy Rewrite"}
             </button>
@@ -90,7 +90,7 @@ export function RewritesTab({ job }: RewritesTabProps) {
       </section>
 
       <section>
-        <h3 className="font-heading text-base font-semibold text-black">
+        <h3 className="font-heading text-base font-semibold text-foreground">
           📋 Bullet Point Rewrites
         </h3>
         <div className="mt-3 space-y-4">
@@ -100,16 +100,16 @@ export function RewritesTab({ job }: RewritesTabProps) {
             return (
               <div
                 key={i}
-                className="grid gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm md:grid-cols-2"
+                className="grid gap-3 rounded-xl border border-border bg-card p-4 shadow-sm md:grid-cols-2"
               >
                 <div>
-                  <p className="text-xs font-semibold text-neutral-500">Original</p>
-                  <p className="mt-1 text-sm text-neutral-600">{b}</p>
+                  <p className="text-xs font-semibold text-muted-foreground">Original</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{b}</p>
                 </div>
                 <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-3">
                   {rw ? (
                     <>
-                      <p className="text-sm text-neutral-900">{rw}</p>
+                      <p className="text-sm text-foreground">{rw}</p>
                       <button
                         type="button"
                         onClick={() => void copyText(key, rw)}
@@ -131,20 +131,20 @@ export function RewritesTab({ job }: RewritesTabProps) {
       </section>
 
       <section>
-        <h3 className="font-heading text-base font-semibold text-black">
+        <h3 className="font-heading text-base font-semibold text-foreground">
           📄 Description Rewrite
         </h3>
         <div className="mt-3 grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-            <p className="text-xs font-semibold text-neutral-500">Current Opening</p>
-            <p className="mt-2 text-sm text-neutral-600">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+            <p className="text-xs font-semibold text-muted-foreground">Current Opening</p>
+            <p className="mt-2 text-sm text-muted-foreground">
               {desc.slice(0, 300)}
               {desc.length > 300 ? "…" : ""}
             </p>
           </div>
           <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
             <p className="text-xs font-semibold text-emerald-900">Suggested Opening</p>
-            <p className="mt-2 text-sm text-neutral-900">
+            <p className="mt-2 text-sm text-foreground">
               {listingScore.descriptionRewrite}
             </p>
             <button
@@ -152,7 +152,7 @@ export function RewritesTab({ job }: RewritesTabProps) {
               onClick={() =>
                 void copyText("desc", listingScore.descriptionRewrite)
               }
-              className="mt-3 rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50"
+              className="mt-3 rounded-lg border border-emerald-300 bg-card px-3 py-1.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50"
             >
               {copiedKey === "desc" ? "Copied!" : "Copy Rewrite"}
             </button>
@@ -163,7 +163,7 @@ export function RewritesTab({ job }: RewritesTabProps) {
       <button
         type="button"
         onClick={() => void copyAll()}
-        className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-800 shadow-sm hover:bg-neutral-50"
+        className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
       >
         {copiedKey === "all" ? "Copied!" : "Copy All Rewrites"}
       </button>

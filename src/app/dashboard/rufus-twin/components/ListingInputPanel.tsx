@@ -26,35 +26,35 @@ export function ListingInputPanel({
   disabled,
 }: ListingInputPanelProps) {
   return (
-    <div className="mt-4 border-t border-neutral-100 pt-4">
+    <div className="mt-4 border-t border-border/55 pt-4">
       <button
         type="button"
         onClick={onToggle}
         disabled={disabled}
-        className="flex w-full items-center justify-between rounded-lg px-1 py-2 text-left text-sm font-semibold text-neutral-800 transition-colors hover:bg-black/[0.02] disabled:opacity-50"
+        className="flex w-full items-center justify-between rounded-lg px-1 py-2 text-left text-sm font-semibold text-foreground transition-colors hover:bg-foreground/[0.05] disabled:opacity-50"
       >
         <span>Add your listing for a personalized score</span>
         {open ? (
-          <FaChevronUp className="size-4 text-neutral-500" aria-hidden />
+          <FaChevronUp className="size-4 text-muted-foreground" aria-hidden />
         ) : (
-          <FaChevronDown className="size-4 text-neutral-500" aria-hidden />
+          <FaChevronDown className="size-4 text-muted-foreground" aria-hidden />
         )}
       </button>
       <div
         className="overflow-hidden transition-[max-height] duration-300 ease-out"
         style={{ maxHeight: open ? "2000px" : "0px" }}
       >
-        <div className="mt-3 space-y-4 rounded-xl border border-neutral-200 bg-neutral-50/50 p-4">
-          <label className="block text-sm font-medium text-neutral-700">
+        <div className="mt-3 space-y-4 rounded-xl border border-border bg-muted/50 p-4">
+          <label className="block text-sm font-medium text-foreground/90">
             Product Title
             <input
               value={value.title}
               onChange={(e) => onChange({ ...value, title: e.target.value })}
               disabled={disabled}
-              className="mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+              className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
             />
           </label>
-          <label className="block text-sm font-medium text-neutral-700">
+          <label className="block text-sm font-medium text-foreground/90">
             Bullet Points
             <textarea
               value={value.bulletsText}
@@ -64,10 +64,10 @@ export function ListingInputPanel({
               disabled={disabled}
               rows={4}
               placeholder="Paste your bullet points here, one per line"
-              className="mt-1.5 w-full resize-y rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+              className="mt-1.5 w-full resize-y rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
             />
           </label>
-          <label className="block text-sm font-medium text-neutral-700">
+          <label className="block text-sm font-medium text-foreground/90">
             Product Description
             <textarea
               value={value.description}
@@ -76,10 +76,10 @@ export function ListingInputPanel({
               }
               disabled={disabled}
               rows={3}
-              className="mt-1.5 w-full resize-y rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+              className="mt-1.5 w-full resize-y rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
             />
           </label>
-          <label className="block text-sm font-medium text-neutral-700">
+          <label className="block text-sm font-medium text-foreground/90">
             Product Category
             <input
               value={value.category}
@@ -88,17 +88,17 @@ export function ListingInputPanel({
               }
               disabled={disabled}
               placeholder="e.g. Vitamins & Supplements"
-              className="mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+              className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
             />
           </label>
-          <label className="block text-sm font-medium text-neutral-700">
+          <label className="block text-sm font-medium text-foreground/90">
             ASIN{" "}
-            <span className="font-normal text-neutral-500">(optional)</span>
+            <span className="font-normal text-muted-foreground">(optional)</span>
             <input
               value={value.asin}
               onChange={(e) => onChange({ ...value, asin: e.target.value })}
               disabled={disabled}
-              className="mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+              className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
             />
           </label>
         </div>

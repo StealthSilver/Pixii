@@ -51,7 +51,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
     <div>
       <label
         htmlFor="amazon-url"
-        className="text-sm font-semibold text-black"
+        className="text-sm font-semibold text-foreground"
       >
         Amazon Listing URL
       </label>
@@ -60,7 +60,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
         type="url"
         autoComplete="off"
         placeholder="https://www.amazon.com/dp/B08XXXXX..."
-        className="mt-2 h-[52px] w-full rounded-lg border border-neutral-200 bg-white px-4 text-sm text-black shadow-sm outline-none ring-primary/0 transition-[box-shadow,border-color] placeholder:text-neutral-400 focus:border-primary/35 focus:ring-4 focus:ring-primary/10"
+        className="mt-2 h-[52px] w-full rounded-lg border border-border bg-card px-4 text-sm text-foreground shadow-sm outline-none ring-primary/0 transition-[box-shadow,border-color] placeholder:text-muted-foreground/75 focus:border-primary/35 focus:ring-4 focus:ring-primary/10"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
@@ -78,7 +78,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
       ) : null}
 
       <div className="mt-4 flex flex-wrap gap-2">
-        <span className="text-xs text-neutral-500">Examples (demo ASINs — AI fallback if scrape unavailable):</span>
+        <span className="text-xs text-muted-foreground">Examples (demo ASINs — AI fallback if scrape unavailable):</span>
       </div>
       <div className="mt-2 flex flex-wrap gap-2">
         {[
@@ -99,7 +99,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
             key={chip.url}
             type="button"
             onClick={() => onChange(chip.url)}
-            className="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-xs font-medium text-neutral-700 transition-colors hover:border-primary/25 hover:bg-white"
+            className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-medium text-foreground/90 transition-colors hover:border-primary/25 hover:bg-card"
           >
             {chip.label}
           </button>
