@@ -3,11 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import type { IconType } from "react-icons";
 import {
   FaAmazon,
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
   FaBrain,
   FaChartLine,
   FaCube,
@@ -23,6 +22,7 @@ import {
   FaUsers,
   FaVideo,
 } from "react-icons/fa";
+import { StoreIcon } from "@/components/icons/StoreIcon";
 
 const DEMO_USER_NAME = "Demo User";
 
@@ -144,9 +144,20 @@ function SectionIcon({ sectionId }: { sectionId: string }) {
     case "content":
       return <FaVideo className="size-3.5 shrink-0 text-primary/80" aria-hidden />;
     case "visuals":
-      return <FaPalette className="size-3.5 shrink-0 text-primary/80" aria-hidden />;
+      return (
+        <VisibilityIcon
+          className="shrink-0 text-primary/80"
+          sx={{ width: "0.875rem", height: "0.875rem", fontSize: "0.875rem" }}
+          aria-hidden
+        />
+      );
     case "store":
-      return <FaShopify className="size-3.5 shrink-0 text-primary/80" aria-hidden />;
+      return (
+        <StoreIcon
+          className="size-3.5 shrink-0 text-primary/80"
+          ariaHidden
+        />
+      );
     default:
       return null;
   }
@@ -154,7 +165,6 @@ function SectionIcon({ sectionId }: { sectionId: string }) {
 
 type SidebarProps = {
   collapsed: boolean;
-  onToggleCollapse: () => void;
 };
 
 function isNavItemActive(
@@ -187,7 +197,7 @@ function navItemClassNames(
   return base + active;
 }
 
-export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
+export function Sidebar({ collapsed }: SidebarProps) {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -198,51 +208,39 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
         (collapsed ? "w-[72px]" : "w-60")
       }
     >
-      <div className="flex h-14 shrink-0 items-center gap-1 border-b border-neutral-200/80 pl-3 pr-1.5">
+      <div className="flex h-14 shrink-0 items-center border-b border-neutral-200/80 px-3">
         {!collapsed ? (
-          <>
+          <Link
+            href="/"
+            className="flex min-w-0 flex-1 items-center outline-none"
+            aria-current={isHome ? "page" : undefined}
+          >
+            <Image
+              src="/logo.svg"
+              alt="Pixii"
+              width={824}
+              height={219}
+              unoptimized
+              priority
+              className="h-6 w-auto max-w-full object-contain"
+            />
+          </Link>
+        ) : (
+          <div className="flex w-full justify-center">
             <Link
               href="/"
-              className="flex min-w-0 flex-1 items-center outline-none"
+              className="flex items-center justify-center outline-none"
               aria-current={isHome ? "page" : undefined}
             >
               <Image
-                src="/logo.svg"
+                src="/small.ico"
                 alt="Pixii"
-                width={824}
-                height={219}
+                width={24}
+                height={24}
                 unoptimized
-                priority
-                className="h-6 w-auto max-w-full object-contain"
+                className="size-6 object-contain"
               />
             </Link>
-            <button
-              type="button"
-              onClick={onToggleCollapse}
-              className="group inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-              aria-label="Collapse sidebar"
-              aria-expanded={true}
-            >
-              <FaAngleDoubleLeft
-                className="size-4 text-neutral-500 transition-colors group-hover:text-primary"
-                aria-hidden
-              />
-            </button>
-          </>
-        ) : (
-          <div className="flex w-full justify-center">
-            <button
-              type="button"
-              onClick={onToggleCollapse}
-              className="group inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-              aria-label="Expand sidebar"
-              aria-expanded={false}
-            >
-              <FaAngleDoubleRight
-                className="size-4 text-neutral-500 transition-colors group-hover:text-primary"
-                aria-hidden
-              />
-            </button>
           </div>
         )}
       </div>

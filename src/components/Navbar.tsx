@@ -1,11 +1,31 @@
 "use client";
 
-export function Navbar() {
+import { SidebarCollapseIcon } from "@/components/icons/SidebarCollapseIcon";
+
+type NavbarProps = {
+  sidebarCollapsed: boolean;
+  onToggleSidebar: () => void;
+};
+
+export function Navbar({ sidebarCollapsed, onToggleSidebar }: NavbarProps) {
   return (
-    <header className="z-10 flex h-14 shrink-0 items-center justify-end border-b border-neutral-200 bg-background px-4">
+    <header className="z-10 flex h-14 shrink-0 items-center gap-2 border-b border-neutral-200 bg-background pl-1.5 pr-4">
       <button
         type="button"
-        className="inline-flex size-10 items-center justify-center rounded-lg text-black transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+        onClick={onToggleSidebar}
+        className="group inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-black/5 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+        aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        aria-expanded={!sidebarCollapsed}
+      >
+        <SidebarCollapseIcon
+          className="size-[18px] transition-colors"
+          flipHorizontal={sidebarCollapsed}
+        />
+      </button>
+      <div className="min-w-0 flex-1" />
+      <button
+        type="button"
+        className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-black transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
         aria-label="Notifications"
       >
         <BellIcon className="size-5" />
