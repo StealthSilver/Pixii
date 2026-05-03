@@ -85,7 +85,7 @@ export default function Home() {
  What you can do
  </h2>
 
- <ul className="mx-auto mt-5 grid w-full max-w-6xl grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:mt-6 lg:grid-cols-4 lg:grid-rows-3 lg:gap-x-6 lg:gap-y-5 [&>li]:min-h-0">
+ <ul className="mt-5 grid w-full max-w-6xl grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:mt-6 lg:grid-cols-4 lg:grid-rows-3 lg:gap-x-6 lg:gap-y-5 [&>li]:min-h-0">
  {apps.map(({ id, title, href, section }) => (
  <li key={id} className="min-h-0">
  <Link

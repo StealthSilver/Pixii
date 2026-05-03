@@ -15,7 +15,7 @@ type SidebarCollapseIconProps = {
 export function SidebarCollapseIcon({
   className,
   size,
-  strokeWidth = 1.5,
+  strokeWidth = 1.1,
   opacity = 1,
   rotation = 0,
   shadow = 0,

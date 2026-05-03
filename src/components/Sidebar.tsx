@@ -1,27 +1,27 @@
 "use client";
 
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import PhishingIcon from "@mui/icons-material/Phishing";
 import type { ComponentType, SVGProps } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  BagGlyph,
+  AmazonGlyph,
   BotGlyph,
+  CameraGlyph,
   ChartGlyph,
   CubeGlyph,
   EyeGlyph,
   FilmGlyph,
   FlameGlyph,
-  HooksGlyph,
-  PackageGlyph,
-  PaletteGlyph,
   PenGlyph,
   ScissorsGlyph,
   SearchGlyph,
-  SparkGlyph,
+  ShopifyGlyph,
   StarGlyph,
   StorefrontGlyph,
-  UsersGlyph,
 } from "@/components/icons/NavGlyphs";
 
 const DEMO_USER_NAME = "Demo User";
@@ -29,7 +29,36 @@ const DEMO_USER_NAME = "Demo User";
 /** Primary tint for demo avatar (matches --primary). */
 const AVATAR_BG = "BF4F30";
 
-type NavGlyph = ComponentType<SVGProps<SVGSVGElement>>;
+type NavIconProps = Pick<SVGProps<SVGSVGElement>, "className" | "aria-hidden">;
+
+type NavGlyph = ComponentType<NavIconProps>;
+
+function IntelligenceSectionIcon({ className, ...rest }: NavIconProps) {
+  return (
+    <AutoAwesomeIcon
+      className={className}
+      aria-hidden={rest["aria-hidden"] === true || rest["aria-hidden"] === "true"}
+    />
+  );
+}
+
+function HooksNavIcon({ className, ...rest }: NavIconProps) {
+  return (
+    <PhishingIcon
+      className={className}
+      aria-hidden={rest["aria-hidden"] === true || rest["aria-hidden"] === "true"}
+    />
+  );
+}
+
+function StudioNavIcon({ className, ...rest }: NavIconProps) {
+  return (
+    <ColorLensIcon
+      className={className}
+      aria-hidden={rest["aria-hidden"] === true || rest["aria-hidden"] === "true"}
+    />
+  );
+}
 
 type NavEntry = {
   label: string;
@@ -53,7 +82,7 @@ const NAV_SECTIONS: NavSection[] = [
       {
         label: "Hooks",
         href: "/hook",
-        Icon: HooksGlyph,
+        Icon: HooksNavIcon,
         activePathPrefixes: ["/dashboard/hooks"],
       },
       {
@@ -103,7 +132,7 @@ const NAV_SECTIONS: NavSection[] = [
     title: "Content",
     items: [
       { label: "Creator", href: "/creator", Icon: PenGlyph },
-      { label: "UGC", href: "/ugc", Icon: UsersGlyph },
+      { label: "UGC", href: "/ugc", Icon: CameraGlyph },
       {
         label: "Clipper",
         href: "/clipper",
@@ -119,7 +148,7 @@ const NAV_SECTIONS: NavSection[] = [
       {
         label: "Studio",
         href: "/studio",
-        Icon: PaletteGlyph,
+        Icon: StudioNavIcon,
         activePathPrefixes: ["/dashboard/photo-upgrader"],
       },
       {
@@ -133,17 +162,17 @@ const NAV_SECTIONS: NavSection[] = [
   {
     id: "store",
     title: "Store",
-    items: [{ label: "Shopify", href: "/shopify", Icon: BagGlyph }],
+    items: [{ label: "Shopify", href: "/shopify", Icon: ShopifyGlyph }],
   },
 ];
 
 function SectionIcon({ sectionId }: { sectionId: string }) {
-  const cls = "size-3.5 shrink-0 text-primary/80";
+  const cls = "size-4 shrink-0 text-primary/80";
   switch (sectionId) {
     case "intelligence":
-      return <SparkGlyph className={cls} />;
+      return <IntelligenceSectionIcon className={cls} aria-hidden />;
     case "amazon":
-      return <PackageGlyph className={cls} />;
+      return <AmazonGlyph className={cls} />;
     case "content":
       return <FilmGlyph className={cls} />;
     case "visuals":
@@ -272,15 +301,10 @@ export function Sidebar({ collapsed }: SidebarProps) {
                     >
                       <Icon
                         className={
-                          collapsed
-                            ? "size-[18px] shrink-0 transition-colors " +
-                              (isActive
-                                ? "text-primary"
-                                : "group-hover:text-primary")
-                            : "size-[17px] shrink-0 transition-colors " +
-                              (isActive
-                                ? "text-primary"
-                                : "text-muted-foreground group-hover:text-primary")
+                          "size-5 shrink-0 transition-colors " +
+                          (isActive
+                            ? "text-primary"
+                            : "text-foreground/70 group-hover:text-primary")
                         }
                         aria-hidden
                       />

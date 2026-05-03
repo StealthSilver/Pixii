@@ -1,9 +1,9 @@
 import type { SVGProps } from "react";
 
-/** Matches ThemeToggle / SidebarCollapseIcon visual weight (24×24, hairline stroke). */
+/** Matches SidebarCollapseIcon / nav glyphs (hairline stroke). */
 export function NotificationBellIcon({
   className,
-  strokeWidth = 1.5,
+  strokeWidth = 1.1,
   ...props
 }: SVGProps<SVGSVGElement> & { strokeWidth?: number }) {
   return (

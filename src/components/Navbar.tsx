@@ -33,7 +33,7 @@ export function Navbar({ sidebarCollapsed, onToggleSidebar }: NavbarProps) {
         className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
         aria-label="Notifications"
       >
-        <NotificationBellIcon className="size-[18px] shrink-0" strokeWidth={1.5} />
+        <NotificationBellIcon className="size-[18px] shrink-0" />
       </button>
     </header>
   );
