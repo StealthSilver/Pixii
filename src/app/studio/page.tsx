@@ -37,8 +37,8 @@ export default function StudioPage() {
               Photo Upgrader
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Turn rough marketplace snapshots into clean studio shots: upscale with
-              Real-ESRGAN, remove the background, apply a seamless backdrop, then
+              Turn rough marketplace snapshots into clean studio shots: upscale
+              (Fal ESRGAN or sharp resize), remove the background, apply a seamless backdrop, then
               relight for commercial polish.
             </p>
             <Link href="/dashboard/photo-upgrader" className={`${primaryBtn} mt-5`}>

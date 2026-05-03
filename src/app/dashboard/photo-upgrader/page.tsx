@@ -453,7 +453,7 @@ export default function PhotoUpgraderPage() {
  onChange={(e) => setRelightEnabled(e.target.checked)}
  className="size-4 rounded border-border text-primary focus:ring-primary"
  />
- Relight & polish (Clipdrop — skipped if CLIPDROP_API_KEY is not set)
+ Relight & polish (Fal.ai — skipped if FAL_API_KEY is not set)
  </label>
 
  <button
@@ -632,10 +632,10 @@ export default function PhotoUpgraderPage() {
  <section className="rounded-xl border border-dashed border-border/80 bg-card/70 px-4 py-4 text-sm text-muted-foreground ring-1 ring-black/[0.03] dark:bg-card/50 dark:ring-white/[0.05]">
  <p className="font-heading font-semibold text-foreground">Pipeline</p>
  <ol className="mt-2 list-decimal space-y-1 pl-4">
- <li>Upscale (Replicate Real-ESRGAN)</li>
+ <li>Upscale (Fal ESRGAN, or Replicate, or sharp resize)</li>
  <li>Background removal (Remove.bg)</li>
  <li>Studio backdrop (preset or Fal.ai)</li>
- <li>Optional relight (Clipdrop)</li>
+ <li>Optional relight (Fal.ai)</li>
  <li>Finalize &amp; deliver</li>
  </ol>
  </section>

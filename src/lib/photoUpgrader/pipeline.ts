@@ -131,6 +131,94 @@ async function runReplicateUpscale(imageUrl: string): Promise<string> {
   throw new Error("Replicate timed out after 30 seconds");
 }
 
+async function runFalEsrganUpscale(imageUrl: string): Promise<string> {
+  const key = process.env.FAL_API_KEY?.trim();
+  if (!key) {
+    throw new Error("Missing FAL_API_KEY");
+  }
+  fal.config({ credentials: key });
+  const result = await fal.subscribe("fal-ai/esrgan", {
+    input: {
+      image_url: imageUrl,
+      scale: 4,
+      model: "RealESRGAN_x4plus",
+      face: false,
+      output_format: "png",
+    },
+  });
+  const url = extractFalImageUrl(result.data);
+  if (!url) {
+    throw new Error("Fal ESRGAN returned no image URL");
+  }
+  return url;
+}
+
+const UPSCALE_FOLDER = "pixii/photo-upgrader/upscaled";
+
+async function runSharpUpscaleToBuffer(imageUrl: string): Promise<Buffer> {
+  const res = await fetch(imageUrl);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch image for upscale: ${res.status}`);
+  }
+  const input = Buffer.from(await res.arrayBuffer());
+  const meta = await sharp(input).metadata();
+  const w = meta.width;
+  const h = meta.height;
+  if (!w || !h) {
+    throw new Error("Could not read image dimensions for sharp upscale");
+  }
+  const scale = 4;
+  let tw = Math.round(w * scale);
+  let th = Math.round(h * scale);
+  const maxEdge = 4096;
+  if (Math.max(tw, th) > maxEdge) {
+    const r = maxEdge / Math.max(tw, th);
+    tw = Math.max(1, Math.round(tw * r));
+    th = Math.max(1, Math.round(th * r));
+  }
+  return sharp(input)
+    .resize(tw, th, { fit: "fill", kernel: sharp.kernel.lanczos3 })
+    .png({ compressionLevel: 6 })
+    .toBuffer();
+}
+
+/**
+ * Uploads to Cloudinary under {@link UPSCALE_FOLDER}.
+ * Order: Fal `fal-ai/esrgan` (Real-ESRGAN-class) → Replicate → sharp LANCZOS resize.
+ */
+async function resolveUpscaledCloudinaryUrl(originalUrl: string): Promise<string> {
+  const tried: string[] = [];
+
+  if (process.env.FAL_API_KEY?.trim()) {
+    try {
+      const remote = await runFalEsrganUpscale(originalUrl);
+      return await uploadImageFromUrl(remote, UPSCALE_FOLDER);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      tried.push(`fal-esrgan: ${msg}`);
+      console.warn("[photo-upgrader] Fal ESRGAN upscale failed:", msg);
+    }
+  }
+
+  if (process.env.REPLICATE_API_KEY?.trim()) {
+    try {
+      const remote = await runReplicateUpscale(originalUrl);
+      return await uploadImageFromUrl(remote, UPSCALE_FOLDER);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      tried.push(`replicate: ${msg}`);
+      console.warn("[photo-upgrader] Replicate upscale failed:", msg);
+    }
+  }
+
+  console.warn(
+    "[photo-upgrader] Using sharp (LANCZOS) resize instead of AI upscale. Fal/Replicate unavailable or failed.",
+    tried.length ? tried.join(" | ") : "no FAL_API_KEY or REPLICATE_API_KEY",
+  );
+  const buf = await runSharpUpscaleToBuffer(originalUrl);
+  return uploadImageFromFile(buf, UPSCALE_FOLDER);
+}
+
 async function removeBackground(upscaledUrl: string): Promise<Buffer> {
   const key = process.env.REMOVEBG_API_KEY?.trim();
   if (!key) {
@@ -222,30 +310,24 @@ async function compositePresetBackground(
     .toBuffer();
 }
 
-async function runClipdropRelight(imageBuffer: Buffer): Promise<Buffer> {
-  const key = process.env.CLIPDROP_API_KEY?.trim();
+/** Clipdrop's `relight/v1` endpoint returns 404; relight uses Fal instead. */
+async function runFalRelighting(imageUrl: string): Promise<string> {
+  const key = process.env.FAL_API_KEY?.trim();
   if (!key) {
-    throw new Error("Missing CLIPDROP_API_KEY");
+    throw new Error("Missing FAL_API_KEY");
   }
-
-  const form = new FormData();
-  const blob = new Blob([new Uint8Array(imageBuffer)], { type: "image/jpeg" });
-  form.append("image_file", blob, "image.jpg");
-  form.append("light_source_direction", "top-left");
-  form.append("light_source_intensity", "0.75");
-
-  const res = await fetch("https://clipdrop-api.co/relight/v1", {
-    method: "POST",
-    headers: { "x-api-key": key },
-    body: form,
+  fal.config({ credentials: key });
+  const result = await fal.subscribe("fal-ai/image-apps-v2/relighting", {
+    input: {
+      image_url: imageUrl,
+      lighting_style: "studio",
+    },
   });
-
-  if (!res.ok) {
-    const t = await res.text();
-    throw new Error(`Clipdrop relight failed: ${res.status} ${t}`);
+  const url = extractFalImageUrl(result.data);
+  if (!url) {
+    throw new Error("Fal relighting returned no image URL");
   }
-
-  return Buffer.from(await res.arrayBuffer());
+  return url;
 }
 
 async function markFailed(jobId: string, message: string): Promise<void> {
@@ -278,11 +360,7 @@ export async function processPhotoJob(jobId: string): Promise<void> {
         status: "upscaling",
         currentStep: 1,
       });
-      const replicateOut = await runReplicateUpscale(job.originalUrl);
-      upscaledUrl = await uploadImageFromUrl(
-        replicateOut,
-        "pixii/photo-upgrader/upscaled",
-      );
+      upscaledUrl = await resolveUpscaledCloudinaryUrl(job.originalUrl);
       await PhotoJob.findByIdAndUpdate(jobId, { upscaledUrl });
     }
 
@@ -354,28 +432,31 @@ export async function processPhotoJob(jobId: string): Promise<void> {
       );
     }
 
-    // STEP 4 — RELIGHT (optional: requires CLIPDROP_API_KEY)
+    // STEP 4 — RELIGHT (optional: Fal `image-apps-v2/relighting`; needs FAL_API_KEY)
     let finalSourceUrl = withBackgroundUrl;
 
-    const clipKey = process.env.CLIPDROP_API_KEY?.trim();
-    if (fresh.relightEnabled && clipKey) {
+    const falForRelight = process.env.FAL_API_KEY?.trim();
+    if (fresh.relightEnabled && falForRelight) {
       await PhotoJob.findByIdAndUpdate(jobId, {
         status: "relighting",
         currentStep: 4,
       });
-      const bgRes = await fetch(withBackgroundUrl);
-      if (!bgRes.ok) {
-        throw new Error(`Failed to fetch composed image: ${bgRes.status}`);
+      try {
+        const relitRemote = await runFalRelighting(withBackgroundUrl);
+        finalSourceUrl = await uploadImageFromUrl(
+          relitRemote,
+          "pixii/photo-upgrader/relit",
+        );
+      } catch (e) {
+        const relMsg = e instanceof Error ? e.message : String(e);
+        console.warn(
+          "[photo-upgrader] Fal relighting failed — using composed image without relight:",
+          relMsg,
+        );
       }
-      const bgBuf = Buffer.from(await bgRes.arrayBuffer());
-      const relitBuf = await runClipdropRelight(bgBuf);
-      finalSourceUrl = await uploadImageFromFile(
-        relitBuf,
-        "pixii/photo-upgrader/relit",
-      );
-    } else if (fresh.relightEnabled && !clipKey) {
+    } else if (fresh.relightEnabled && !falForRelight) {
       console.warn(
-        "[photo-upgrader] Relight enabled but CLIPDROP_API_KEY unset — using composed image without Clipdrop relight.",
+        "[photo-upgrader] Relight enabled but FAL_API_KEY unset — using composed image without AI relight.",
       );
     }
 
