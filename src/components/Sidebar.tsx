@@ -70,8 +70,18 @@ const NAV_SECTIONS: NavSection[] = [
     id: "amazon",
     title: "Amazon",
     items: [
-      { label: "Roaster", href: "/roaster", Icon: FaFire },
-      { label: "Reviews", href: "/reviews", Icon: FaStar },
+      {
+        label: "Roaster",
+        href: "/roaster",
+        Icon: FaFire,
+        activePathPrefixes: ["/dashboard/roaster", "/roaster"],
+      },
+      {
+        label: "Reviews",
+        href: "/reviews",
+        Icon: FaStar,
+        activePathPrefixes: ["/dashboard/review-analytics", "/reviews"],
+      },
       {
         label: "Markets",
         href: "/market",

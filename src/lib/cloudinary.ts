@@ -67,12 +67,14 @@ export async function uploadImageFromFile(
 export async function uploadImageFromUrl(
   imageUrl: string,
   folder: string,
+  options?: { public_id?: string },
 ): Promise<string> {
   ensureCloudinaryConfig();
   try {
     const result = await cloudinary.uploader.upload(imageUrl, {
       folder,
       resource_type: "image",
+      ...(options?.public_id ? { public_id: options.public_id } : {}),
     });
     if (!result?.secure_url) {
       throw new Error("Cloudinary returned no secure_url");

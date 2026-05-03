@@ -1,10 +1,5 @@
-import { FeaturePage } from "@/components/FeaturePage";
+import { redirect } from "next/navigation";
 
-export default function RoasterPage() {
-  return (
-    <FeaturePage
-      title="Roaster"
-      description="Get direct, no-fluff video feedback to improve your product listing."
-    />
-  );
+export default function RoasterRedirectPage() {
+  redirect("/dashboard/roaster");
 }

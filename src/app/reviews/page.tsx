@@ -1,10 +1,5 @@
-import { FeaturePage } from "@/components/FeaturePage";
+import { redirect } from "next/navigation";
 
-export default function ReviewsPage() {
-  return (
-    <FeaturePage
-      title="Reviews"
-      description="Analyze large volumes of reviews to uncover competitor weaknesses."
-    />
-  );
+export default function ReviewsRedirectPage() {
+  redirect("/dashboard/review-analytics");
 }
