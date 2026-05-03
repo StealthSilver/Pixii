@@ -81,7 +81,12 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Creator", href: "/creator", Icon: FaPenNib },
       { label: "UGC", href: "/ugc", Icon: FaUsers },
-      { label: "Clipper", href: "/clipper", Icon: FaCut },
+      {
+        label: "Clipper",
+        href: "/clipper",
+        Icon: FaCut,
+        activePathPrefixes: ["/clipper"],
+      },
     ],
   },
   {
