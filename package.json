@@ -10,6 +10,7 @@
   "dependencies": {
     "@fal-ai/client": "^1.10.0",
     "@google/generative-ai": "^0.24.1",
+    "cheerio": "^1.2.0",
     "cloudinary": "^2.10.0",
     "jszip": "^3.10.1",
     "marked": "^18.0.3",

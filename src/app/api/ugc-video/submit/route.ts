@@ -90,6 +90,19 @@ export async function POST(request: Request) {
     const productName =
       typeof body.productName === "string" ? body.productName.trim() : "";
 
+    const genderTyped = gender as "female" | "male" | "non_binary";
+    const ageTyped = ageRange as "18-25" | "25-35" | "35-45" | "45+";
+    const styleTyped = style as
+      | "casual"
+      | "professional"
+      | "fitness"
+      | "beauty_guru"
+      | "mom"
+      | "student"
+      | "entrepreneur";
+    const scriptStyleTyped = scriptStyle as (typeof UGC_SCRIPT_STYLES)[number];
+    const platformTyped = platform as (typeof UGC_PLATFORMS)[number];
+
     await connectDB();
 
     const job = await UGCJob.create({
@@ -102,18 +115,18 @@ export async function POST(request: Request) {
       suggestedScriptStyles: [],
       suggestedPersonas: [],
       persona: {
-        gender,
-        ageRange,
-        style,
+        gender: genderTyped,
+        ageRange: ageTyped,
+        style: styleTyped,
         ethnicity,
       },
-      scriptStyle,
-      platform,
+      scriptStyle: scriptStyleTyped,
+      platform: platformTyped,
       status: "queued",
       currentStep: 0,
     });
 
-    const jobId = job._id.toString();
+    const jobId = String(job._id);
     processUGCJob(jobId).catch((err) => {
       console.error("[ugc-video/submit]", jobId, err);
     });
