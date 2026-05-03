@@ -91,7 +91,7 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
 
  return (
  <div className="space-y-6">
- <div className="grid gap-4 sm:grid-cols-3">
+ <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
  <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-2xl font-bold tracking-tight text-foreground">
  {formatRevenue(m.totalMarketSizeMonthly)}
@@ -129,7 +129,7 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
  * Estimates based on Best Sellers Rank position. For directional research only.
  </p>
 
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+ <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
  <div className="rounded-lg border border-border/80 bg-muted/60 px-3 py-3 dark:bg-muted/40">
  <p className="text-xs font-medium text-muted-foreground"> Avg price</p>
  <p className="mt-1 font-heading text-lg font-semibold text-foreground">
@@ -182,24 +182,25 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
  {products.map((p) => {
  const pct = (p.estimatedMonthlyRevenue / maxRev) * 100;
  return (
- <li key={p.asin + p.rank} className="flex items-center gap-2 text-sm">
- <span className="w-6 shrink-0 text-xs font-bold text-muted-foreground">
+ <li
+ key={p.asin + p.rank}
+ className="flex flex-wrap items-center gap-2 text-sm sm:flex-nowrap sm:gap-2"
+ >
+ <span className="w-6 shrink-0 text-[10px] font-bold text-muted-foreground sm:text-xs">
  #{p.rank}
  </span>
- <span className="min-w-0 flex-1 truncate text-xs text-foreground">
+ <span className="min-w-0 max-w-[calc(100%-5rem)] flex-1 truncate text-[10px] text-foreground sm:max-w-none sm:flex-1 sm:text-xs">
  {p.title}
  </span>
- <div className="hidden min-w-0 flex-[2] sm:block">
- <div className="h-2 overflow-hidden rounded-full bg-foreground/10">
+ <span className="shrink-0 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 sm:text-xs">
+ {formatRevenue(p.estimatedMonthlyRevenue)}
+ </span>
+ <div className="h-2 w-full basis-full overflow-hidden rounded-full bg-foreground/10 sm:basis-auto sm:flex-[2] sm:max-w-md">
  <div
  className="h-full rounded-full bg-primary/80"
  style={{ width: `${pct}%` }}
  />
  </div>
- </div>
- <span className="shrink-0 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
- {formatRevenue(p.estimatedMonthlyRevenue)}
- </span>
  </li>
  );
  })}

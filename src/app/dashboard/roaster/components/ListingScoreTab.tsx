@@ -96,10 +96,10 @@ export function ListingScoreTab({ job }: ListingScoreTabProps) {
 
   return (
     <div className="space-y-6">
-      <section className={`${card} p-6`}>
+      <section className={`${card} p-4 sm:p-6`}>
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-center sm:gap-10">
-          <div className="relative flex size-36 items-center justify-center">
-            <svg className="size-36 -rotate-90" viewBox="0 0 120 120" aria-hidden>
+          <div className="relative flex size-32 items-center justify-center sm:size-36">
+            <svg className="size-32 -rotate-90 sm:size-36" viewBox="0 0 120 120" aria-hidden>
               <circle
                 cx="60"
                 cy="60"
@@ -120,7 +120,7 @@ export function ListingScoreTab({ job }: ListingScoreTabProps) {
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className={`font-heading text-4xl font-bold ${formatScore(overall)}`}>
+              <span className={`font-heading text-3xl font-bold sm:text-4xl ${formatScore(overall)}`}>
                 {overall}
               </span>
               <span className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-heading text-sm font-bold text-foreground shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
@@ -145,7 +145,7 @@ export function ListingScoreTab({ job }: ListingScoreTabProps) {
         </div>
       </section>
 
-      <section className={`${card} p-5`}>
+      <section className={`${card} p-4 sm:p-5`}>
         <h3 className="font-heading text-lg font-semibold text-foreground">
           Score breakdown
         </h3>
@@ -182,7 +182,7 @@ export function ListingScoreTab({ job }: ListingScoreTabProps) {
         </div>
       </section>
 
-      <section className="rounded-xl border border-emerald-200/90 bg-emerald-50/60 p-5 shadow-sm ring-1 ring-black/[0.03] dark:border-emerald-500/30 dark:bg-emerald-950/25 dark:ring-white/[0.05]">
+      <section className="rounded-xl border border-emerald-200/90 bg-emerald-50/60 p-4 shadow-sm ring-1 ring-black/[0.03] dark:border-emerald-500/30 dark:bg-emerald-950/25 dark:ring-white/[0.05] sm:p-5">
         <h3 className="font-heading text-lg font-semibold text-emerald-950 dark:text-emerald-100">
           Quick wins — do these first
         </h3>

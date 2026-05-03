@@ -51,7 +51,7 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
 
  return (
  <div className="space-y-4">
- <div className="flex flex-wrap gap-3">
+ <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-3">
  <label className="text-xs font-medium text-foreground/90">
  Min Revenue $
  <input
@@ -59,7 +59,7 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  value={minRev}
  onChange={(e) => setMinRev(e.target.value)}
  placeholder="0"
- className="mt-1 block w-28 rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
+ className="mt-1 block h-11 w-full min-w-0 max-w-full rounded-lg border border-border bg-card px-2 py-2 text-base shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06] sm:h-auto sm:w-28 sm:min-h-0 sm:px-2 sm:py-1.5 sm:text-sm"
  />
  </label>
  <label className="text-xs font-medium text-foreground/90">
@@ -70,7 +70,7 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  value={minRating}
  onChange={(e) => setMinRating(e.target.value)}
  placeholder="0"
- className="mt-1 block w-24 rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
+ className="mt-1 block h-11 w-full min-w-0 max-w-full rounded-lg border border-border bg-card px-2 py-2 text-base shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06] sm:h-auto sm:w-24 sm:min-h-0 sm:px-2 sm:py-1.5 sm:text-sm"
  />
  </label>
  </div>
@@ -79,14 +79,14 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  <table className="min-w-[720px] w-full text-left text-sm">
  <thead className="border-b border-border bg-muted text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:bg-muted/50">
  <tr>
- <th className="px-3 py-2">Rank</th>
- <th className="px-3 py-2">Product</th>
- <th className="px-3 py-2">Price</th>
- <th className="px-3 py-2">Rating</th>
- <th className="px-3 py-2">Reviews</th>
- <th className="px-3 py-2">Est. Monthly Sales</th>
- <th className="px-3 py-2">Est. Monthly Revenue</th>
- <th className="px-3 py-2">Revenue Share</th>
+ <th className="px-2 py-2 md:px-3 md:py-2">Rank</th>
+ <th className="px-2 py-2 md:px-3 md:py-2">Product</th>
+ <th className="px-2 py-2 md:px-3 md:py-2">Price</th>
+ <th className="px-2 py-2 md:px-3 md:py-2">Rating</th>
+ <th className="hidden px-2 py-2 md:table-cell md:px-3 md:py-2">Reviews</th>
+ <th className="hidden px-2 py-2 md:table-cell md:px-3 md:py-2">Est. Monthly Sales</th>
+ <th className="px-2 py-2 md:px-3 md:py-2">Est. Monthly Revenue</th>
+ <th className="hidden px-2 py-2 md:px-3 md:py-2 lg:table-cell">Revenue Share</th>
  </tr>
  </thead>
  <tbody className="divide-y divide-border/50">
@@ -94,14 +94,14 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  const share = (p.estimatedMonthlyRevenue / totalRev) * 100;
  return (
  <tr key={p.asin + p.rank} className="align-middle">
- <td className="px-3 py-2">
+ <td className="px-2 py-2 md:px-3 md:py-2">
  <span
  className={`inline-flex size-7 items-center justify-center rounded-full text-xs font-bold ${rankBadgeClass(p.rank)}`}
  >
  {p.rank}
  </span>
  </td>
- <td className="max-w-[220px] px-3 py-2">
+ <td className="max-w-[220px] px-2 py-2 md:px-3 md:py-2">
  <div className="flex gap-2">
  <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-border/55 bg-muted">
  {p.imageUrl ? (
@@ -125,25 +125,25 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  </div>
  </div>
  </td>
- <td className="whitespace-nowrap px-3 py-2 text-xs font-medium">
+ <td className="whitespace-nowrap px-2 py-2 text-xs font-medium md:px-3 md:py-2">
  ${p.price.toFixed(2)}
  </td>
- <td className="whitespace-nowrap px-3 py-2 text-xs">
+ <td className="whitespace-nowrap px-2 py-2 text-xs md:px-3 md:py-2">
  <span className="inline-flex items-center gap-1 tabular-nums">
  {p.rating.toFixed(1)}
  <FaStar className="size-3 shrink-0 text-amber-500" aria-hidden />
  </span>
  </td>
- <td className="whitespace-nowrap px-3 py-2 text-xs">
+ <td className="hidden whitespace-nowrap px-2 py-2 text-xs md:table-cell md:px-3 md:py-2">
  {p.reviewCount.toLocaleString()}
  </td>
- <td className="whitespace-nowrap px-3 py-2 text-xs">
+ <td className="hidden whitespace-nowrap px-2 py-2 text-xs md:table-cell md:px-3 md:py-2">
  {p.estimatedMonthlySales.toLocaleString()}
  </td>
- <td className="whitespace-nowrap px-3 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+ <td className="whitespace-nowrap px-2 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400 md:px-3 md:py-2">
  {formatRevenue(p.estimatedMonthlyRevenue)}
  </td>
- <td className="px-3 py-2">
+ <td className="hidden px-2 py-2 md:px-3 md:py-2 lg:table-cell">
  <div className="flex items-center gap-2">
  <div className="h-1.5 w-16 overflow-hidden rounded-full bg-foreground/10">
  <div

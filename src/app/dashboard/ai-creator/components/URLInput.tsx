@@ -60,7 +60,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
  type="url"
  autoComplete="off"
  placeholder="https://www.amazon.com/dp/B08XXXXX..."
- className="mt-2 h-[52px] w-full rounded-lg border border-border bg-card px-4 text-sm text-foreground shadow-sm ring-1 ring-black/[0.04] outline-none transition-[box-shadow,border-color] placeholder:text-muted-foreground/75 focus:border-primary/35 focus:ring-4 focus:ring-primary/10 dark:ring-white/[0.06]"
+ className="mt-2 h-11 min-h-[44px] w-full rounded-lg border border-border bg-card px-4 text-base text-foreground shadow-sm ring-1 ring-black/[0.04] outline-none transition-[box-shadow,border-color] placeholder:text-muted-foreground/75 focus:border-primary/35 focus:ring-4 focus:ring-primary/10 dark:ring-white/[0.06] sm:h-[52px] sm:min-h-0 sm:text-sm"
  value={value}
  onChange={(e) => onChange(e.target.value)}
  />
@@ -80,7 +80,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
  <div className="mt-4 flex flex-wrap gap-2">
  <span className="text-xs text-muted-foreground">Examples (demo ASINs — AI fallback if scrape unavailable):</span>
  </div>
- <div className="mt-2 flex flex-wrap gap-2">
+ <div className="mt-2 flex flex-wrap justify-start gap-2">
  {[
  {
  label: "Example: Supplement listing",
@@ -99,7 +99,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
  key={chip.url}
  type="button"
  onClick={() => onChange(chip.url)}
- className="rounded-full border border-border/80 bg-card/80 px-3 py-1.5 text-xs font-semibold text-muted-foreground backdrop-blur-[1px] transition-colors hover:border-muted-foreground/30 hover:text-foreground"
+ className="min-h-11 rounded-full border border-border/80 bg-card/80 px-3 py-2 text-xs font-semibold text-muted-foreground backdrop-blur-[1px] transition-colors hover:border-muted-foreground/30 hover:text-foreground sm:min-h-0 sm:py-1.5"
  >
  {chip.label}
  </button>

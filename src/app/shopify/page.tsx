@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
+import { BetaFeatureNotice } from "@/components/BetaFeatureNotice";
 import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import {
@@ -372,15 +373,31 @@ function ShopifyPhotosPageContent() {
  <>
  <div className="relative min-h-full overflow-x-hidden">
  <GridBackdrop />
- <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <div className="relative z-10 px-4 py-6 sm:px-5 sm:py-7 md:px-8 md:py-9">
+ <BetaFeatureNotice
+ message={
+ <>
+ Shopify Photos is in beta: store connection, product sync, image generation,
+ and publishing to your catalog may change, pause, or fail between releases.
+ Thanks for trying it early—report issues if something breaks.
+ </>
+ }
+ />
  <header className="border-b border-border/70 pb-6">
  <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
  Commerce
  </p>
- <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ <div className="mt-2 flex flex-wrap items-center gap-2">
+ <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground md:text-3xl lg:text-4xl">
  Shopify Photos
  </h1>
- <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ <span
+ className="shrink-0 rounded-md border border-primary/25 bg-primary/8 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-primary/90 dark:border-primary/35 dark:bg-primary/12"
+ >
+ Beta
+ </span>
+ </div>
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
  Connect your Shopify store to generate and publish lifestyle photos automatically.
  </p>
  </header>
@@ -406,7 +423,7 @@ function ShopifyPhotosPageContent() {
  ) : (
  <>
  <div
- className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ className="mt-8 flex max-w-full flex-nowrap gap-1 overflow-x-auto scroll-smooth rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
  role="tablist"
  aria-label="Shopify workspace"
  >
@@ -697,7 +714,7 @@ export default function ShopifyPhotosPage() {
  fallback={
  <div className="relative min-h-full overflow-x-hidden">
  <GridBackdrop />
- <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <div className="relative z-10 px-4 py-6 sm:px-5 sm:py-7 md:px-8 md:py-9">
  <div className="h-8 max-w-xs animate-pulse rounded-lg bg-muted dark:bg-muted/60" />
  <div className="mt-8 max-w-6xl space-y-3">
  <div className="h-10 max-w-md animate-pulse rounded-lg bg-muted dark:bg-muted/60" />

@@ -65,7 +65,7 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
 
  return (
  <div className="space-y-8">
- <div className="grid gap-6 lg:grid-cols-2">
+ <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
  <div>
  <h3 className="font-heading text-sm font-semibold text-foreground"> Your Listing Wins</h3>
  <p className="mt-1 text-xs text-muted-foreground">

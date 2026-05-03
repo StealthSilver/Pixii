@@ -26,11 +26,11 @@ const secondaryBtn =
   "rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
 const primaryBtn =
-  "w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 dark:ring-white/15";
+  "min-h-11 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 dark:ring-white/15 sm:min-h-0";
 
 function segmentTabClass(active: boolean): string {
   return (
-    "rounded-lg px-4 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    "shrink-0 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 sm:px-4 " +
     (active
       ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
       : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
@@ -39,7 +39,7 @@ function segmentTabClass(active: boolean): string {
 
 function resultTabClass(active: boolean): string {
   return (
-    "rounded-lg px-3 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    "shrink-0 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
     (active
       ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
       : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
@@ -428,17 +428,17 @@ export default function ReviewAnalyticsPage() {
  <>
  <div className="relative min-h-full overflow-x-hidden">
  <GridBackdrop />
- <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <div className="relative z-10 px-4 py-6 sm:px-5 sm:py-7 md:px-8 md:py-9">
  <header className="border-b border-border/70 pb-6">
  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
  <div className="min-w-0 flex-1">
  <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
  Amazon
  </p>
- <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ <h1 className="mt-2 font-heading text-2xl font-semibold tracking-tight text-foreground md:text-3xl lg:text-4xl">
  Review Analytics
  </h1>
- <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
  Paste your Amazon listing URL. We&apos;ll scrape your listing, find up to 9
  competitors, pull 1000+ reviews, and surface what shoppers actually care about.
  </p>
@@ -459,7 +459,7 @@ export default function ReviewAnalyticsPage() {
  </header>
 
  <div
- className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ className="mt-8 flex max-w-full flex-nowrap gap-1 overflow-x-auto scroll-smooth rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
  role="tablist"
  aria-label="Review Analytics sections"
  >
@@ -494,7 +494,7 @@ export default function ReviewAnalyticsPage() {
  <div className="mt-8 max-w-6xl space-y-6">
  {view === "input" && (
  <>
- <div className="flex flex-wrap gap-2">
+ <div className="flex flex-wrap justify-start gap-2">
  <span className="rounded-full border border-sky-200/90 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-950 dark:border-sky-500/35 dark:bg-sky-950/40 dark:text-sky-100">
  10 listings analyzed
  </span>
@@ -536,7 +536,7 @@ export default function ReviewAnalyticsPage() {
 
  <URLInput value={urlInput} onChange={setUrlInput} />
 
- <div className="grid gap-4 md:grid-cols-3">
+ <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
  <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-sm font-semibold text-foreground">
  Competitor discovery
@@ -564,7 +564,7 @@ export default function ReviewAnalyticsPage() {
  </div>
  </div>
 
- <p className="text-center text-xs text-muted-foreground">
+ <p className="text-center text-xs text-muted-foreground sm:text-sm">
  ~3–5 minutes · 1000+ reviews · 10 listings · AI-powered analysis
  </p>
 
@@ -626,7 +626,7 @@ export default function ReviewAnalyticsPage() {
  ) : null}
  </p>
 
- <div className="inline-flex flex-wrap gap-1 rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25">
+ <div className="flex max-w-full flex-nowrap gap-1 overflow-x-auto scroll-smooth rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25">
  <button
  type="button"
  className={resultTabClass(tab === "criteria")}

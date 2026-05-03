@@ -36,10 +36,10 @@ type URLInputProps = {
 };
 
 const inputClass =
- "mt-1.5 h-13 min-h-[52px] w-full rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+ "mt-1.5 h-11 min-h-[44px] w-full rounded-lg border border-border bg-card px-3 py-3 text-base font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06] sm:h-13 sm:min-h-[52px] sm:text-sm";
 
 const chipClass =
- "rounded-full border border-border/80 bg-card/80 px-3 py-1.5 text-xs font-semibold text-muted-foreground backdrop-blur-[1px] transition-colors hover:border-muted-foreground/30 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 disabled:opacity-60";
+ "min-h-11 rounded-full border border-border/80 bg-card/80 px-3 py-2 text-xs font-semibold text-muted-foreground backdrop-blur-[1px] transition-colors hover:border-muted-foreground/30 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 disabled:opacity-60 sm:min-h-0 sm:py-1.5";
 
 export function URLInput({ value, onChange, disabled }: URLInputProps) {
  const [debounced, setDebounced] = useState(value);
@@ -72,7 +72,7 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
 
  return (
  <section
- className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]"
+ className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05] sm:p-5"
  aria-labelledby="me-url-heading"
  >
  <h2
@@ -108,7 +108,7 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
  <p className="mt-2 text-sm text-red-700 dark:text-red-300">Please enter an Amazon URL</p>
  ) : null}
 
- <div className="mt-4 flex flex-wrap gap-2">
+ <div className="mt-4 flex flex-wrap justify-start gap-2">
  {EXAMPLE_URLS.map((c) => (
  <button
  key={c.url}

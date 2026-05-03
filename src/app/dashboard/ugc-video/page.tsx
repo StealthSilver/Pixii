@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
-import { BetaFeatureNotice } from "@/components/BetaFeatureNotice";
+import { BetaFeatureNotice, PageBetaBadge } from "@/components/BetaFeatureNotice";
 import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import type { PersonaConfig } from "@/lib/ugcVideo/types";
@@ -490,15 +490,18 @@ export default function UgcVideoPage() {
  <>
  <div className="relative min-h-full overflow-x-hidden">
  <GridBackdrop />
- <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <div className="relative z-10 px-4 py-6 sm:px-5 sm:py-7 md:px-8 md:py-9">
  <BetaFeatureNotice />
  <header className="border-b border-border/70 pb-6">
  <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
  Content
  </p>
- <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+ <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground md:text-3xl lg:text-4xl">
  UGC video
  </h1>
+ <PageBetaBadge />
+ </div>
  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
  Turn a product photo into a ~30s UGC-style video with voiceover, frames,
  and captions—styled for short-form platforms.
@@ -506,7 +509,7 @@ export default function UgcVideoPage() {
  </header>
 
  <div
- className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ className="mt-8 flex max-w-full flex-nowrap gap-1 overflow-x-auto scroll-smooth rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
  role="tablist"
  aria-label="UGC sections"
  >

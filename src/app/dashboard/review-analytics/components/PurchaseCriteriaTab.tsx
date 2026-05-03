@@ -66,7 +66,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
  </div>
  </div>
 
- <div className="mt-4 grid gap-4 md:grid-cols-2">
+ <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
  <div>
  <div className="flex justify-between text-xs font-medium text-muted-foreground">
  <span>Market Satisfaction</span>
@@ -93,7 +93,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
  </div>
  </div>
 
- <div className="mt-4 grid gap-3 md:grid-cols-2">
+ <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
  <blockquote className="border-l-4 border-emerald-500 pl-3 text-xs italic text-muted-foreground">
  {c.topPositiveQuote}
  </blockquote>

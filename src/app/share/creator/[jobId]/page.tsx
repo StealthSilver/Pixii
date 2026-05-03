@@ -80,7 +80,7 @@ export default function ShareCreatorRoastPage() {
 
  return (
  <div className="min-h-screen bg-[rgb(251_249_247)] px-4 py-10">
- <div className="mx-auto max-w-lg">
+ <div className="mx-auto w-full max-w-lg">
  <p className="text-center font-heading text-xl font-bold text-foreground">
  Pixii AI Creator
  </p>
@@ -90,8 +90,7 @@ export default function ShareCreatorRoastPage() {
  <video
  controls
  width="100%"
- className="mx-auto rounded-xl shadow-md"
- style={{ maxWidth: 360 }}
+ className="mx-auto w-full max-w-full rounded-xl shadow-md sm:max-w-[360px]"
  >
  <source src={data.finalVideoUrl} type="video/mp4" />
  </video>
@@ -131,7 +130,7 @@ export default function ShareCreatorRoastPage() {
  <div className="flex justify-center pt-4">
  <Link
  href="/dashboard/ai-creator"
- className="rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary/90"
+ className="block w-full min-h-11 rounded-lg bg-primary px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary/90 sm:inline-block sm:w-auto sm:min-h-0"
  >
  Get your listing roasted
  </Link>

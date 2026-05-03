@@ -309,12 +309,12 @@ export default function PhotoUpgraderPage() {
  <>
  <div className="relative min-h-full overflow-x-hidden">
  <GridBackdrop />
- <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <div className="relative z-10 px-4 py-6 sm:px-5 sm:py-7 md:px-8 md:py-9">
  <header className="border-b border-border/70 pb-6">
  <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
  Studio
  </p>
- <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ <h1 className="mt-2 font-heading text-2xl font-semibold tracking-tight text-foreground md:text-3xl lg:text-4xl">
  Photo Upgrader
  </h1>
  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">

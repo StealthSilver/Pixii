@@ -61,7 +61,7 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
 
  return (
  <div className="space-y-8">
- <div className="grid gap-6 lg:grid-cols-2">
+ <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
  <div>
  <h3 className="font-heading text-sm font-semibold text-foreground">
  What Customers Love
@@ -100,7 +100,7 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  <h3 className="font-heading text-sm font-semibold text-amber-950 dark:text-amber-100">
  Unmet needs — what customers wish existed
  </h3>
- <div className="mt-3 flex flex-wrap gap-2">
+ <div className="mt-3 flex flex-wrap justify-start gap-2">
  {needs.map((n) => (
  <span
  key={n}

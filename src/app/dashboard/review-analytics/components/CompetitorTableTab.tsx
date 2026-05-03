@@ -77,8 +77,8 @@ export function CompetitorTableTab({ listings, userAsin }: Props) {
  }
  };
 
- const th = (k: SortKey, label: string) => (
- <th className="whitespace-nowrap px-2 py-2 text-left">
+ const th = (k: SortKey, label: string, thClass = "") => (
+ <th className={`whitespace-nowrap px-2 py-2 text-left ${thClass}`}>
  <button
  type="button"
  onClick={() => toggle(k)}
@@ -110,10 +110,10 @@ export function CompetitorTableTab({ listings, userAsin }: Props) {
  {th("price", "Price")}
  {th("rating", "Rating")}
  {th("reviewCount", "Reviews")}
- {th("bsr", "BSR")}
- {th("estimatedMonthlySales", "Est. Sales")}
+ {th("bsr", "BSR", "hidden lg:table-cell")}
+ {th("estimatedMonthlySales", "Est. Sales", "hidden lg:table-cell")}
  {th("estimatedMonthlyRevenue", "Est. Revenue")}
- {th("avgSentimentScore", "Sentiment")}
+ {th("avgSentimentScore", "Sentiment", "hidden lg:table-cell")}
  </tr>
  </thead>
  <tbody>
@@ -164,8 +164,8 @@ export function CompetitorTableTab({ listings, userAsin }: Props) {
  </span>
  </td>
  <td className="px-2 py-2 text-xs">{formatNumber(row.reviewCount)}</td>
- <td className="px-2 py-2 text-xs text-foreground/90">{formatBsr(row.bsr)}</td>
- <td className="px-2 py-2 text-xs">{formatNumber(row.estimatedMonthlySales)}</td>
+ <td className="hidden px-2 py-2 text-xs text-foreground/90 lg:table-cell">{formatBsr(row.bsr)}</td>
+ <td className="hidden px-2 py-2 text-xs lg:table-cell">{formatNumber(row.estimatedMonthlySales)}</td>
  <td
  className={
  "px-2 py-2 text-xs font-semibold " +
@@ -174,7 +174,7 @@ export function CompetitorTableTab({ listings, userAsin }: Props) {
  >
  {formatRevenue(row.estimatedMonthlyRevenue)}
  </td>
- <td className="px-2 py-2">
+ <td className="hidden px-2 py-2 lg:table-cell">
  <span
  className={
  "inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold " +

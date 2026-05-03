@@ -92,13 +92,13 @@ export function ReviewBrowser({ jobId, listings }: Props) {
 
  return (
  <div className="space-y-4 rounded-lg border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
- <div className="flex flex-wrap items-end gap-3">
+ <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
  <label className="text-xs font-semibold text-foreground/90">
  ASIN
  <select
  value={asin}
  onChange={(e) => setAsin(e.target.value)}
- className="mt-1 block rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
+ className="mt-1 block h-11 w-full min-w-0 rounded-lg border border-border bg-card px-2 py-2 text-base shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06] sm:h-auto sm:min-h-0 sm:py-1.5 sm:text-sm"
  >
  <option value="">All listings</option>
  {listings.map((l) => (

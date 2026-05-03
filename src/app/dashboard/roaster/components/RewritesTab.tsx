@@ -18,7 +18,7 @@ const copyRewriteBtn =
   "mt-3 rounded-lg border border-emerald-300/90 bg-card px-3 py-1.5 text-xs font-semibold text-emerald-900 shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-emerald-50/80 dark:border-emerald-500/40 dark:bg-card dark:text-emerald-100 dark:hover:bg-emerald-950/40 dark:ring-white/[0.06]";
 
 const secondaryFull =
-  "w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted dark:ring-white/[0.06]";
+  "min-h-11 w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted dark:ring-white/[0.06] sm:min-h-0";
 
 export function RewritesTab({ job }: RewritesTabProps) {
   const { listingData, listingScore } = job;
@@ -68,7 +68,7 @@ export function RewritesTab({ job }: RewritesTabProps) {
         <h3 className="font-heading text-base font-semibold text-foreground">
           Title rewrite
         </h3>
-        <div className="mt-3 grid gap-4 md:grid-cols-2">
+        <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className={`${card} p-4`}>
             <p className="text-xs font-semibold text-muted-foreground">Current title</p>
             <p className="mt-2 text-sm text-foreground">{title}</p>
@@ -110,7 +110,7 @@ export function RewritesTab({ job }: RewritesTabProps) {
             const rw = listingScore.bulletRewrites[i];
             const key = `b-${i}`;
             return (
-              <div key={i} className={`grid gap-3 md:grid-cols-2 ${card} p-4`}>
+              <div key={i} className={`grid grid-cols-1 gap-3 md:grid-cols-2 ${card} p-4`}>
                 <div>
                   <p className="text-xs font-semibold text-muted-foreground">Original</p>
                   <p className="mt-1 text-sm text-muted-foreground">{b}</p>
@@ -143,7 +143,7 @@ export function RewritesTab({ job }: RewritesTabProps) {
         <h3 className="font-heading text-base font-semibold text-foreground">
           Description rewrite
         </h3>
-        <div className="mt-3 grid gap-4 md:grid-cols-2">
+        <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className={`${card} p-4`}>
             <p className="text-xs font-semibold text-muted-foreground">Current opening</p>
             <p className="mt-2 text-sm text-muted-foreground">

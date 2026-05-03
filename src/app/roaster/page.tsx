@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
-import { BetaFeatureNotice } from "@/components/BetaFeatureNotice";
+import { BetaFeatureNotice, PageBetaBadge } from "@/components/BetaFeatureNotice";
 import { GridBackdrop } from "@/components/GridBackdrop";
 
 const primaryBtn =
@@ -10,15 +10,18 @@ export default function RoasterPage() {
   return (
     <div className="relative min-h-full overflow-x-hidden">
       <GridBackdrop />
-      <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+      <div className="relative z-10 px-4 py-6 sm:px-5 sm:py-7 md:px-8 md:py-9">
         <BetaFeatureNotice />
         <header className="border-b border-border/70 pb-6">
           <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             Amazon
           </p>
-          <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
-            Roaster
-          </h1>
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground md:text-3xl lg:text-4xl">
+              Roaster
+            </h1>
+            <PageBetaBadge />
+          </div>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             Critique listings, score copy, and generate UGC-style video scripts from
             an Amazon product URL—same grid shell and typography as the rest of

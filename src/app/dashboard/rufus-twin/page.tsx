@@ -428,7 +428,7 @@ export default function RufusTwinPage() {
     <>
       <div className="relative min-h-full overflow-x-hidden">
         <GridBackdrop />
-        <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+        <div className="relative z-10 px-4 py-6 sm:px-5 sm:py-7 md:px-8 md:py-9">
           <header className="border-b border-border/70 pb-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0 flex-1">
@@ -436,7 +436,7 @@ export default function RufusTwinPage() {
                   Intelligence
                 </p>
                 <div className="mt-2 flex flex-wrap items-center gap-2 gap-y-2">
-                  <h1 className="font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+                  <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground md:text-3xl lg:text-4xl">
                     Rufus Twin
                   </h1>
                   <span className="inline-flex items-center rounded-full border border-amber-200/90 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/40 dark:text-amber-100">
@@ -464,7 +464,7 @@ export default function RufusTwinPage() {
           </header>
 
           <div
-            className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+            className="mt-8 flex max-w-full flex-nowrap gap-1 overflow-x-auto scroll-smooth rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
             role="tablist"
             aria-label="Rufus sections"
           >

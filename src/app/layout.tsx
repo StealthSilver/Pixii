@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { AppShell } from "@/components/AppShell";
 import "./globals.css";
 
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');var dark=t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',dark);}catch(e){}})();`;
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');var dark=t!=='light';document.documentElement.classList.toggle('dark',dark);}catch(e){document.documentElement.classList.add('dark');}})();`;
 
 export const metadata: Metadata = {
  title: "Pixii",

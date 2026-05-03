@@ -167,7 +167,7 @@ const NAV_SECTIONS: NavSection[] = [
     id: "store",
     title: "Store",
     items: [
-      { label: "Shopify", href: "/shopify", Icon: ShopifyGlyph },
+      { label: "Shopify", href: "/shopify", Icon: ShopifyGlyph, isBeta: true },
     ],
   },
 ];
@@ -192,6 +192,12 @@ function SectionIcon({ sectionId }: { sectionId: string }) {
 
 type SidebarProps = {
   collapsed: boolean;
+  /** Mobile drawer: expanded rail, close control, link tap closes parent. */
+  drawer?: boolean;
+  onLinkClick?: () => void;
+  onDrawerClose?: () => void;
+  /** Merged onto the root `aside` (e.g. drawer width). */
+  className?: string;
 };
 
 function isNavItemActive(
@@ -224,21 +230,35 @@ function navItemClassNames(
   return base + active;
 }
 
-export function Sidebar({ collapsed }: SidebarProps) {
+export function Sidebar({
+  collapsed,
+  drawer = false,
+  onLinkClick,
+  onDrawerClose,
+  className = "",
+}: SidebarProps) {
   const pathname = usePathname();
   const isHome = pathname === "/";
+
+  const widthClass = drawer
+    ? "w-72"
+    : collapsed
+      ? "w-[72px]"
+      : "w-60";
 
   return (
     <aside
       className={
         "flex h-full min-h-0 shrink-0 flex-col border-r border-border/80 bg-background transition-[width] duration-200 ease-out " +
-        (collapsed ? "w-[72px]" : "w-60")
+        widthClass +
+        (className ? ` ${className}` : "")
       }
     >
-      <div className="flex h-14 shrink-0 items-center border-b border-border/80 px-3">
+      <div className="flex h-14 shrink-0 items-center gap-2 border-b border-border/80 px-3">
         {!collapsed ? (
           <Link
             href="/"
+            onClick={() => onLinkClick?.()}
             className="flex min-w-0 flex-1 items-center outline-none"
             aria-current={isHome ? "page" : undefined}
           >
@@ -256,6 +276,7 @@ export function Sidebar({ collapsed }: SidebarProps) {
           <div className="flex w-full justify-center">
             <Link
               href="/"
+              onClick={() => onLinkClick?.()}
               className="flex items-center justify-center outline-none"
               aria-current={isHome ? "page" : undefined}
             >
@@ -270,6 +291,18 @@ export function Sidebar({ collapsed }: SidebarProps) {
             </Link>
           </div>
         )}
+        {drawer && onDrawerClose ? (
+          <button
+            type="button"
+            onClick={onDrawerClose}
+            className="ml-auto inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+            aria-label="Close menu"
+          >
+            <span className="text-lg leading-none" aria-hidden>
+              ✕
+            </span>
+          </button>
+        ) : null}
       </div>
 
       <nav
@@ -302,6 +335,7 @@ export function Sidebar({ collapsed }: SidebarProps) {
                   >
                     <Link
                       href={href}
+                      onClick={() => onLinkClick?.()}
                       title={
                         collapsed
                           ? `${section.title} · ${label}${isBeta ? " · Beta" : ""}`

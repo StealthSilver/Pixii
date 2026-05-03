@@ -13,7 +13,7 @@ const secondaryBtnSm =
   "rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted dark:ring-white/[0.06]";
 
 const primaryLink =
-  "inline-flex flex-1 items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 sm:flex-none dark:ring-white/15";
+  "inline-flex min-h-11 flex-1 items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 sm:min-h-0 sm:flex-none dark:ring-white/15";
 
 function gradeCircleClass(letter: string): string {
   switch (letter.toUpperCase()) {
@@ -95,11 +95,11 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
 
   return (
     <div className="space-y-6">
-      <section className={`${card} p-6`}>
+      <section className={`${card} p-4 sm:p-6`}>
         <div className="flex flex-col items-center text-center">
           <div
             className={
-              "flex size-28 items-center justify-center rounded-full text-5xl font-heading font-bold shadow-md ring-4 " +
+              "flex size-24 items-center justify-center rounded-full text-4xl font-heading font-bold shadow-md ring-4 sm:size-28 sm:text-5xl " +
               gradeCircleClass(lg)
             }
             aria-label={`Grade ${lg}`}
@@ -116,15 +116,14 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
       </section>
 
       {hasVideo ? (
-        <div className={`${card} p-5`}>
+        <div className={`${card} p-4 sm:p-5`}>
           <video
             controls
-            style={{ maxWidth: 400 }}
-            className="mx-auto w-full rounded-lg"
+            className="mx-auto w-full max-w-full rounded-lg sm:max-w-md"
           >
             <source src={finalVideoUrl} type="video/mp4" />
           </video>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
             <a href={finalVideoUrl} download className={primaryLink}>
               Download video
             </a>
@@ -172,7 +171,7 @@ export function CritiqueVideoTab({ job }: CritiqueVideoTabProps) {
             >
               <source src={voiceoverUrl} />
             </audio>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
               <button
                 type="button"
                 onClick={() => void copyShareLink()}

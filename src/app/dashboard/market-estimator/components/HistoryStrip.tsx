@@ -37,14 +37,14 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
  <h3 className="font-heading text-sm font-semibold tracking-tight text-foreground">
  Previous analyses
  </h3>
- <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+ <div className="mt-3 flex gap-3 overflow-x-auto scroll-smooth pb-2 [-webkit-overflow-scrolling:touch]">
  {show.map((h) => (
  <button
  key={h._id}
  type="button"
  disabled={busyId === h._id}
  onClick={() => onSelect(h._id)}
- className="group flex w-[200px] shrink-0 flex-col rounded-xl border border-border/80 bg-card/95 p-3 text-left shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] transition hover:border-muted-foreground/35 disabled:opacity-60 dark:ring-white/[0.05]"
+ className="group flex w-44 shrink-0 flex-col rounded-xl border border-border/80 bg-card/95 p-3 text-left shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] transition hover:border-muted-foreground/35 disabled:opacity-60 dark:ring-white/[0.05] sm:w-[200px]"
  >
  <div className="relative mb-2 h-14 w-full overflow-hidden rounded-lg border border-border/55 bg-muted">
  {h.products?.[0]?.imageUrl ? (

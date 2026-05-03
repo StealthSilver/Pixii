@@ -36,15 +36,11 @@ function readStoredTheme(): Theme | null {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("dark");
 
   useEffect(() => {
     const stored = readStoredTheme();
-    const prefersDark =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial: Theme =
-      stored ?? (prefersDark ? "dark" : "light");
+    const initial: Theme = stored === "light" ? "light" : "dark";
     setThemeState(initial);
     applyTheme(initial);
   }, []);

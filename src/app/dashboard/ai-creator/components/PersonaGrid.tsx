@@ -66,7 +66,7 @@ export function PersonaGrid({ selected, onSelect }: PersonaGridProps) {
  ][];
 
  return (
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+ <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
  {entries.map(([id, p]) => {
  const a = ACCENT[id] ?? ACCENT.savage_sarah;
  const active = selected === id;
@@ -77,14 +77,14 @@ export function PersonaGrid({ selected, onSelect }: PersonaGridProps) {
  type="button"
  onClick={() => onSelect(id)}
  className={
- "rounded-xl border p-4 text-left shadow-sm transition-colors " +
+ "rounded-xl border p-3 text-left shadow-sm transition-colors sm:p-4 " +
  (active
  ? `${a.border} ${a.bg} border-l-4 ${a.left}`
  : "border-border bg-card/95 shadow-sm ring-1 ring-black/[0.03] hover:border-muted-foreground/35 dark:ring-white/[0.05]")
  }
  >
  <div className="text-primary" aria-hidden>
- <Icon className="size-8" />
+ <Icon className="size-7 sm:size-8" />
  </div>
  <p className="mt-2 font-heading text-base font-bold text-foreground">
  {p.name}

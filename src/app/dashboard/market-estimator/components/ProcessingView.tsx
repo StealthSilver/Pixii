@@ -68,7 +68,7 @@ export function ProcessingView({
 
  if (status === "failed") {
  return (
- <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05] sm:p-5">
  <h2 className="font-heading text-lg font-semibold tracking-tight text-foreground">
  Something went wrong
  </h2>
@@ -87,7 +87,7 @@ export function ProcessingView({
  }
 
  return (
- <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05] sm:p-5">
  {category ? (
  <p className="mb-4 inline-flex rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold text-foreground">
  Category: {category}

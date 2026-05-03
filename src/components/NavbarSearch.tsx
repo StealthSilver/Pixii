@@ -136,7 +136,7 @@ export function NavbarSearch() {
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          className="h-9 w-44 rounded-lg border border-border bg-card py-2 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground/75 shadow-sm outline-none transition-[border-color,box-shadow] focus:border-primary/40 focus:ring-2 focus:ring-primary/15 sm:w-52 md:w-60"
+          className="h-11 min-h-[44px] w-44 rounded-lg border border-border bg-card py-2 pl-8 pr-3 text-base text-foreground placeholder:text-muted-foreground/75 shadow-sm outline-none transition-[border-color,box-shadow] focus:border-primary/40 focus:ring-2 focus:ring-primary/15 sm:h-9 sm:min-h-0 sm:w-52 sm:text-sm md:w-60"
         />
       </div>
 
