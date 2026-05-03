@@ -1,10 +1,5 @@
-import { FeaturePage } from "@/components/FeaturePage";
+import { redirect } from "next/navigation";
 
 export default function CreatorPage() {
-  return (
-    <FeaturePage
-      title="Creator"
-      description="AI generates influencer-style videos that critique your product listing."
-    />
-  );
+  redirect("/dashboard/ai-creator");
 }

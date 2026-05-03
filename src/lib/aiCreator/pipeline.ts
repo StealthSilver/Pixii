@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/mongodb";
 import { CreatorJob, type CreatorJobDoc } from "@/lib/models/creatorJob";
-import { scrapeAmazonListing, extractAsin } from "@/lib/aiCreator/listingScraper";
+import { scrapeAmazonListing } from "@/lib/aiCreator/listingScraper";
+import { extractAsin } from "@/lib/aiCreator/extractAsin";
 import { analyzeListing } from "@/lib/aiCreator/listingAnalyzer";
 import { generateRoastScript } from "@/lib/aiCreator/roastScriptGenerator";
 import { generateCreatorVoiceover } from "@/lib/aiCreator/voiceoverGenerator";

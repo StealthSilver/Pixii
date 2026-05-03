@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import {
   UGCJob,
@@ -127,9 +127,11 @@ export async function POST(request: Request) {
     });
 
     const jobId = String(job._id);
-    processUGCJob(jobId).catch((err) => {
-      console.error("[ugc-video/submit]", jobId, err);
-    });
+    after(() =>
+      processUGCJob(jobId).catch((err) => {
+        console.error("[ugc-video/submit]", jobId, err);
+      }),
+    );
 
     return NextResponse.json({ jobId });
   } catch (e) {

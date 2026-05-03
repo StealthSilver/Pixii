@@ -1,10 +1,5 @@
-import { FeaturePage } from "@/components/FeaturePage";
+import { redirect } from "next/navigation";
 
-export default function UgcPage() {
-  return (
-    <FeaturePage
-      title="UGC"
-      description="Turn a single product photo into a short, engaging lifestyle video."
-    />
-  );
+export default function UgcRedirectPage() {
+  redirect("/dashboard/ugc-video");
 }

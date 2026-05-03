@@ -2,32 +2,9 @@ import * as cheerio from "cheerio";
 import { callClaude } from "@/lib/rufusTwin/claude";
 import type { ListingData } from "@/lib/aiCreator/types";
 import { parseJsonFromClaude } from "@/lib/aiCreator/jsonUtils";
+import { extractAsin } from "@/lib/aiCreator/extractAsin";
 
-const ASIN_RE = /(?:^|[/?&])(?:dp|gp\/product|product)\/([A-Z0-9]{10})(?:[^A-Z0-9]|$)|[?&]asin=([A-Z0-9]{10})/i;
-
-export function extractAsin(url: string): string | null {
-  try {
-    const u = url.trim();
-    const matchDp = u.match(/\/(?:dp|gp\/product|product)\/([A-Z0-9]{10})(?:[/?]|$)/i);
-    if (matchDp?.[1]?.length === 10) {
-      return matchDp[1].toUpperCase();
-    }
-    const q = u.match(/[?&]asin=([A-Z0-9]{10})/i);
-    if (q?.[1]?.length === 10) {
-      return q[1].toUpperCase();
-    }
-    const m = u.match(ASIN_RE);
-    if (m?.[1]?.length === 10) {
-      return m[1].toUpperCase();
-    }
-    if (m?.[2]?.length === 10) {
-      return m[2].toUpperCase();
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
+export { extractAsin } from "@/lib/aiCreator/extractAsin";
 
 function emptyListing(scrapedAt: Date): ListingData {
   return {

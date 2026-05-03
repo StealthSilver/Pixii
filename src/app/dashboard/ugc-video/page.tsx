@@ -179,13 +179,17 @@ export default function UgcVideoPage() {
       setElapsedSec(Math.floor((Date.now() - start) / 1000));
     }, 1000);
 
-    let pollHandle: ReturnType<typeof setInterval> | undefined;
+    let pollHandle: number | undefined;
 
-    function stopTimers() {
+    function stopPollOnly() {
       if (pollHandle !== undefined) {
         window.clearInterval(pollHandle);
         pollHandle = undefined;
       }
+    }
+
+    function stopAllTimers() {
+      stopPollOnly();
       window.clearInterval(tickHandle);
     }
 
@@ -197,13 +201,13 @@ export default function UgcVideoPage() {
         }
         setJob(data);
         if (data.status === "complete") {
-          stopTimers();
+          stopAllTimers();
           setView("result");
           void mutateHistory();
           return;
         }
         if (data.status === "failed") {
-          stopTimers();
+          stopAllTimers();
           return;
         }
       } catch {
@@ -222,7 +226,7 @@ export default function UgcVideoPage() {
             "Stopped polling after 10 minutes. Refresh the page or open from history if your job finished.",
           variant: "info",
         });
-        stopTimers();
+        stopPollOnly();
         return;
       }
       void poll();
@@ -230,7 +234,7 @@ export default function UgcVideoPage() {
 
     return () => {
       cancelled = true;
-      stopTimers();
+      stopAllTimers();
     };
   }, [view, jobId, mutateHistory]);
 

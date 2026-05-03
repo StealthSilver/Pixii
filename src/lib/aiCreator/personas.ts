@@ -1,5 +1,7 @@
 import type { InfluencerPersonaId } from "@/lib/aiCreator/types";
 
+export type { InfluencerPersonaId } from "@/lib/aiCreator/types";
+
 export type Persona = {
   name: string;
   handle: string;

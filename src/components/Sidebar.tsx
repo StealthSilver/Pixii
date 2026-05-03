@@ -72,7 +72,16 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Roaster", href: "/roaster", Icon: FaFire },
       { label: "Reviews", href: "/reviews", Icon: FaStar },
-      { label: "Markets", href: "/markets", Icon: FaChartLine },
+      {
+        label: "Markets",
+        href: "/market",
+        Icon: FaChartLine,
+        activePathPrefixes: [
+          "/dashboard/market-estimator",
+          "/market",
+          "/markets",
+        ],
+      },
     ],
   },
   {
