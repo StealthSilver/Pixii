@@ -109,12 +109,14 @@ export function HistoryList({
             <span className={overallBadge(row.overallScore)}>
               Overall {row.overallScore ?? "—"}
             </span>
-            <span className={pill(row.gptScore)}>GPT {row.gptScore ?? "—"}</span>
+            <span className={pill(row.gptScore)}>
+              A {row.gptScore ?? "—"}
+            </span>
             <span className={pill(row.claudeScore)}>
-              Mini {row.claudeScore ?? "—"}
+              B {row.claudeScore ?? "—"}
             </span>
             <span className={pill(row.geminiScore)}>
-              Gemini {row.geminiScore ?? "—"}
+              C {row.geminiScore ?? "—"}
             </span>
             <span className="ml-auto text-xs text-muted-foreground">
               {formatRelativeTime(row.createdAt)}

@@ -1,4 +1,4 @@
-import { callClaude } from "@/lib/rufusTwin/claude";
+import { callRufusLlm } from "@/lib/rufusTwin/llm";
 
 export function parseJsonFromClaudeText<T = Record<string, unknown>>(
   text: string,
@@ -23,7 +23,7 @@ export async function callClaudeJson(params: {
   maxTokens?: number;
   timeoutMs?: number;
 }): Promise<string> {
-  return callClaude({
+  return callRufusLlm({
     system: params.system,
     messages: [{ role: "user", content: params.user }],
     maxTokens: params.maxTokens ?? 8192,

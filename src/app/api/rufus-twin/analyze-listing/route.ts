@@ -66,7 +66,7 @@ export async function POST(req: Request) {
       e instanceof Error ? e.message : "Failed to analyze listing.";
     const redacted = message
       .replace(/ANTHROPIC_API_KEY.*/i, "Configuration error.")
-      .replace(/GEMINI_API_KEY.*/i, "Configuration error.")
+      .replace(/ANTHROPIC_API_KEY.*/i, "Configuration error.")
       .replace(/Rufus Twin needs.*/i, "Configuration error.");
     return NextResponse.json({ error: redacted }, { status: 500 });
   }

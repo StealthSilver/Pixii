@@ -64,7 +64,7 @@ export function RawResponses({
               className={tabBtn(tab === "gpt")}
               onClick={() => setTab("gpt")}
             >
-              GPT
+              Detailed
             </button>
             <button
               type="button"
@@ -73,7 +73,7 @@ export function RawResponses({
               className={tabBtn(tab === "claude")}
               onClick={() => setTab("claude")}
             >
-              GPT mini
+              Concise
             </button>
             <button
               type="button"
@@ -82,7 +82,7 @@ export function RawResponses({
               className={tabBtn(tab === "gemini")}
               onClick={() => setTab("gemini")}
             >
-              Gemini
+              Brands
             </button>
           </div>
           <div

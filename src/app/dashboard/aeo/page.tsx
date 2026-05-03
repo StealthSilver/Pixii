@@ -364,21 +364,6 @@ export default function AeoDashboardPage() {
 
                 {result ? (
                   <div className="mt-8 space-y-6">
-                    {result.meta?.usedGeminiForOpenAiSlots &&
-                    (result.meta.usedGeminiForOpenAiSlots.gpt ||
-                      result.meta.usedGeminiForOpenAiSlots.mini) &&
-                    !result.meta?.skipOpenAi ? (
-                      <p className="rounded-lg border border-amber-200/90 bg-amber-50 px-3 py-2 text-sm text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/35 dark:text-amber-100">
-                        Demo note: OpenAI hit quota or was skipped, so the{" "}
-                        <strong>GPT-4o</strong> and/or{" "}
-                        <strong>GPT-4o mini</strong> answers below were
-                        generated with{" "}
-                        <strong>
-                          Gemini ({result.meta.geminiModel ?? "Gemini"})
-                        </strong>{" "}
-                        instead (same free-tier key as the third column).
-                      </p>
-                    ) : null}
                     <ScoreOverview
                       overallScore={result.overallScore}
                       rankSummary={derivedMeta?.rankSummary ?? null}
@@ -392,8 +377,8 @@ export default function AeoDashboardPage() {
 
                     <div className="grid gap-4 md:grid-cols-3">
                       <EngineCard
-                        title="GPT-4o"
-                        icon="G"
+                        title="Claude — detailed"
+                        icon="A"
                         score={result.gptScore}
                         unavailable={
                           Boolean(result.meta?.engineErrors?.gpt) ||
@@ -406,8 +391,8 @@ export default function AeoDashboardPage() {
                         allCompetitorNames={namesForHighlight}
                       />
                       <EngineCard
-                        title="GPT-4o mini"
-                        icon="M"
+                        title="Claude — concise"
+                        icon="B"
                         score={result.claudeScore}
                         unavailable={
                           Boolean(result.meta?.engineErrors?.mini) ||
@@ -421,11 +406,11 @@ export default function AeoDashboardPage() {
                       />
                       <EngineCard
                         title={
-                          result.meta?.geminiModel
-                            ? `Gemini (${result.meta.geminiModel})`
-                            : "Gemini"
+                          result.meta?.anthropicModel
+                            ? `Claude — brands (${result.meta.anthropicModel})`
+                            : "Claude — brands"
                         }
-                        icon="◆"
+                        icon="C"
                         score={result.geminiScore}
                         unavailable={
                           Boolean(result.meta?.engineErrors?.gemini) ||

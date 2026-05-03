@@ -18,7 +18,6 @@ function friendlyError(e: unknown): string {
     const m = e.message;
     if (
       m.includes("ANTHROPIC_API_KEY") ||
-      m.includes("GEMINI_API_KEY") ||
       m.includes("Rufus Twin needs")
     ) {
       return "AI is not configured. Please try again later.";

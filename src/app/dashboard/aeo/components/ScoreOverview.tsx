@@ -148,15 +148,15 @@ export function ScoreOverview({
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
             <span className={pillClass(gptScore)}>
-              <span className="text-muted-foreground">GPT</span>{" "}
+              <span className="text-muted-foreground">Detailed</span>{" "}
               {gptScore ?? "—"}
             </span>
             <span className={pillClass(claudeScore)}>
-              <span className="text-muted-foreground">Mini</span>{" "}
+              <span className="text-muted-foreground">Concise</span>{" "}
               {claudeScore ?? "—"}
             </span>
             <span className={pillClass(geminiScore)}>
-              <span className="text-muted-foreground">Gemini</span>{" "}
+              <span className="text-muted-foreground">Brands</span>{" "}
               {geminiScore ?? "—"}
             </span>
           </div>

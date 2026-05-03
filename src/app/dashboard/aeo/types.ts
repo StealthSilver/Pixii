@@ -18,15 +18,14 @@ export type AeoEngineErrors = {
 export type AeoRunMeta = {
   rankSummary: number | null;
   brandsMentionedCount: number;
-  /** Model id used for the Gemini column / native slot (after burst selection). */
+  /** Claude model id used for this AEO run. */
+  anthropicModel?: string;
+  aeoProvider?: "anthropic";
+  /** Legacy: older runs stored Gemini metadata here. */
   geminiModel?: string;
-  /** Generative Language API version used for Gemini (e.g. v1, v1beta). */
   geminiApiVersion?: string;
-  /** Models selected for this run (spread RPM across free-tier buckets). */
   geminiBurstModels?: string[];
-  /** True when `AEO_SKIP_OPENAI` / `AEO_GEMINI_ONLY` — hides optional demo banner. */
   skipOpenAi?: boolean;
-  /** When OpenAI failed/quota, these slots used Gemini text instead. */
   usedGeminiForOpenAiSlots?: { gpt: boolean; mini: boolean };
   engineErrors?: AeoEngineErrors;
 };

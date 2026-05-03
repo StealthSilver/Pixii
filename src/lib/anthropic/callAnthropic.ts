@@ -1,19 +1,18 @@
-import { resolveRufusAnthropicModel } from "@/lib/rufusTwin/claude";
-
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_VERSION = "2023-06-01";
 
-type ImageBlock = {
-  type: "image";
-  source: { type: "url"; url: string };
-};
+/** Default: fast/cheap; override with ANTHROPIC_MODEL. */
+export function defaultAnthropicModel(): string {
+  return process.env.ANTHROPIC_MODEL?.trim() || "claude-haiku-4-5";
+}
 
-type TextBlock = { type: "text"; text: string };
+export type AnthropicMessage = { role: "user" | "assistant"; content: string };
 
-export async function callClaudeWithImageContent(params: {
-  system: string;
-  userContent: (ImageBlock | TextBlock)[];
+export async function callAnthropicMessages(params: {
+  system?: string;
+  messages: AnthropicMessage[];
   maxTokens: number;
+  model?: string;
   timeoutMs?: number;
 }): Promise<string> {
   const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
@@ -21,11 +20,21 @@ export async function callClaudeWithImageContent(params: {
     throw new Error("ANTHROPIC_API_KEY is not configured.");
   }
 
-  const timeoutMs = params.timeoutMs ?? 90_000;
+  const model = params.model?.trim() || defaultAnthropicModel();
+  const timeoutMs = params.timeoutMs ?? 60_000;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    const body: Record<string, unknown> = {
+      model,
+      max_tokens: params.maxTokens,
+      messages: params.messages,
+    };
+    if (params.system?.trim()) {
+      body.system = params.system.trim();
+    }
+
     const res = await fetch(ANTHROPIC_URL, {
       method: "POST",
       headers: {
@@ -33,23 +42,13 @@ export async function callClaudeWithImageContent(params: {
         "x-api-key": apiKey,
         "anthropic-version": ANTHROPIC_VERSION,
       },
-      body: JSON.stringify({
-        model: resolveRufusAnthropicModel(),
-        max_tokens: params.maxTokens,
-        system: params.system,
-        messages: [
-          {
-            role: "user",
-            content: params.userContent,
-          },
-        ],
-      }),
+      body: JSON.stringify(body),
       signal: controller.signal,
     });
 
     const raw = await res.text();
     if (!res.ok) {
-      console.warn("[ugcVideo/claudeVision]", res.status, raw.slice(0, 400));
+      console.warn("[anthropic]", res.status, raw.slice(0, 400));
       throw new Error("The AI service returned an error. Please try again.");
     }
 

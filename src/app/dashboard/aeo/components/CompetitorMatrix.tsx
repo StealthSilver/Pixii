@@ -79,10 +79,14 @@ export function CompetitorMatrix({ brandName, rows }: CompetitorMatrixProps) {
           <thead>
             <tr className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               <th className="border-b border-border/70 px-3 py-2">Brand</th>
-              <th className="border-b border-border/70 px-3 py-2">GPT rank</th>
-              <th className="border-b border-border/70 px-3 py-2">Mini rank</th>
               <th className="border-b border-border/70 px-3 py-2">
-                Gemini rank
+                Detailed rank
+              </th>
+              <th className="border-b border-border/70 px-3 py-2">
+                Concise rank
+              </th>
+              <th className="border-b border-border/70 px-3 py-2">
+                Brands rank
               </th>
               <th className="border-b border-border/70 px-3 py-2">Avg score</th>
               <th className="border-b border-border/70 px-3 py-2">Sentiment</th>

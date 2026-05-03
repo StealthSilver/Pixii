@@ -1,5 +1,5 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
+import { callAnthropicMessages } from "@/lib/anthropic/callAnthropic";
 
 type GenerateBody = {
   patternName?: string;
@@ -12,9 +12,6 @@ type GenerateBody = {
 
 const SYSTEM =
   "You are an expert social media copywriter for an AI photography product called Pixii. You write high-converting posts that feel human, punchy, and platform-native.";
-
-/** Override with GEMINI_MODEL if your project prefers another flash model. */
-const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
 
 function buildUserPrompt(body: Required<GenerateBody>): string {
   const examples = body.exampleHooks.join(" | ");
@@ -39,10 +36,9 @@ function parseVariations(text: string): string[] {
 
 export async function POST(request: Request) {
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
+    if (!process.env.ANTHROPIC_API_KEY?.trim()) {
       return NextResponse.json(
-        { error: "Missing GEMINI_API_KEY in environment" },
+        { error: "Missing ANTHROPIC_API_KEY in environment" },
         { status: 500 },
       );
     }
@@ -81,23 +77,12 @@ export async function POST(request: Request) {
       tone,
     });
 
-    const modelName =
-      process.env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL;
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: modelName,
-      systemInstruction: SYSTEM,
+    const blockText = await callAnthropicMessages({
+      system: SYSTEM,
+      messages: [{ role: "user", content: userContent }],
+      maxTokens: 2048,
     });
 
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: userContent }] }],
-      generationConfig: {
-        maxOutputTokens: 2048,
-        temperature: 0.85,
-      },
-    });
-
-    const blockText = result.response.text();
     if (!blockText) {
       return NextResponse.json(
         { error: "No text response from model" },

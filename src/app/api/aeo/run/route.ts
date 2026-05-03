@@ -1,5 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import OpenAI from "openai";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { AEOQuery } from "@/lib/models/aeoQuery";
@@ -12,79 +10,12 @@ import {
 } from "@/lib/aeo/competitorMatrix";
 import { parseJsonObject, parseJsonStringArray } from "@/lib/aeo/parseJson";
 import type { AeoParsed } from "@/lib/aeo/types";
-
-/** Passed as 2nd arg to `getGenerativeModel(..., opts)` (apiVersion: v1 vs v1beta). */
-type GeminiRequestOpts = { apiVersion?: string };
-
-function geminiApiVersionsToProbe(): string[] {
-  const v = process.env.GEMINI_API_VERSION?.trim().toLowerCase();
-  if (v === "v1") {
-    return ["v1"];
-  }
-  if (v === "v1beta") {
-    return ["v1beta"];
-  }
-  return ["v1beta", "v1"];
-}
-
-async function listGeminiModelNames(
-  apiKey: string,
-  apiVersion: string,
-): Promise<string[]> {
-  try {
-    const url = new URL(
-      `https://generativelanguage.googleapis.com/${apiVersion}/models`,
-    );
-    url.searchParams.set("key", apiKey);
-    url.searchParams.set("pageSize", "100");
-    const res = await fetch(url.toString(), { method: "GET" });
-    if (!res.ok) {
-      const snippet = (await res.text()).slice(0, 240);
-      console.warn(
-        "[aeo/run] listModels",
-        apiVersion,
-        res.status,
-        snippet || res.statusText,
-      );
-      return [];
-    }
-    const data = (await res.json()) as {
-      models?: {
-        name?: string;
-        supportedGenerationMethods?: string[];
-      }[];
-    };
-    const out: string[] = [];
-    for (const m of data.models ?? []) {
-      const methods = m.supportedGenerationMethods ?? [];
-      if (!methods.includes("generateContent")) {
-        continue;
-      }
-      const name = m.name ?? "";
-      const short = name.startsWith("models/")
-        ? name.slice("models/".length)
-        : name;
-      if (short) {
-        out.push(short);
-      }
-    }
-    return out;
-  } catch (e) {
-    console.warn(
-      "[aeo/run] listModels exception:",
-      e instanceof Error ? e.message : String(e),
-    );
-    return [];
-  }
-}
+import {
+  callAnthropicMessages,
+  defaultAnthropicModel,
+} from "@/lib/anthropic/callAnthropic";
 
 const AI_TIMEOUT_MS = 25_000;
-const GPT_CONSUMER_MODEL =
-  process.env.AEO_GPT_MODEL?.trim() || "gpt-4o";
-const GPT_MINI_MODEL =
-  process.env.AEO_GPT_MINI_MODEL?.trim() || "gpt-4o-mini";
-const PARSER_MODEL = process.env.AEO_PARSER_MODEL?.trim() || "gpt-4o";
-const REC_MODEL = process.env.AEO_REC_MODEL?.trim() || "gpt-4o";
 
 function formatEngineError(e: unknown): string {
   if (e instanceof Error) {
@@ -94,339 +25,6 @@ function formatEngineError(e: unknown): string {
     return String((e as { message: unknown }).message);
   }
   return String(e);
-}
-
-function isOpenAiFallbackEligible(e: unknown): boolean {
-  const m = formatEngineError(e).toLowerCase();
-  return (
-    m.includes("429") ||
-    m.includes("quota") ||
-    m.includes("rate limit") ||
-    m.includes("billing") ||
-    m.includes("insufficient_quota") ||
-    m.includes("401") ||
-    m.includes("403") ||
-    m.includes("invalid_api_key") ||
-    m.includes("incorrect api key") ||
-    m.includes("credit") ||
-    m.includes("exceeded your current")
-  );
-}
-
-/** Models to try in order — free / widely-enabled ids first; 2.5 last (often restricted). */
-function geminiModelCandidates(): string[] {
-  const defaults = [
-    "gemini-2.0-flash",
-    "gemini-2.0-flash-001",
-    "gemini-2.0-flash-lite",
-    "gemini-1.5-flash-8b",
-    "gemini-1.5-flash",
-    "gemini-1.5-flash-latest",
-    "gemini-flash-latest",
-    "gemini-pro",
-    "gemini-2.5-flash",
-  ];
-  const extra = [
-    process.env.AEO_GEMINI_MODEL?.trim(),
-    process.env.GEMINI_MODEL?.trim(),
-  ].filter(Boolean) as string[];
-  const preferEnvFirst = process.env.AEO_TRY_ENV_GEMINI_MODEL_FIRST === "1";
-  const merged = preferEnvFirst
-    ? [...new Set([...extra, ...defaults])]
-    : [...new Set([...defaults, ...extra])];
-  return merged;
-}
-
-/**
- * Distinct Gemini model ids spread across separate **free-tier RPM buckets**
- * (limits are per model). One AEO run issues ~7 Gemini calls when OpenAI is
- * unavailable — parallel calls to the same model exceed typical 5 RPM limits.
- */
-const DEFAULT_GEMINI_BURST_MODELS = [
-  "gemini-2.0-flash",
-  "gemini-2.5-flash",
-  "gemini-1.5-flash",
-  "gemini-2.0-flash-lite",
-  "gemini-2.5-flash-lite",
-  "gemini-1.5-flash-8b",
-  "gemini-pro",
-];
-
-function parseBurstModelList(): string[] {
-  const raw = process.env.AEO_GEMINI_BURST_MODELS?.trim();
-  if (!raw) {
-    return [...DEFAULT_GEMINI_BURST_MODELS];
-  }
-  const parts = raw
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  return parts.length > 0 ? [...new Set(parts)] : [...DEFAULT_GEMINI_BURST_MODELS];
-}
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-/** Parses "Please retry in 49.25s" from Gemini 429 bodies. */
-function retryDelayMsFromGeminiError(e: unknown): number {
-  const msg = formatEngineError(e);
-  const m = msg.match(/retry in ([\d.]+)\s*s/i);
-  if (m) {
-    return Math.min(120_000, Math.ceil(parseFloat(m[1]) * 1000) + 750);
-  }
-  return 13_500;
-}
-
-function isGemini429Error(e: unknown): boolean {
-  const msg = formatEngineError(e).toLowerCase();
-  return msg.includes("429") || msg.includes("too many requests");
-}
-
-async function withGemini429Retries<T>(
-  label: string,
-  fn: () => Promise<T>,
-): Promise<T> {
-  let last: unknown;
-  for (let attempt = 0; attempt < 5; attempt++) {
-    try {
-      return await fn();
-    } catch (e) {
-      last = e;
-      if (!isGemini429Error(e) || attempt === 4) {
-        throw e;
-      }
-      const d = retryDelayMsFromGeminiError(e);
-      console.warn(`[aeo/run] ${label}: Gemini 429, retry in ${d}ms`);
-      await sleep(d);
-    }
-  }
-  throw last;
-}
-
-type GeminiBurstPlan = {
-  requestOpts?: GeminiRequestOpts;
-  /** Distinct models for parallel slots (consumers + parses + rec). */
-  models: string[];
-};
-
-async function runGeminiPing(
-  apiKey: string,
-  modelId: string,
-  requestOpts?: GeminiRequestOpts,
-): Promise<void> {
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: modelId }, requestOpts);
-  const result = await model.generateContent({
-    contents: [
-      { role: "user", parts: [{ text: 'Reply with exactly the word "OK".' }] },
-    ],
-    generationConfig: { maxOutputTokens: 16, temperature: 0 },
-  });
-  const t = result.response.text()?.trim();
-  if (!t) {
-    throw new Error("Empty Gemini ping response");
-  }
-}
-
-/**
- * Probes multiple model ids so parallel AEO stages don't share one model's RPM.
- */
-async function resolveGeminiBurstPlan(apiKey: string): Promise<GeminiBurstPlan> {
-  const targetSlots = 7;
-  const burst = parseBurstModelList();
-  const versions = geminiApiVersionsToProbe();
-  const verified: string[] = [];
-  let savedRo: GeminiRequestOpts | undefined;
-
-  for (const ver of versions) {
-    const ro: GeminiRequestOpts = { apiVersion: ver };
-    for (const id of burst) {
-      if (verified.includes(id)) {
-        continue;
-      }
-      try {
-        await withGemini429Retries(`burst-ping-${id}`, () =>
-          withTimeout(runGeminiPing(apiKey, id, ro), 15_000, `gemini-ping-${id}`),
-        );
-        verified.push(id);
-        if (!savedRo) {
-          savedRo = ro;
-        }
-        console.info("[aeo/run] Burst probe OK", id, ver, `(have ${verified.length})`);
-        if (verified.length >= targetSlots) {
-          return { requestOpts: savedRo, models: verified.slice(0, targetSlots) };
-        }
-      } catch (e) {
-        console.warn("[aeo/run] Burst probe failed", id, formatEngineError(e));
-      }
-    }
-  }
-
-  if (verified.length < targetSlots) {
-    for (const id of geminiModelCandidates()) {
-      if (verified.includes(id)) {
-        continue;
-      }
-      for (const ver of versions) {
-        const ro: GeminiRequestOpts = { apiVersion: ver };
-        try {
-          await withGemini429Retries(`extra-ping-${id}`, () =>
-            withTimeout(runGeminiPing(apiKey, id, ro), 15_000, `gemini-ping-${id}`),
-          );
-          verified.push(id);
-          if (!savedRo) {
-            savedRo = ro;
-          }
-          console.info("[aeo/run] Extra burst probe OK", id, ver);
-          if (verified.length >= targetSlots) {
-            break;
-          }
-        } catch (e) {
-          console.warn("[aeo/run] Extra burst probe failed", id, formatEngineError(e));
-        }
-      }
-      if (verified.length >= targetSlots) {
-        break;
-      }
-    }
-  }
-
-  if (verified.length === 0) {
-    const single = await resolveGeminiModel(apiKey);
-    return {
-      requestOpts: single.requestOpts,
-      models: [single.modelId],
-    };
-  }
-
-  while (verified.length < targetSlots && verified.length > 0) {
-    verified.push(verified[verified.length % verified.length]!);
-  }
-
-  return {
-    requestOpts: savedRo,
-    models: verified.slice(0, targetSlots),
-  };
-}
-
-async function resolveGeminiModel(
-  apiKey: string,
-): Promise<{ modelId: string; requestOpts?: GeminiRequestOpts }> {
-  const staticCandidates = geminiModelCandidates();
-  let lastErr = "";
-  const versions = geminiApiVersionsToProbe();
-
-  for (const ver of versions) {
-    const listed = await listGeminiModelNames(apiKey, ver);
-    const candidates = [...new Set([...listed, ...staticCandidates])];
-    for (const id of candidates) {
-      try {
-        const ro: GeminiRequestOpts = { apiVersion: ver };
-        await withTimeout(
-          runGeminiPing(apiKey, id, ro),
-          15_000,
-          `gemini-ping-${ver}-${id}`,
-        );
-        console.info("[aeo/run] Using Gemini model", id, "api", ver);
-        return { modelId: id, requestOpts: ro };
-      } catch (e) {
-        lastErr = formatEngineError(e);
-        console.warn("[aeo/run] Gemini probe failed:", ver, id, lastErr);
-      }
-    }
-  }
-
-  throw new Error(
-    `No Gemini model accepted this API key (tried REST list + static ids for: ${versions.join(", ")}). ` +
-      `Last error: ${lastErr}. ` +
-      "Create a fresh key at https://aistudio.google.com/apikey or in Google Cloud enable " +
-      "\"Generative Language API\" and check project restrictions / billing. " +
-      "You can also set GEMINI_API_VERSION=v1 in .env.local to force the v1 endpoint.",
-  );
-}
-
-type ConsumerOk = {
-  ok: true;
-  text: string;
-  usedGeminiFallback?: boolean;
-};
-type ConsumerFail = { ok: false; error: string; text: "" };
-
-async function runConsumerWithOpenAiThenGemini(args: {
-  openai: OpenAI | null;
-  openaiModel: string;
-  geminiKey: string;
-  geminiModelId: string;
-  geminiRequestOpts?: GeminiRequestOpts;
-  userPrompt: string;
-  geminiPrefix: string | null;
-}): Promise<ConsumerOk | ConsumerFail> {
-  let triedOpenAi = false;
-  if (args.openai) {
-    triedOpenAi = true;
-    try {
-      const text = await withTimeout(
-        runOpenAIText(args.openai, args.openaiModel, args.userPrompt),
-        AI_TIMEOUT_MS,
-        args.openaiModel,
-      );
-      return { ok: true, text };
-    } catch (e) {
-      if (!isOpenAiFallbackEligible(e)) {
-        return { ok: false, error: formatEngineError(e), text: "" };
-      }
-      console.warn(
-        `[aeo/run] ${args.openaiModel} failed; using Gemini fallback:`,
-        formatEngineError(e),
-      );
-    }
-  }
-  try {
-    const full = (args.geminiPrefix ?? "") + args.userPrompt;
-    const text = await withTimeout(
-      runGeminiText(
-        args.geminiKey,
-        args.geminiModelId,
-        full,
-        args.geminiRequestOpts,
-      ),
-      AI_TIMEOUT_MS,
-      "gemini-consumer",
-    );
-    return {
-      ok: true,
-      text,
-      usedGeminiFallback: triedOpenAi ? true : undefined,
-    };
-  } catch (e) {
-    return { ok: false, error: formatEngineError(e), text: "" };
-  }
-}
-
-async function runGeminiConsumerOnly(args: {
-  geminiKey: string;
-  geminiModelId: string;
-  geminiRequestOpts?: GeminiRequestOpts;
-  userPrompt: string;
-  prefix: string | null;
-}): Promise<ConsumerOk | ConsumerFail> {
-  try {
-    const full = (args.prefix ?? "") + args.userPrompt;
-    const text = await withTimeout(
-      runGeminiText(
-        args.geminiKey,
-        args.geminiModelId,
-        full,
-        args.geminiRequestOpts,
-      ),
-      AI_TIMEOUT_MS,
-      "gemini-slot",
-    );
-    return { ok: true, text };
-  } catch (e) {
-    return { ok: false, error: formatEngineError(e), text: "" };
-  }
 }
 
 function consumerPrompt(queryText: string): string {
@@ -570,188 +168,59 @@ function coerceParsed(raw: unknown): AeoParsed {
   };
 }
 
-async function runOpenAIText(
-  client: OpenAI,
+type ConsumerOk = { ok: true; text: string };
+type ConsumerFail = { ok: false; error: string; text: "" };
+
+async function runAnthropicConsumer(
+  userContent: string,
+  maxTokens: number,
   model: string,
-  userPrompt: string,
-): Promise<string> {
-  const res = await client.chat.completions.create({
-    model,
-    messages: [{ role: "user", content: userPrompt }],
-    max_completion_tokens: 600,
-    temperature: 0.75,
-  });
-  const text = res.choices[0]?.message?.content?.trim();
-  if (!text) {
-    throw new Error("Empty OpenAI response");
-  }
-  return text;
-}
-
-async function runGeminiText(
-  apiKey: string,
-  modelId: string,
-  userPrompt: string,
-  requestOpts?: GeminiRequestOpts,
-): Promise<string> {
-  return withGemini429Retries(`gemini-consumer-${modelId}`, async () => {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: modelId }, requestOpts);
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: userPrompt }] }],
-      generationConfig: {
-        maxOutputTokens: 600,
-        temperature: 0.75,
-      },
-    });
-    const text = result.response.text()?.trim();
-    if (!text) {
-      throw new Error("Empty Gemini response");
-    }
-    return text;
-  });
-}
-
-async function parseWithOpenAI(
-  client: OpenAI,
-  queryText: string,
-  brandName: string,
-  productName: string,
-  raw: string,
-): Promise<AeoParsed> {
-  const prompt = buildParserPrompt(queryText, brandName, productName, raw);
-  const res = await client.chat.completions.create({
-    model: PARSER_MODEL,
-    response_format: { type: "json_object" },
-    messages: [
-      {
-        role: "system",
-        content:
-          "You extract structured fields from prose. Output only JSON matching the requested shape.",
-      },
-      { role: "user", content: prompt },
-    ],
-    max_completion_tokens: 900,
-    temperature: 0.1,
-  });
-  const text = res.choices[0]?.message?.content ?? "{}";
+): Promise<ConsumerOk | ConsumerFail> {
   try {
-    return coerceParsed(parseJsonObject<unknown>(text));
-  } catch {
-    return emptyParsed();
+    const text = await withTimeout(
+      callAnthropicMessages({
+        messages: [{ role: "user", content: userContent }],
+        maxTokens,
+        model,
+      }),
+      AI_TIMEOUT_MS,
+      "aeo-consumer",
+    );
+    return { ok: true, text };
+  } catch (e) {
+    return { ok: false, error: formatEngineError(e), text: "" };
   }
 }
 
-async function parseWithGemini(
-  apiKey: string,
-  modelId: string,
-  requestOpts: GeminiRequestOpts | undefined,
+async function parseWithAnthropic(
   queryText: string,
   brandName: string,
   productName: string,
   raw: string,
-): Promise<AeoParsed> {
-  const prompt = buildParserPrompt(queryText, brandName, productName, raw);
-  const genAI = new GoogleGenerativeAI(apiKey);
-  try {
-    const result = await withGemini429Retries(`parse-json-${modelId}`, async () => {
-      const model = genAI.getGenerativeModel(
-        {
-          model: modelId,
-          generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: 2048,
-            responseMimeType: "application/json",
-          },
-        },
-        requestOpts,
-      );
-      return model.generateContent({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-      });
-    });
-    const text = result.response.text() ?? "{}";
-    try {
-      return coerceParsed(parseJsonObject<unknown>(text));
-    } catch {
-      return emptyParsed();
-    }
-  } catch {
-    const result = await withGemini429Retries(`parse-plain-${modelId}`, async () => {
-      const model = genAI.getGenerativeModel(
-        {
-          model: modelId,
-          generationConfig: { temperature: 0.1, maxOutputTokens: 2048 },
-        },
-        requestOpts,
-      );
-      return model.generateContent({
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                text: `${prompt}\n\nOutput one valid JSON object only. No markdown or code fences.`,
-              },
-            ],
-          },
-        ],
-      });
-    });
-    const text = result.response.text() ?? "{}";
-    try {
-      return coerceParsed(parseJsonObject<unknown>(text));
-    } catch {
-      return emptyParsed();
-    }
-  }
-}
-
-async function parseWithOpenAiThenGemini(
-  openai: OpenAI | null,
-  geminiKey: string,
-  geminiModelId: string,
-  geminiRequestOpts: GeminiRequestOpts | undefined,
-  queryText: string,
-  brandName: string,
-  productName: string,
-  raw: string,
+  model: string,
 ): Promise<AeoParsed> {
   if (!raw.trim()) {
     return emptyParsed();
   }
-  if (openai) {
-    try {
-      return await parseWithOpenAI(
-        openai,
-        queryText,
-        brandName,
-        productName,
-        raw,
-      );
-    } catch (e) {
-      if (!isOpenAiFallbackEligible(e)) {
-        console.warn("[aeo/run] OpenAI parse failed:", formatEngineError(e));
-        return emptyParsed();
-      }
-      console.warn(
-        "[aeo/run] OpenAI parse failed; Gemini parse:",
-        formatEngineError(e),
-      );
-    }
-  }
+  const prompt = buildParserPrompt(queryText, brandName, productName, raw);
   try {
-    return await parseWithGemini(
-      geminiKey,
-      geminiModelId,
-      geminiRequestOpts,
-      queryText,
-      brandName,
-      productName,
-      raw,
+    const text = await withTimeout(
+      callAnthropicMessages({
+        system:
+          "You extract structured fields from prose. Output only JSON matching the requested shape. No markdown code fences.",
+        messages: [{ role: "user", content: prompt }],
+        maxTokens: 1200,
+        model,
+      }),
+      AI_TIMEOUT_MS,
+      "aeo-parse",
     );
-  } catch (e) {
-    console.warn("[aeo/run] Gemini parse failed:", formatEngineError(e));
+    try {
+      return coerceParsed(parseJsonObject<unknown>(text));
+    } catch {
+      return emptyParsed();
+    }
+  } catch {
     return emptyParsed();
   }
 }
@@ -779,16 +248,16 @@ function buildRecommendationsUserText(params: RecParams): string {
     "You are an AEO (Answer Engine Optimization) strategist.\n" +
     `A brand called '${params.brandName.replace(/'/g, "’")}' ran a diagnostic for the query: ` +
     `'${params.queryText.replace(/'/g, "’")}'\n\n` +
-    "Their scores:\n" +
-    `- GPT-4o: ${params.gptScore ?? "unavailable"}/100, rank: ${fmt(params.gptRank)}\n` +
-    `- GPT-4o mini: ${params.claudeScore ?? "unavailable"}/100, rank: ${fmt(params.claudeRank)}\n` +
-    `- Gemini: ${params.geminiScore ?? "unavailable"}/100, rank: ${fmt(params.geminiRank)}\n` +
+    "Three Claude runs used different answer styles (detailed, concise, brand-forward). Scores:\n" +
+    `- Detailed style: ${params.gptScore ?? "unavailable"}/100, rank: ${fmt(params.gptRank)}\n` +
+    `- Concise style: ${params.claudeScore ?? "unavailable"}/100, rank: ${fmt(params.claudeRank)}\n` +
+    `- Brand-forward style: ${params.geminiScore ?? "unavailable"}/100, rank: ${fmt(params.geminiRank)}\n` +
     `- Overall AEO Score: ${params.overallScore ?? "unavailable"}/100\n\n` +
     "Their top competitors in AI responses:\n" +
     `${params.matrixSnippet}\n\n` +
-    `GPT said about their brand: ${params.gptParsed.mention_context ?? "not mentioned"}\n` +
-    `GPT mini said about their brand: ${params.claudeParsed.mention_context ?? "not mentioned"}\n` +
-    `Gemini said about their brand: ${params.geminiParsed.mention_context ?? "not mentioned"}\n\n` +
+    `Detailed style said about their brand: ${params.gptParsed.mention_context ?? "not mentioned"}\n` +
+    `Concise style said about their brand: ${params.claudeParsed.mention_context ?? "not mentioned"}\n` +
+    `Brand-forward style said about their brand: ${params.geminiParsed.mention_context ?? "not mentioned"}\n\n` +
     "Generate exactly 4 specific, actionable recommendations to " +
     "improve their AEO score. Each recommendation should be 1-2 " +
     "sentences, specific to their scores and gaps. Focus on " +
@@ -797,25 +266,18 @@ function buildRecommendationsUserText(params: RecParams): string {
   );
 }
 
-async function buildRecommendations(
-  client: OpenAI,
+async function buildRecommendationsAnthropic(
   params: RecParams,
+  model: string,
 ): Promise<string[]> {
   const userPrompt = buildRecommendationsUserText(params);
-  const res = await client.chat.completions.create({
-    model: REC_MODEL,
-    response_format: { type: "json_object" },
-    messages: [
-      {
-        role: "system",
-        content: "You return only JSON with a recommendations array of 4 strings.",
-      },
-      { role: "user", content: userPrompt },
-    ],
-    max_completion_tokens: 700,
-    temperature: 0.5,
+  const text = await callAnthropicMessages({
+    system:
+      "You return only JSON with a recommendations array of exactly 4 strings. No markdown.",
+    messages: [{ role: "user", content: userPrompt }],
+    maxTokens: 800,
+    model,
   });
-  const text = res.choices[0]?.message?.content ?? "{}";
   const obj = parseJsonObject<{ recommendations?: unknown }>(text);
   let arr: string[] = [];
   if (Array.isArray(obj.recommendations)) {
@@ -836,128 +298,6 @@ async function buildRecommendations(
   return four.slice(0, 4);
 }
 
-async function buildRecommendationsGemini(
-  apiKey: string,
-  modelId: string,
-  requestOpts: GeminiRequestOpts | undefined,
-  params: RecParams,
-): Promise<string[]> {
-  const userPrompt = buildRecommendationsUserText(params);
-  const genAI = new GoogleGenerativeAI(apiKey);
-  try {
-    const result = await withGemini429Retries(`rec-json-${modelId}`, async () => {
-      const model = genAI.getGenerativeModel(
-        {
-          model: modelId,
-          generationConfig: {
-            temperature: 0.5,
-            maxOutputTokens: 1200,
-            responseMimeType: "application/json",
-          },
-        },
-        requestOpts,
-      );
-      return model.generateContent({
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                text:
-                  "You return only JSON with a recommendations array of exactly 4 strings.\n\n" +
-                  userPrompt,
-              },
-            ],
-          },
-        ],
-      });
-    });
-    const text = result.response.text() ?? "{}";
-    const obj = parseJsonObject<{ recommendations?: unknown }>(text);
-    let arr: string[] = [];
-    if (Array.isArray(obj.recommendations)) {
-      arr = obj.recommendations.map(String);
-    } else {
-      try {
-        arr = parseJsonStringArray(text);
-      } catch {
-        arr = [];
-      }
-    }
-    const four = arr.filter(Boolean).slice(0, 4);
-    while (four.length < 4) {
-      four.push(
-        "Tighten on-page copy and FAQs so models can quote clear, factual claims about your product.",
-      );
-    }
-    return four.slice(0, 4);
-  } catch {
-    const result = await withGemini429Retries(`rec-plain-${modelId}`, async () => {
-      const model = genAI.getGenerativeModel(
-        {
-          model: modelId,
-          generationConfig: { temperature: 0.5, maxOutputTokens: 1200 },
-        },
-        requestOpts,
-      );
-      return model.generateContent({
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                text:
-                  "Return one JSON object only, no markdown. " +
-                  buildRecommendationsUserText(params),
-              },
-            ],
-          },
-        ],
-      });
-    });
-    const text = result.response.text() ?? "{}";
-    const obj = parseJsonObject<{ recommendations?: unknown }>(text);
-    const arr = Array.isArray(obj.recommendations)
-      ? obj.recommendations.map(String)
-      : [];
-    const four = arr.filter(Boolean).slice(0, 4);
-    while (four.length < 4) {
-      four.push(
-        "Tighten on-page copy and FAQs so models can quote clear, factual claims about your product.",
-      );
-    }
-    return four.slice(0, 4);
-  }
-}
-
-async function buildRecommendationsEither(
-  openai: OpenAI | null,
-  geminiKey: string,
-  geminiModelId: string,
-  geminiRequestOpts: GeminiRequestOpts | undefined,
-  params: RecParams,
-): Promise<string[]> {
-  if (openai) {
-    try {
-      return await buildRecommendations(openai, params);
-    } catch (e) {
-      if (!isOpenAiFallbackEligible(e)) {
-        throw e;
-      }
-      console.warn(
-        "[aeo/run] OpenAI recommendations failed; Gemini:",
-        formatEngineError(e),
-      );
-    }
-  }
-  return buildRecommendationsGemini(
-    geminiKey,
-    geminiModelId,
-    geminiRequestOpts,
-    params,
-  );
-}
-
 type RunBody = {
   queryText?: string;
   brandName?: string;
@@ -966,9 +306,7 @@ type RunBody = {
 
 function toConsumerSlot(
   r: ConsumerOk | ConsumerFail,
-):
-  | { ok: true; text: string }
-  | { ok: false; error: string; text: "" } {
+): { ok: true; text: string } | { ok: false; error: string; text: "" } {
   return r.ok
     ? { ok: true, text: r.text }
     : { ok: false, error: r.error, text: "" };
@@ -976,15 +314,9 @@ function toConsumerSlot(
 
 export async function POST(request: Request) {
   try {
-    const openaiKey = process.env.OPENAI_API_KEY?.trim();
-    const geminiKey = process.env.GEMINI_API_KEY?.trim();
-    const skipOpenAi =
-      process.env.AEO_SKIP_OPENAI === "1" ||
-      process.env.AEO_GEMINI_ONLY === "1";
-
-    if (!geminiKey) {
+    if (!process.env.ANTHROPIC_API_KEY?.trim()) {
       return NextResponse.json(
-        { error: "Missing GEMINI_API_KEY in environment" },
+        { error: "Missing ANTHROPIC_API_KEY in environment" },
         { status: 500 },
       );
     }
@@ -1001,52 +333,27 @@ export async function POST(request: Request) {
       );
     }
 
+    const model = defaultAnthropicModel();
     const prompt = consumerPrompt(queryText);
-    const burstPlan = await resolveGeminiBurstPlan(geminiKey);
-    const geminiRequestOpts = burstPlan.requestOpts;
-    const gm = burstPlan.models;
-    const slotGptGem = gm[0] ?? "gemini-2.0-flash";
-    const slotMiniGem = gm[1] ?? slotGptGem;
-    const slotNativeGem = gm[2] ?? slotGptGem;
-    const parseGemG = gm[3] ?? slotGptGem;
-    const parseGemM = gm[4] ?? slotMiniGem;
-    const parseGemZ = gm[5] ?? slotNativeGem;
-    const recGem = gm[6] ?? slotNativeGem;
-    const geminiModelId = slotNativeGem;
-    const openai =
-      openaiKey && !skipOpenAi
-        ? new OpenAI({ apiKey: openaiKey, timeout: AI_TIMEOUT_MS })
-        : null;
 
     const [gptR, miniR, gemR] = await Promise.all([
-      runConsumerWithOpenAiThenGemini({
-        openai,
-        openaiModel: GPT_CONSUMER_MODEL,
-        geminiKey,
-        geminiModelId: slotGptGem,
-        geminiRequestOpts,
-        userPrompt: prompt,
-        geminiPrefix:
-          "(You are a thorough product researcher helping a shopper.)\n\n",
-      }),
-      runConsumerWithOpenAiThenGemini({
-        openai,
-        openaiModel: GPT_MINI_MODEL,
-        geminiKey,
-        geminiModelId: slotMiniGem,
-        geminiRequestOpts,
-        userPrompt: prompt,
-        geminiPrefix:
-          "(You are concise and direct; favor clear tradeoffs for a busy shopper.)\n\n",
-      }),
-      runGeminiConsumerOnly({
-        geminiKey,
-        geminiModelId: slotNativeGem,
-        geminiRequestOpts,
-        userPrompt: prompt,
-        prefix:
-          "(You are Gemini: mention several specific brands by name when helpful.)\n\n",
-      }),
+      runAnthropicConsumer(
+        "(You are a thorough product researcher helping a shopper.)\n\n" +
+          prompt,
+        600,
+        model,
+      ),
+      runAnthropicConsumer(
+        "(You are concise and direct; favor clear tradeoffs for a busy shopper.)\n\n" +
+          prompt,
+        600,
+        model,
+      ),
+      runAnthropicConsumer(
+        "(You mention several specific brand names when helpful.)\n\n" + prompt,
+        600,
+        model,
+      ),
     ]);
 
     const gptRes = toConsumerSlot(gptR);
@@ -1054,15 +361,13 @@ export async function POST(request: Request) {
     const gemRes = toConsumerSlot(gemR);
 
     if (!gptRes.ok) {
-      console.error("[aeo/run] GPT-4o slot failed:", gptRes.error);
+      console.error("[aeo/run] slot A failed:", gptRes.error);
     }
     if (!miniRes.ok) {
-      console.error("[aeo/run] GPT-4o mini slot failed:", miniRes.error);
+      console.error("[aeo/run] slot B failed:", miniRes.error);
     }
     if (!gemRes.ok) {
-      console.error("[aeo/run] Gemini slot failed:", gemRes.error, {
-        model: geminiModelId,
-      });
+      console.error("[aeo/run] slot C failed:", gemRes.error);
     }
 
     const gptRaw = gptRes.ok ? gptRes.text : "";
@@ -1071,18 +376,15 @@ export async function POST(request: Request) {
 
     const parseGptP = gptRes.ok
       ? withTimeout(
-          parseWithOpenAiThenGemini(
-            openai,
-            geminiKey,
-            parseGemG,
-            geminiRequestOpts,
+          parseWithAnthropic(
             queryText,
             brandName,
             productName,
             gptRaw,
+            model,
           ),
           AI_TIMEOUT_MS,
-          "parse GPT",
+          "parse A",
         ).then(
           (p) => ({ ok: true as const, parsed: p }),
           () => ({ ok: false as const, parsed: emptyParsed() }),
@@ -1091,18 +393,15 @@ export async function POST(request: Request) {
 
     const parseMiniP = miniRes.ok
       ? withTimeout(
-          parseWithOpenAiThenGemini(
-            openai,
-            geminiKey,
-            parseGemM,
-            geminiRequestOpts,
+          parseWithAnthropic(
             queryText,
             brandName,
             productName,
             claudeRaw,
+            model,
           ),
           AI_TIMEOUT_MS,
-          "parse mini",
+          "parse B",
         ).then(
           (p) => ({ ok: true as const, parsed: p }),
           () => ({ ok: false as const, parsed: emptyParsed() }),
@@ -1111,18 +410,15 @@ export async function POST(request: Request) {
 
     const parseGemP = gemRes.ok
       ? withTimeout(
-          parseWithOpenAiThenGemini(
-            openai,
-            geminiKey,
-            parseGemZ,
-            geminiRequestOpts,
+          parseWithAnthropic(
             queryText,
             brandName,
             productName,
             geminiRaw,
+            model,
           ),
           AI_TIMEOUT_MS,
-          "parse Gemini",
+          "parse C",
         ).then(
           (p) => ({ ok: true as const, parsed: p }),
           () => ({ ok: false as const, parsed: emptyParsed() }),
@@ -1171,11 +467,7 @@ export async function POST(request: Request) {
     let recommendations: string[] = [];
     try {
       recommendations = await withTimeout(
-        buildRecommendationsEither(
-          openai,
-          geminiKey,
-          recGem,
-          geminiRequestOpts,
+        buildRecommendationsAnthropic(
           {
             brandName,
             queryText,
@@ -1191,6 +483,7 @@ export async function POST(request: Request) {
             geminiParsed,
             matrixSnippet: topCompLines || "(none extracted)",
           },
+          model,
         ),
         AI_TIMEOUT_MS,
         "recommendations",
@@ -1265,14 +558,8 @@ export async function POST(request: Request) {
       meta: {
         rankSummary: rankX,
         brandsMentionedCount: brandsY,
-        geminiModel: geminiModelId,
-        geminiApiVersion: geminiRequestOpts?.apiVersion,
-        geminiBurstModels: burstPlan.models,
-        skipOpenAi,
-        usedGeminiForOpenAiSlots: {
-          gpt: Boolean(gptR.ok && gptR.usedGeminiFallback),
-          mini: Boolean(miniR.ok && miniR.usedGeminiFallback),
-        },
+        anthropicModel: model,
+        aeoProvider: "anthropic" as const,
         engineErrors: {
           gpt: gptRes.ok ? undefined : gptRes.error,
           mini: miniRes.ok ? undefined : miniRes.error,
