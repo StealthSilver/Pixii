@@ -23,6 +23,8 @@ export {
 const packagingJobSchema = new Schema(
   {
     originalPdfUrl: { type: String, required: true },
+    /** Cloudinary public_id for signed raw delivery when unsigned URLs return 401. */
+    originalPdfPublicId: { type: String },
     flatTextureUrl: { type: String },
     packageShape: {
       type: String,

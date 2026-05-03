@@ -1,4 +1,8 @@
 import { fromBuffer } from "pdf2pic";
+import {
+  parseDeliveryAssetVersionFromUrl,
+  signedCloudinaryPdfFirstPagePngUrl,
+} from "@/lib/cloudinary";
 
 function cloudinaryPdfToPngUrl(pdfSecureUrl: string): string {
   if (!pdfSecureUrl.includes("res.cloudinary.com")) {
@@ -132,13 +136,40 @@ async function tryReplicatePdfToImage(pdfBuffer: Buffer): Promise<Buffer> {
   return Buffer.from(await imgRes.arrayBuffer());
 }
 
-async function tryCloudinaryPdfUrl(pdfSecureUrl: string): Promise<Buffer> {
-  const imageUrl = cloudinaryPdfToPngUrl(pdfSecureUrl);
-  const res = await fetch(imageUrl);
-  if (!res.ok) {
-    throw new Error(`Cloudinary PDF→PNG fetch failed: ${res.status}`);
+async function tryCloudinaryPdfUrl(
+  pdfSecureUrl: string,
+  pdfPublicId?: string | null,
+): Promise<Buffer> {
+  const version = parseDeliveryAssetVersionFromUrl(pdfSecureUrl);
+  const attempts: string[] = [];
+  const pid = pdfPublicId?.trim();
+  if (pid) {
+    if (version != null) {
+      attempts.push(signedCloudinaryPdfFirstPagePngUrl(pid, { version }));
+      attempts.push(
+        signedCloudinaryPdfFirstPagePngUrl(pid, {
+          version,
+          longUrlSignature: true,
+        }),
+      );
+    } else {
+      attempts.push(signedCloudinaryPdfFirstPagePngUrl(pid, {}));
+      attempts.push(signedCloudinaryPdfFirstPagePngUrl(pid, { longUrlSignature: true }));
+    }
   }
-  return Buffer.from(await res.arrayBuffer());
+  attempts.push(cloudinaryPdfToPngUrl(pdfSecureUrl));
+
+  let lastStatus = 0;
+  for (const imageUrl of attempts) {
+    const res = await fetch(imageUrl, {
+      headers: { "User-Agent": "PixiiPackagingRenderer/1.0" },
+    });
+    if (res.ok) {
+      return Buffer.from(await res.arrayBuffer());
+    }
+    lastStatus = res.status;
+  }
+  throw new Error(`Cloudinary PDF→PNG fetch failed: ${lastStatus}`);
 }
 
 /**
@@ -148,6 +179,7 @@ async function tryCloudinaryPdfUrl(pdfSecureUrl: string): Promise<Buffer> {
 export async function extractTextureFromPdf(
   pdfBuffer: Buffer,
   cloudinaryPdfUrl?: string,
+  cloudinaryPdfPublicId?: string | null,
 ): Promise<Buffer> {
   const errors: string[] = [];
 
@@ -165,7 +197,7 @@ export async function extractTextureFromPdf(
 
   if (cloudinaryPdfUrl?.startsWith("http")) {
     try {
-      return await tryCloudinaryPdfUrl(cloudinaryPdfUrl);
+      return await tryCloudinaryPdfUrl(cloudinaryPdfUrl, cloudinaryPdfPublicId);
     } catch (e) {
       errors.push(`cloudinary: ${e instanceof Error ? e.message : String(e)}`);
     }

@@ -49,13 +49,12 @@ export async function POST(request: Request) {
 
     await connectDB();
 
-    const originalPdfUrl = await uploadRawPdfBuffer(
-      buf,
-      "pixii/packaging-renderer/originals",
-    );
+    const { secureUrl: originalPdfUrl, publicId: originalPdfPublicId } =
+      await uploadRawPdfBuffer(buf, "pixii/packaging-renderer/originals");
 
     const job = await PackagingJob.create({
       originalPdfUrl,
+      originalPdfPublicId,
       status: "queued",
       currentStep: 0,
       packageShape: "box_rectangle" satisfies PackageShape,

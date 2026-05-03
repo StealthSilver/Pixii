@@ -5,6 +5,7 @@ import {
   type PackagingJobDoc,
 } from "@/lib/models/packagingJob";
 import {
+  downloadRawPdfAsset,
   uploadImageBufferWithMime,
   uploadImageFromUrl,
 } from "@/lib/cloudinary";
@@ -318,12 +319,15 @@ export async function processPackagingJob(jobId: string): Promise<void> {
       renderEngine: undefined,
     }).exec();
 
-    const pdfRes = await fetch(job.originalPdfUrl);
-    if (!pdfRes.ok) {
-      throw new Error(`Failed to download PDF (${pdfRes.status})`);
-    }
-    const pdfBuf = Buffer.from(await pdfRes.arrayBuffer());
-    const textureBuf = await extractTextureFromPdf(pdfBuf, job.originalPdfUrl);
+    const pdfBuf = await downloadRawPdfAsset({
+      secureUrl: job.originalPdfUrl,
+      publicId: job.originalPdfPublicId ?? undefined,
+    });
+    const textureBuf = await extractTextureFromPdf(
+      pdfBuf,
+      job.originalPdfUrl,
+      job.originalPdfPublicId ?? undefined,
+    );
 
     const flatTextureUrl = await uploadImageBufferWithMime(
       textureBuf,
