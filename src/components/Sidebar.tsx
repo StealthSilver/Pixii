@@ -1,38 +1,40 @@
 "use client";
 
+import type { ComponentType, SVGProps } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import type { IconType } from "react-icons";
 import {
-  FaAmazon,
-  FaBrain,
-  FaChartLine,
-  FaCube,
-  FaCut,
-  FaFire,
-  FaLink,
-  FaPalette,
-  FaPenNib,
-  FaRobot,
-  FaSearch,
-  FaShopify,
-  FaStar,
-  FaUsers,
-  FaVideo,
-} from "react-icons/fa";
-import { StoreIcon } from "@/components/icons/StoreIcon";
+  BagGlyph,
+  BotGlyph,
+  ChartGlyph,
+  CubeGlyph,
+  EyeGlyph,
+  FilmGlyph,
+  FlameGlyph,
+  HooksGlyph,
+  PackageGlyph,
+  PaletteGlyph,
+  PenGlyph,
+  ScissorsGlyph,
+  SearchGlyph,
+  SparkGlyph,
+  StarGlyph,
+  StorefrontGlyph,
+  UsersGlyph,
+} from "@/components/icons/NavGlyphs";
 
 const DEMO_USER_NAME = "Demo User";
 
 /** Primary tint for demo avatar (matches --primary). */
 const AVATAR_BG = "BF4F30";
 
+type NavGlyph = ComponentType<SVGProps<SVGSVGElement>>;
+
 type NavEntry = {
   label: string;
   href: string;
-  Icon: IconType;
+  Icon: NavGlyph;
   /** App routes under these paths keep this item active (e.g. dashboard tools). */
   activePathPrefixes?: string[];
 };
@@ -51,19 +53,19 @@ const NAV_SECTIONS: NavSection[] = [
       {
         label: "Hooks",
         href: "/hook",
-        Icon: FaLink,
+        Icon: HooksGlyph,
         activePathPrefixes: ["/dashboard/hooks"],
       },
       {
         label: "AEO",
         href: "/aeo",
-        Icon: FaSearch,
+        Icon: SearchGlyph,
         activePathPrefixes: ["/dashboard/aeo"],
       },
       {
         label: "Rufus",
         href: "/rufus",
-        Icon: FaRobot,
+        Icon: BotGlyph,
         activePathPrefixes: ["/dashboard/rufus-twin"],
       },
     ],
@@ -75,19 +77,19 @@ const NAV_SECTIONS: NavSection[] = [
       {
         label: "Roaster",
         href: "/roaster",
-        Icon: FaFire,
+        Icon: FlameGlyph,
         activePathPrefixes: ["/dashboard/roaster", "/roaster"],
       },
       {
         label: "Reviews",
         href: "/reviews",
-        Icon: FaStar,
+        Icon: StarGlyph,
         activePathPrefixes: ["/dashboard/review-analytics", "/reviews"],
       },
       {
         label: "Markets",
         href: "/market",
-        Icon: FaChartLine,
+        Icon: ChartGlyph,
         activePathPrefixes: [
           "/dashboard/market-estimator",
           "/market",
@@ -100,12 +102,12 @@ const NAV_SECTIONS: NavSection[] = [
     id: "content",
     title: "Content",
     items: [
-      { label: "Creator", href: "/creator", Icon: FaPenNib },
-      { label: "UGC", href: "/ugc", Icon: FaUsers },
+      { label: "Creator", href: "/creator", Icon: PenGlyph },
+      { label: "UGC", href: "/ugc", Icon: UsersGlyph },
       {
         label: "Clipper",
         href: "/clipper",
-        Icon: FaCut,
+        Icon: ScissorsGlyph,
         activePathPrefixes: ["/clipper"],
       },
     ],
@@ -117,13 +119,13 @@ const NAV_SECTIONS: NavSection[] = [
       {
         label: "Studio",
         href: "/studio",
-        Icon: FaPalette,
+        Icon: PaletteGlyph,
         activePathPrefixes: ["/dashboard/photo-upgrader"],
       },
       {
         label: "Renderer",
         href: "/renderer",
-        Icon: FaCube,
+        Icon: CubeGlyph,
         activePathPrefixes: ["/dashboard/packaging-renderer"],
       },
     ],
@@ -131,33 +133,23 @@ const NAV_SECTIONS: NavSection[] = [
   {
     id: "store",
     title: "Store",
-    items: [{ label: "Shopify", href: "/shopify", Icon: FaShopify }],
+    items: [{ label: "Shopify", href: "/shopify", Icon: BagGlyph }],
   },
 ];
 
 function SectionIcon({ sectionId }: { sectionId: string }) {
+  const cls = "size-3.5 shrink-0 text-primary/80";
   switch (sectionId) {
     case "intelligence":
-      return <FaBrain className="size-3.5 shrink-0 text-primary/80" aria-hidden />;
+      return <SparkGlyph className={cls} />;
     case "amazon":
-      return <FaAmazon className="size-3.5 shrink-0 text-primary/80" aria-hidden />;
+      return <PackageGlyph className={cls} />;
     case "content":
-      return <FaVideo className="size-3.5 shrink-0 text-primary/80" aria-hidden />;
+      return <FilmGlyph className={cls} />;
     case "visuals":
-      return (
-        <VisibilityIcon
-          className="shrink-0 text-primary/80"
-          sx={{ width: "0.875rem", height: "0.875rem", fontSize: "0.875rem" }}
-          aria-hidden
-        />
-      );
+      return <EyeGlyph className={cls} />;
     case "store":
-      return (
-        <StoreIcon
-          className="size-3.5 shrink-0 text-primary/80"
-          ariaHidden
-        />
-      );
+      return <StorefrontGlyph className={cls} />;
     default:
       return null;
   }

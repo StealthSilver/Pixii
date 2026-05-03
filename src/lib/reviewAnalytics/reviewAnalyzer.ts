@@ -70,7 +70,7 @@ function buildSample(
 function sampleCharLength(sample: ScrapedReview[]): number {
   return sample.reduce((acc, r) => {
     const body = (r.body ?? "").slice(0, BODY_TRUNC);
-    const line = `[ASIN:${r.asin}][${r.rating}★] ${r.title}: ${body}\n\n`;
+    const line = `[ASIN:${r.asin}][${r.rating}/5 stars] ${r.title}: ${body}\n\n`;
     return acc + line.length;
   }, 0);
 }
@@ -141,7 +141,7 @@ async function runClaudeAnalysis(params: {
   const reviewBlock = sampleReviews
     .map((r) => {
       const body = (r.body ?? "").slice(0, BODY_TRUNC);
-      return `[ASIN:${r.asin}][${r.rating}★] ${r.title}: ${body}`;
+      return `[ASIN:${r.asin}][${r.rating}/5 stars] ${r.title}: ${body}`;
     })
     .join("\n\n");
 
@@ -151,7 +151,7 @@ USER'S LISTING (ASIN: ${userAsin}): ${userListing.title}
 Price: $${userListing.price} | Rating: ${userListing.rating} | Reviews: ${userListing.reviewCount}
 
 COMPETITOR LISTINGS:
-${competitors.map((l) => `- ${l.title} | $${l.price} | ${l.rating}★ | ${l.reviewCount} reviews`).join("\n")}
+${competitors.map((l) => `- ${l.title} | $${l.price} | ${l.rating}/5 stars | ${l.reviewCount} reviews`).join("\n")}
 
 REVIEWS SAMPLE (${sampleReviews.length} reviews):
 ${reviewBlock}

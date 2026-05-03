@@ -2,6 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
+import {
+ FaChartBar,
+ FaRobot,
+ FaVideo,
+} from "react-icons/fa";
 import { FeaturePage } from "@/components/FeaturePage";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import { extractAsin } from "@/lib/aiCreator/extractAsin";
@@ -271,13 +276,16 @@ export default function AiCreatorPage() {
  description="Drop in your Amazon listing URL and get a brutal influencer critique video in minutes."
  >
  <div className="mt-6 flex flex-wrap gap-2">
- <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-900">
+ <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-900">
+ <FaVideo className="size-3.5 shrink-0" aria-hidden />
  60-sec critique video
  </span>
- <span className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-900">
+ <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-900">
+ <FaRobot className="size-3.5 shrink-0" aria-hidden />
  6 AI personas
  </span>
- <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-900">
+ <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-900">
+ <FaChartBar className="size-3.5 shrink-0" aria-hidden />
  Listing score included
  </span>
  </div>

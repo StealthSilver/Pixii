@@ -73,7 +73,7 @@ export async function analyzeMarket(
   const topLines = products
     .map(
       (p) =>
-        `#${p.rank}: ${p.title} | $${p.price} | ${p.rating}★ | ${p.reviewCount} reviews | ~$${Math.round(p.estimatedMonthlyRevenue).toLocaleString()}/mo`,
+        `#${p.rank}: ${p.title} | $${p.price} | ${p.rating}/5 stars | ${p.reviewCount} reviews | ~$${Math.round(p.estimatedMonthlyRevenue).toLocaleString()}/mo`,
     )
     .join("\n");
 

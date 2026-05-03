@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { FaStar } from "react-icons/fa";
 import { formatRevenue } from "@/lib/marketEstimator/formatRevenue";
 import type { MarketJob } from "./types";
 
@@ -128,7 +129,10 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  ${p.price.toFixed(2)}
  </td>
  <td className="whitespace-nowrap px-3 py-2 text-xs">
- {p.rating.toFixed(1)} 
+ <span className="inline-flex items-center gap-1 tabular-nums">
+ {p.rating.toFixed(1)}
+ <FaStar className="size-3 shrink-0 text-amber-500" aria-hidden />
+ </span>
  </td>
  <td className="whitespace-nowrap px-3 py-2 text-xs">
  {p.reviewCount.toLocaleString()}

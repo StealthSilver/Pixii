@@ -118,7 +118,10 @@ export function ReviewBrowser({ jobId, listings }: Props) {
  checked={ratings[n] ?? false}
  onChange={() => toggleRating(n)}
  />
+ <span className="inline-flex items-center gap-0.5 tabular-nums">
  {n}
+ <FaStar className="size-3 text-amber-500" aria-hidden />
+ </span>
  </label>
  ))}
  </div>
