@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function MarketRedirectPage() {
-  redirect("/dashboard/market-estimator");
+ redirect("/dashboard/market-estimator");
 }

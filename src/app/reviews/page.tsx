@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function ReviewsRedirectPage() {
-  redirect("/dashboard/review-analytics");
+ redirect("/dashboard/review-analytics");
 }

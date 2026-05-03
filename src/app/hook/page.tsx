@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function HookPage() {
-  redirect("/dashboard/hooks");
+ redirect("/dashboard/hooks");
 }

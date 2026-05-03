@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function CreatorPage() {
-  redirect("/dashboard/ai-creator");
+ redirect("/dashboard/ai-creator");
 }
