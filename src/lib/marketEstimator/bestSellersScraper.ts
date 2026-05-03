@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import { callClaude } from "@/lib/rufusTwin/claude";
+import { callMarketEstimatorLlm } from "@/lib/marketEstimator/anthropic";
 import { parseJsonFromClaude } from "@/lib/aiCreator/jsonUtils";
 import {
   extractCategoryFromUrl,
@@ -162,7 +162,7 @@ function parseHtmlToProducts(html: string): ScrapedProduct[] {
 
 async function scrapeWithClaudeFallback(url: string): Promise<ScrapedProduct[]> {
   const { category } = extractCategoryFromUrl(url);
-  const raw = await callClaude({
+  const raw = await callMarketEstimatorLlm({
     system: "You return only valid JSON when asked. No markdown.",
     messages: [
       {

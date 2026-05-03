@@ -12,6 +12,7 @@ import { ProductTableTab } from "./components/ProductTableTab";
 import { AIInsightsTab } from "./components/AIInsightsTab";
 import { HistoryStrip } from "./components/HistoryStrip";
 import { HistoryView } from "./components/HistoryView";
+import { TutorialVideoOverlay } from "@/app/dashboard/aeo/components/TutorialVideoOverlay";
 import type {
  HistoryStripItem,
  MarketJob,
@@ -46,6 +47,12 @@ function resultTabClass(active: boolean): string {
 type View = "input" | "processing" | "result" | "history";
 
 const STORAGE_KEY = "pixii-market-estimator-last-job";
+const MARKETS_TUTORIAL_SEEN_KEY = "pixii_market_estimator_tutorial_seen";
+/** https://youtu.be/qPxSkFU8T1g */
+const MARKETS_TUTORIAL_VIDEO_ID = "qPxSkFU8T1g";
+
+const tutorialHeaderBtn =
+ "inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
  const res = await fetch(url, init);
@@ -150,6 +157,10 @@ export default function MarketEstimatorPage() {
  message: string;
  variant: "success" | "error";
  } | null>(null);
+ const [tutorialReady, setTutorialReady] = useState(false);
+ const [tutorialOpen, setTutorialOpen] = useState(false);
+ const [tutorialIframeKey, setTutorialIframeKey] = useState(0);
+ const [showPlayTutorialButton, setShowPlayTutorialButton] = useState(false);
 
  const pollTimerRef = useRef<number | null>(null);
  const elapsedTimerRef = useRef<number | null>(null);
@@ -199,6 +210,32 @@ export default function MarketEstimatorPage() {
  cancelled = true;
  };
  }, [resumeDismissed]);
+
+ useEffect(() => {
+ try {
+ const seenBefore = window.localStorage.getItem(MARKETS_TUTORIAL_SEEN_KEY) === "1";
+ setShowPlayTutorialButton(seenBefore);
+ if (!seenBefore) {
+ setTutorialIframeKey((k) => k + 1);
+ setTutorialOpen(true);
+ }
+ } catch {
+ setShowPlayTutorialButton(false);
+ setTutorialIframeKey((k) => k + 1);
+ setTutorialOpen(true);
+ }
+ setTutorialReady(true);
+ }, []);
+
+ const handleTutorialClose = useCallback(() => {
+ setTutorialOpen(false);
+ try {
+ window.localStorage.setItem(MARKETS_TUTORIAL_SEEN_KEY, "1");
+ } catch {
+ /* ignore */
+ }
+ setShowPlayTutorialButton(true);
+ }, []);
 
  useEffect(() => {
  if (view !== "processing" || !jobId) {
@@ -357,6 +394,8 @@ export default function MarketEstimatorPage() {
  <GridBackdrop />
  <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
  <header className="border-b border-border/70 pb-6">
+ <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+ <div className="min-w-0 flex-1">
  <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
  Amazon
  </p>
@@ -367,6 +406,20 @@ export default function MarketEstimatorPage() {
  Paste any Amazon Best Sellers category URL. See estimated monthly revenue for the
  top 10 and a concise read on market size and opportunity.
  </p>
+ </div>
+ {tutorialReady && showPlayTutorialButton ? (
+ <button
+ type="button"
+ onClick={() => {
+ setTutorialIframeKey((k) => k + 1);
+ setTutorialOpen(true);
+ }}
+ className={`${tutorialHeaderBtn} shrink-0 self-start`}
+ >
+ Play tutorial
+ </button>
+ ) : null}
+ </div>
  </header>
 
  <div
@@ -567,6 +620,19 @@ export default function MarketEstimatorPage() {
  </div>
  </div>
  </div>
+
+ {tutorialReady ? (
+ <TutorialVideoOverlay
+ open={tutorialOpen}
+ onClose={handleTutorialClose}
+ autoplay
+ iframeKey={tutorialIframeKey}
+ videoId={MARKETS_TUTORIAL_VIDEO_ID}
+ heading="Markets tutorial"
+ headingId="markets-tutorial-video-title"
+ iframeTitle="Markets tutorial — YouTube video"
+ />
+ ) : null}
 
  {toast ? (
  <Toast

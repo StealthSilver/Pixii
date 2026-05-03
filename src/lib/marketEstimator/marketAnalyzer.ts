@@ -1,4 +1,4 @@
-import { callClaude } from "@/lib/rufusTwin/claude";
+import { callMarketEstimatorLlm } from "@/lib/marketEstimator/anthropic";
 import { parseJsonFromClaude } from "@/lib/aiCreator/jsonUtils";
 import type { EstimatedProduct } from "@/lib/marketEstimator/revenueEstimator";
 
@@ -110,7 +110,7 @@ Return ONLY valid JSON, no markdown:
   "keyInsight": "Single most important insight about this market in 1-2 sentences. Must reference actual numbers."
 }`;
 
-  const raw = await callClaude({
+  const raw = await callMarketEstimatorLlm({
     system:
       "You are an Amazon market research expert and e-commerce strategist. You analyze product markets for entrepreneurs deciding whether to enter a niche. You are honest, specific, and always reference actual numbers from the data provided. Return only valid JSON when asked for JSON.",
     messages: [{ role: "user", content: userPrompt }],

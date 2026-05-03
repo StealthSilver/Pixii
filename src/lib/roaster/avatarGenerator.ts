@@ -1,5 +1,6 @@
 import { fal } from "@fal-ai/client";
 import { uploadImageFromUrl, uploadVideoFromUrl } from "@/lib/cloudinary";
+import { runwareFluxImage, runwareKlingAvatarVideo } from "@/lib/roaster/runwareClient";
 
 export type AvatarResult = {
   frameUrls: string[];
@@ -16,6 +17,8 @@ mouth slightly open ready to speak`;
 
 const NEGATIVE_PROMPT =
   "cartoon, illustration, watermark, text overlay, logo, deformed hands";
+
+const RUNWARE_KLING_AVATAR_PROMPT = `Photoreal vertical 9:16 talking-head video of a professional business consultant speaking directly to camera. Preserve the reference portrait identity with precise lip sync, natural blinking, subtle head movement, smart casual blazer, clean modern office with soft bokeh, confident composed delivery, premium lighting, smooth motion.`;
 
 function extractFluxImages(payload: unknown): string[] {
   if (!payload || typeof payload !== "object") {
@@ -61,6 +64,18 @@ function extractVideoUrl(payload: unknown): string | null {
 }
 
 async function fluxOne(prompt: string): Promise<string | null> {
+  const runwareKey = process.env.RUNWARE_API_KEY?.trim();
+  if (runwareKey) {
+    try {
+      const rw = await runwareFluxImage(prompt);
+      if (rw) {
+        return rw;
+      }
+    } catch (e) {
+      console.warn("[roaster/avatar] runware flux failed, may try fal", e);
+    }
+  }
+
   const falKey = process.env.FAL_API_KEY?.trim();
   if (!falKey) {
     return null;
@@ -81,17 +96,22 @@ async function fluxOne(prompt: string): Promise<string | null> {
     });
   } catch (e) {
     console.warn("[roaster/avatar] flux portrait failed, retry 4:3", e);
-    result = await fal.subscribe("fal-ai/flux/dev", {
-      input: {
-        prompt,
-        image_size: "portrait_4_3",
-        num_inference_steps: 28,
-        guidance_scale: 7,
-        num_images: 1,
-        enable_safety_checker: true,
-        negative_prompt: NEGATIVE_PROMPT,
-      } as never,
-    });
+    try {
+      result = await fal.subscribe("fal-ai/flux/dev", {
+        input: {
+          prompt,
+          image_size: "portrait_4_3",
+          num_inference_steps: 28,
+          guidance_scale: 7,
+          num_images: 1,
+          enable_safety_checker: true,
+          negative_prompt: NEGATIVE_PROMPT,
+        } as never,
+      });
+    } catch (e2) {
+      console.warn("[roaster/avatar] flux fal failed (both sizes)", e2);
+      return null;
+    }
   }
   const payload = (result as { data?: unknown }).data ?? result;
   const urls = extractFluxImages(payload);
@@ -115,42 +135,61 @@ export async function generateRoasterAvatar(
   try {
     const primaryRemote = await fluxOne(BASE_PROMPT);
     if (!primaryRemote) {
-      console.warn("[roaster/avatar] No primary image from Fal");
+      console.warn("[roaster/avatar] No primary image (Runware/Fal flux)");
       return { frameUrls: [], assembled: false, finalVideoUrl: null };
     }
 
     const cloudinaryAvatarUrl = await uploadAvatar(primaryRemote, jobId, "");
 
     const falKey = process.env.FAL_API_KEY?.trim();
-    if (!falKey) {
-      console.warn("[roaster/avatar] Missing FAL_API_KEY — static frames only");
-      return buildThreeFrameFallback(cloudinaryAvatarUrl, jobId);
-    }
-    fal.config({ credentials: falKey });
+    const runwareKey = process.env.RUNWARE_API_KEY?.trim();
+    let remoteVideo: string | null = null;
 
-    try {
-      const videoResult = await fal.subscribe("fal-ai/wav2lip", {
-        input: {
-          face_image_url: cloudinaryAvatarUrl,
-          audio_url: voiceoverUrl,
-          quality: "enhanced",
-        } as never,
-      });
-      const payload = (videoResult as { data?: unknown }).data ?? videoResult;
-      const remoteVideo = extractVideoUrl(payload);
-      if (remoteVideo) {
-        const cloudinaryVideoUrl = await uploadVideoFromUrl(
-          remoteVideo,
-          "pixii/roaster/videos",
-        );
-        return {
-          frameUrls: [cloudinaryAvatarUrl],
-          assembled: true,
-          finalVideoUrl: cloudinaryVideoUrl,
-        };
+    if (falKey) {
+      fal.config({ credentials: falKey });
+      try {
+        const videoResult = await fal.subscribe("fal-ai/wav2lip", {
+          input: {
+            face_image_url: cloudinaryAvatarUrl,
+            audio_url: voiceoverUrl,
+            quality: "enhanced",
+          } as never,
+        });
+        const payload = (videoResult as { data?: unknown }).data ?? videoResult;
+        remoteVideo = extractVideoUrl(payload);
+      } catch (err) {
+        console.warn("[roaster/avatar] wav2lip failed:", err);
       }
-    } catch (err) {
-      console.warn("[roaster/avatar] wav2lip failed:", err);
+    }
+
+    if (!remoteVideo && runwareKey) {
+      try {
+        remoteVideo = await runwareKlingAvatarVideo({
+          imageUrl: cloudinaryAvatarUrl,
+          audioUrl: voiceoverUrl,
+          positivePrompt: RUNWARE_KLING_AVATAR_PROMPT,
+        });
+      } catch (e) {
+        console.warn("[roaster/avatar] Runware Kling avatar failed:", e);
+      }
+    }
+
+    if (remoteVideo) {
+      const cloudinaryVideoUrl = await uploadVideoFromUrl(
+        remoteVideo,
+        "pixii/roaster/videos",
+      );
+      return {
+        frameUrls: [cloudinaryAvatarUrl],
+        assembled: true,
+        finalVideoUrl: cloudinaryVideoUrl,
+      };
+    }
+
+    if (!falKey && !runwareKey) {
+      console.warn(
+        "[roaster/avatar] No FAL_API_KEY or RUNWARE_API_KEY — static frames only",
+      );
     }
 
     return buildThreeFrameFallback(cloudinaryAvatarUrl, jobId);

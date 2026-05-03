@@ -20,6 +20,11 @@ import { QueryInput } from "./components/QueryInput";
 import { RankingFactors } from "./components/RankingFactors";
 import { RelatedQuestions } from "./components/RelatedQuestions";
 import { RufusResponseCard } from "./components/RufusResponseCard";
+import { TutorialVideoOverlay } from "@/app/dashboard/aeo/components/TutorialVideoOverlay";
+
+const RUFUS_TUTORIAL_SEEN_KEY = "pixii_rufus_tutorial_seen";
+/** https://youtu.be/oiFYWjKybPo */
+const RUFUS_TUTORIAL_VIDEO_ID = "oiFYWjKybPo";
 
 const LS_QUERY = "rufusTwin_queryText";
 const LS_LISTING = "rufusTwin_listing";
@@ -42,6 +47,9 @@ const secondaryBtn =
 
 const primaryBtn =
   "rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 dark:ring-white/15";
+
+const tutorialHeaderBtn =
+  "inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
 function segmentTabClass(active: boolean): string {
   return (
@@ -146,6 +154,10 @@ export default function RufusTwinPage() {
   const [relatedLoading, setRelatedLoading] = useState(false);
   const [historyReadOnly, setHistoryReadOnly] = useState(false);
   const [historyBannerAt, setHistoryBannerAt] = useState<string | null>(null);
+  const [tutorialReady, setTutorialReady] = useState(false);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialIframeKey, setTutorialIframeKey] = useState(0);
+  const [showPlayTutorialButton, setShowPlayTutorialButton] = useState(false);
 
   const querySectionRef = useRef<HTMLDivElement>(null);
   const startedAtRef = useRef<number>(0);
@@ -183,6 +195,33 @@ export default function RufusTwinPage() {
     } catch {
       /* ignore */
     }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const seenBefore =
+        window.localStorage.getItem(RUFUS_TUTORIAL_SEEN_KEY) === "1";
+      setShowPlayTutorialButton(seenBefore);
+      if (!seenBefore) {
+        setTutorialIframeKey((k) => k + 1);
+        setTutorialOpen(true);
+      }
+    } catch {
+      setShowPlayTutorialButton(false);
+      setTutorialIframeKey((k) => k + 1);
+      setTutorialOpen(true);
+    }
+    setTutorialReady(true);
+  }, []);
+
+  const handleTutorialClose = useCallback(() => {
+    setTutorialOpen(false);
+    try {
+      window.localStorage.setItem(RUFUS_TUTORIAL_SEEN_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    setShowPlayTutorialButton(true);
   }, []);
 
   useEffect(() => {
@@ -391,21 +430,37 @@ export default function RufusTwinPage() {
         <GridBackdrop />
         <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
           <header className="border-b border-border/70 pb-6">
-            <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Intelligence
-            </p>
-            <div className="mt-2 flex flex-wrap items-center gap-2 gap-y-2">
-              <h1 className="font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
-                Rufus Twin
-              </h1>
-              <span className="inline-flex items-center rounded-full border border-amber-200/90 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/40 dark:text-amber-100">
-                Amazon Rufus Simulator
-              </span>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0 flex-1">
+                <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Intelligence
+                </p>
+                <div className="mt-2 flex flex-wrap items-center gap-2 gap-y-2">
+                  <h1 className="font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+                    Rufus Twin
+                  </h1>
+                  <span className="inline-flex items-center rounded-full border border-amber-200/90 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/40 dark:text-amber-100">
+                    Amazon Rufus Simulator
+                  </span>
+                </div>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  Simulate how Amazon&apos;s AI shopping assistant answers shopper
+                  questions—and optimize your listing to rank in those answers.
+                </p>
+              </div>
+              {tutorialReady && showPlayTutorialButton ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTutorialIframeKey((k) => k + 1);
+                    setTutorialOpen(true);
+                  }}
+                  className={`${tutorialHeaderBtn} shrink-0 self-start`}
+                >
+                  Play tutorial
+                </button>
+              ) : null}
             </div>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Simulate how Amazon&apos;s AI shopping assistant answers shopper
-              questions—and optimize your listing to rank in those answers.
-            </p>
           </header>
 
           <div
@@ -612,6 +667,19 @@ export default function RufusTwinPage() {
           </div>
         </div>
       </div>
+
+      {tutorialReady ? (
+        <TutorialVideoOverlay
+          open={tutorialOpen}
+          onClose={handleTutorialClose}
+          autoplay
+          iframeKey={tutorialIframeKey}
+          videoId={RUFUS_TUTORIAL_VIDEO_ID}
+          heading="Rufus Twin tutorial"
+          headingId="rufus-tutorial-video-title"
+          iframeTitle="Rufus Twin tutorial — YouTube video"
+        />
+      ) : null}
 
       {toast ? (
         <Toast

@@ -13,6 +13,7 @@ import { ReviewThemesTab } from "./components/ReviewThemesTab";
 import { ActionPlanTab } from "./components/ActionPlanTab";
 import { HistoryStrip } from "./components/HistoryStrip";
 import { HistoryView } from "./components/HistoryView";
+import { TutorialVideoOverlay } from "@/app/dashboard/aeo/components/TutorialVideoOverlay";
 import type {
  HistoryStripItem,
  MarketIntelDto,
@@ -48,6 +49,12 @@ function resultTabClass(active: boolean): string {
 type View = "input" | "processing" | "result" | "history";
 
 const STORAGE_KEY = "pixii-review-analytics-last-job";
+const REVIEW_RUFUS_TUTORIAL_SEEN_KEY = "pixii_review_analytics_rufus_tutorial_seen";
+/** https://youtu.be/aU_On8gek4A */
+const REVIEW_RUFUS_TUTORIAL_VIDEO_ID = "aU_On8gek4A";
+
+const tutorialHeaderBtn =
+ "inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
  const res = await fetch(url, init);
@@ -181,6 +188,10 @@ export default function ReviewAnalyticsPage() {
  message: string;
  variant: "success" | "error";
  } | null>(null);
+ const [tutorialReady, setTutorialReady] = useState(false);
+ const [tutorialOpen, setTutorialOpen] = useState(false);
+ const [tutorialIframeKey, setTutorialIframeKey] = useState(0);
+ const [showPlayTutorialButton, setShowPlayTutorialButton] = useState(false);
 
  const pollTimerRef = useRef<number | null>(null);
  const elapsedTimerRef = useRef<number | null>(null);
@@ -234,6 +245,33 @@ export default function ReviewAnalyticsPage() {
  cancelled = true;
  };
  }, [resumeDismissed]);
+
+ useEffect(() => {
+ try {
+ const seenBefore =
+ window.localStorage.getItem(REVIEW_RUFUS_TUTORIAL_SEEN_KEY) === "1";
+ setShowPlayTutorialButton(seenBefore);
+ if (!seenBefore) {
+ setTutorialIframeKey((k) => k + 1);
+ setTutorialOpen(true);
+ }
+ } catch {
+ setShowPlayTutorialButton(false);
+ setTutorialIframeKey((k) => k + 1);
+ setTutorialOpen(true);
+ }
+ setTutorialReady(true);
+ }, []);
+
+ const handleTutorialClose = useCallback(() => {
+ setTutorialOpen(false);
+ try {
+ window.localStorage.setItem(REVIEW_RUFUS_TUTORIAL_SEEN_KEY, "1");
+ } catch {
+ /* ignore */
+ }
+ setShowPlayTutorialButton(true);
+ }, []);
 
  useEffect(() => {
  if (view !== "processing" || !jobId) {
@@ -392,6 +430,8 @@ export default function ReviewAnalyticsPage() {
  <GridBackdrop />
  <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
  <header className="border-b border-border/70 pb-6">
+ <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+ <div className="min-w-0 flex-1">
  <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
  Amazon
  </p>
@@ -402,6 +442,20 @@ export default function ReviewAnalyticsPage() {
  Paste your Amazon listing URL. We&apos;ll scrape your listing, find up to 9
  competitors, pull 1000+ reviews, and surface what shoppers actually care about.
  </p>
+ </div>
+ {tutorialReady && showPlayTutorialButton ? (
+ <button
+ type="button"
+ onClick={() => {
+ setTutorialIframeKey((k) => k + 1);
+ setTutorialOpen(true);
+ }}
+ className={`${tutorialHeaderBtn} shrink-0 self-start`}
+ >
+ Play tutorial
+ </button>
+ ) : null}
+ </div>
  </header>
 
  <div
@@ -646,6 +700,19 @@ export default function ReviewAnalyticsPage() {
  </div>
  </div>
  </div>
+
+ {tutorialReady ? (
+ <TutorialVideoOverlay
+ open={tutorialOpen}
+ onClose={handleTutorialClose}
+ autoplay
+ iframeKey={tutorialIframeKey}
+ videoId={REVIEW_RUFUS_TUTORIAL_VIDEO_ID}
+ heading="Rufus & Review Analytics tutorial"
+ headingId="review-rufus-tutorial-video-title"
+ iframeTitle="Rufus and Review Analytics tutorial — YouTube video"
+ />
+ ) : null}
 
  {toast ? (
  <Toast
