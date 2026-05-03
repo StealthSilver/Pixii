@@ -1,4 +1,4 @@
-import { callClaude } from "@/lib/rufusTwin/claude";
+import { callRufusLlm } from "@/lib/rufusTwin/llm";
 import { extractJsonPayload } from "@/lib/rufusTwin/jsonParse";
 import type {
   CompetitorProduct,
@@ -107,7 +107,7 @@ Return ONLY a JSON object (valid JSON, double-quoted keys and strings):
   "amazonContext": "what Amazon-specific data Rufus would pull for this query"
 }`;
 
-  let text = await callClaude({
+  let text = await callRufusLlm({
     system: EXPERT_SYSTEM,
     messages: [{ role: "user", content: userPrompt }],
     maxTokens: 1000,
@@ -115,7 +115,7 @@ Return ONLY a JSON object (valid JSON, double-quoted keys and strings):
 
   let parsed = safeParseJsonObject(text);
   if (!parsed) {
-    text = await callClaude({
+    text = await callRufusLlm({
       system: EXPERT_SYSTEM,
       messages: [
         {
@@ -167,7 +167,7 @@ async function simulateRufusVoice(params: {
 Query type: ${params.analysis.queryType}
 Key factors to address: ${params.analysis.keyFactors.join(", ")}${extra}`;
 
-  return callClaude({
+  return callRufusLlm({
     system: RUFUS_ACTOR_SYSTEM,
     messages: [{ role: "user", content: userPrompt }],
     maxTokens: 1500,
@@ -236,7 +236,7 @@ Rules:
 - Exactly 5 entries in "relatedQuestions".
 - 4-8 responseFactors.`;
 
-  let text = await callClaude({
+  let text = await callRufusLlm({
     system: EXPERT_SYSTEM,
     messages: [{ role: "user", content: userPrompt }],
     maxTokens: 1000,
@@ -244,7 +244,7 @@ Rules:
 
   let parsed = safeParseJsonObject(text);
   if (!parsed) {
-    text = await callClaude({
+    text = await callRufusLlm({
       system: EXPERT_SYSTEM,
       messages: [
         {
@@ -366,14 +366,18 @@ export async function simulateRufusResponse(
 
   const analysis = await runQueryAnalysis(trimmed);
 
-  const [simulatedResponse, structured] = await Promise.all([
-    simulateRufusVoice({ queryText: trimmed, analysis, productDetails }),
-    runStructuredAnalysis({
-      queryText: trimmed,
-      analysis,
-      productDetails,
-    }),
-  ]);
+  // Run voice then structured JSON sequentially so Gemini free-tier RPM is not
+  // doubled by two parallel generateContent calls (same total tokens, lower burst).
+  const simulatedResponse = await simulateRufusVoice({
+    queryText: trimmed,
+    analysis,
+    productDetails,
+  });
+  const structured = await runStructuredAnalysis({
+    queryText: trimmed,
+    analysis,
+    productDetails,
+  });
 
   return {
     queryType: analysis.queryType,

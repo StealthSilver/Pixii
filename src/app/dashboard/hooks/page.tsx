@@ -12,6 +12,8 @@ import type { WriteTabHandle } from "./components/WriteTab";
 import { WriteTab } from "./components/WriteTab";
 import type { DraftJson, HookPatternJson, TabId } from "./types";
 
+const HOOKS_TUTORIAL_SEEN_KEY = "pixii_hooks_tutorial_seen";
+
 async function fetchJson<T>(url: string): Promise<T> {
   const res = await fetch(url);
   let body: unknown = {};
@@ -77,7 +79,10 @@ export default function HooksDashboardPage() {
     message: string;
     variant: "success" | "error";
   } | null>(null);
-  const [tutorialOpen, setTutorialOpen] = useState(true);
+  const [tutorialReady, setTutorialReady] = useState(false);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialIframeKey, setTutorialIframeKey] = useState(0);
+  const [showPlayTutorialButton, setShowPlayTutorialButton] = useState(false);
 
   const writeRef = useRef<WriteTabHandle>(null);
   const { mutate: mutateKey } = useSWRConfig();
@@ -135,6 +140,33 @@ export default function HooksDashboardPage() {
     return () => window.clearTimeout(t);
   }, [toast]);
 
+  useEffect(() => {
+    try {
+      const seenBefore =
+        window.localStorage.getItem(HOOKS_TUTORIAL_SEEN_KEY) === "1";
+      setShowPlayTutorialButton(seenBefore);
+      if (!seenBefore) {
+        setTutorialIframeKey((k) => k + 1);
+        setTutorialOpen(true);
+      }
+    } catch {
+      setShowPlayTutorialButton(false);
+      setTutorialIframeKey((k) => k + 1);
+      setTutorialOpen(true);
+    }
+    setTutorialReady(true);
+  }, []);
+
+  const handleTutorialClose = useCallback(() => {
+    setTutorialOpen(false);
+    try {
+      window.localStorage.setItem(HOOKS_TUTORIAL_SEEN_KEY, "1");
+    } catch {
+      /* ignore quota / private mode */
+    }
+    setShowPlayTutorialButton(true);
+  }, []);
+
   const handleSeed = async () => {
     setSeeding(true);
     try {
@@ -172,16 +204,32 @@ export default function HooksDashboardPage() {
         <GridBackdrop />
         <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
           <header className="border-b border-border/70 pb-6">
-            <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Intelligence
-            </p>
-            <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
-              Hooks
-            </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Browse viral hook patterns, generate Pixii-native posts, and keep
-              drafts in one minimal workspace.
-            </p>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0 flex-1">
+                <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Intelligence
+                </p>
+                <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+                  Hooks
+                </h1>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  Browse viral hook patterns, generate Pixii-native posts, and keep
+                  drafts in one minimal workspace.
+                </p>
+              </div>
+              {tutorialReady && showPlayTutorialButton ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTutorialIframeKey((k) => k + 1);
+                    setTutorialOpen(true);
+                  }}
+                  className={`${secondaryBtnClass} shrink-0 self-start`}
+                >
+                  Play tutorial
+                </button>
+              ) : null}
+            </div>
           </header>
 
           <div
@@ -376,10 +424,14 @@ export default function HooksDashboardPage() {
         </div>
       </div>
 
-      <TutorialVideoOverlay
-        open={tutorialOpen}
-        onClose={() => setTutorialOpen(false)}
-      />
+      {tutorialReady ? (
+        <TutorialVideoOverlay
+          open={tutorialOpen}
+          onClose={handleTutorialClose}
+          autoplay
+          iframeKey={tutorialIframeKey}
+        />
+      ) : null}
 
       {toast ? (
         <Toast

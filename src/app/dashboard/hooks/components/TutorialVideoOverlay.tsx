@@ -2,15 +2,36 @@
 
 import { useEffect } from "react";
 
-const TUTORIAL_EMBED_SRC =
-  "https://www.youtube.com/embed/zlwB2pD9MXQ?autoplay=1&rel=0&modestbranding=1&playsinline=1";
+/** Hooks dashboard tutorial (YouTube). */
+export const HOOKS_TUTORIAL_VIDEO_ID = "uybaPGOYY8c";
+
+function embedSrc(videoId: string, autoplay: boolean): string {
+  const q = new URLSearchParams({
+    autoplay: autoplay ? "1" : "0",
+    mute: "0",
+    rel: "0",
+    modestbranding: "1",
+    playsinline: "1",
+    enablejsapi: "1",
+  });
+  return `https://www.youtube.com/embed/${videoId}?${q.toString()}`;
+}
 
 type TutorialVideoOverlayProps = {
   open: boolean;
   onClose: () => void;
+  /** When true, iframe loads with autoplay (first visit or after clicking Play tutorial). */
+  autoplay?: boolean;
+  /** Bump when opening the overlay so the iframe remounts and playback restarts. */
+  iframeKey: number;
 };
 
-export function TutorialVideoOverlay({ open, onClose }: TutorialVideoOverlayProps) {
+export function TutorialVideoOverlay({
+  open,
+  onClose,
+  autoplay = true,
+  iframeKey,
+}: TutorialVideoOverlayProps) {
   useEffect(() => {
     if (!open) {
       return;
@@ -74,8 +95,9 @@ export function TutorialVideoOverlay({ open, onClose }: TutorialVideoOverlayProp
         </div>
         <div className="aspect-video w-full bg-black">
           <iframe
+            key={iframeKey}
             title="Hooks tutorial — YouTube video"
-            src={TUTORIAL_EMBED_SRC}
+            src={embedSrc(HOOKS_TUTORIAL_VIDEO_ID, autoplay)}
             className="size-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen

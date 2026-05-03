@@ -1,4 +1,4 @@
-import { callClaude } from "@/lib/rufusTwin/claude";
+import { callRufusLlm } from "@/lib/rufusTwin/llm";
 import { extractJsonPayload } from "@/lib/rufusTwin/jsonParse";
 import type { ListingDetailsInput, ListingScore } from "@/lib/rufusTwin/types";
 
@@ -62,7 +62,7 @@ Return ONLY JSON (valid JSON, double-quoted keys and strings):
 
 overallScore must be a weighted average: title 30%, bullets 40%, description 20%, reviews 10%.`;
 
-  let text = await callClaude({
+  let text = await callRufusLlm({
     system: EXPERT,
     messages: [{ role: "user", content: userPrompt }],
     maxTokens: 1000,
@@ -70,7 +70,7 @@ overallScore must be a weighted average: title 30%, bullets 40%, description 20%
 
   let parsed = safeParse(text);
   if (!parsed) {
-    text = await callClaude({
+    text = await callRufusLlm({
       system: EXPERT,
       messages: [
         {
