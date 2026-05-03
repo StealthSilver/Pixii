@@ -135,3 +135,49 @@ export async function uploadRawPdfBuffer(
     stream.end(buffer);
   });
 }
+
+/** Upload raw bytes (e.g. MP3, JSON package) via data URI. */
+export async function uploadRawFromBuffer(
+  buffer: Buffer,
+  mime: string,
+  folder: string,
+  options?: { public_id?: string },
+): Promise<string> {
+  ensureCloudinaryConfig();
+  const dataUri = dataUriFromBuffer(buffer, mime);
+  try {
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder,
+      resource_type: "raw",
+      public_id: options?.public_id,
+    });
+    if (!result?.secure_url) {
+      throw new Error("Cloudinary returned no secure_url");
+    }
+    return result.secure_url as string;
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    throw new Error(`Cloudinary raw upload failed: ${msg}`);
+  }
+}
+
+/** Upload a remote video URL into Cloudinary (e.g. Replicate output). */
+export async function uploadVideoFromUrl(
+  videoUrl: string,
+  folder: string,
+): Promise<string> {
+  ensureCloudinaryConfig();
+  try {
+    const result = await cloudinary.uploader.upload(videoUrl, {
+      folder,
+      resource_type: "video",
+    });
+    if (!result?.secure_url) {
+      throw new Error("Cloudinary returned no secure_url");
+    }
+    return result.secure_url as string;
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    throw new Error(`Cloudinary video upload failed: ${msg}`);
+  }
+}
