@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { FaBookOpen, FaSpinner } from "react-icons/fa";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { DraftsTab } from "./components/DraftsTab";
 import { HookCard } from "./components/HookCard";
 import { Toast } from "./components/Toast";
@@ -61,37 +62,6 @@ const secondaryBtnClass =
 
 const primaryBtnClass =
   "inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 dark:ring-white/15";
-
-function HooksGridBackdrop() {
-  return (
-    <>
-      <div
-        className="pointer-events-none absolute inset-0 bg-[length:26px_26px] opacity-[0.38] dark:hidden"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgb(0 0 0 / 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgb(0 0 0 / 0.04) 1px, transparent 1px)
-          `,
-        }}
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 hidden bg-[length:26px_26px] opacity-[0.42] dark:block"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
-            linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px)
-          `,
-        }}
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_60%_at_50%_-18%,rgb(191_79_48_/_0.07),transparent_58%)] dark:bg-[radial-gradient(ellipse_90%_60%_at_50%_-18%,rgb(224_122_85_/_0.09),transparent_58%)]"
-        aria-hidden
-      />
-    </>
-  );
-}
 
 export default function HooksDashboardPage() {
   const [tab, setTab] = useState<TabId>("library");
@@ -197,7 +167,7 @@ export default function HooksDashboardPage() {
   return (
     <>
       <div className="relative min-h-full overflow-x-hidden">
-        <HooksGridBackdrop />
+        <GridBackdrop />
         <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
           <header className="border-b border-border/70 pb-6">
             <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
