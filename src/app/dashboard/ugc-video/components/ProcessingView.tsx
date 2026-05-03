@@ -74,8 +74,8 @@ export function ProcessingView({
 
  if (status === "failed") {
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
- <h2 className="font-heading text-lg font-semibold text-foreground">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
+ <h2 className="font-heading text-lg font-semibold tracking-tight text-foreground">
  Something went wrong
  </h2>
  <p className="mt-2 text-sm text-muted-foreground">
@@ -84,7 +84,7 @@ export function ProcessingView({
  <button
  type="button"
  onClick={onTryAgain}
- className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90"
+ className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 dark:ring-white/15"
  >
  Try again
  </button>
@@ -93,9 +93,9 @@ export function ProcessingView({
  }
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <div className="flex flex-wrap items-center gap-3">
- <div className="relative size-[60px] shrink-0 overflow-hidden rounded-lg border border-border bg-foreground/10">
+ <div className="relative size-[60px] shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
  {thumbnailUrl ? (
  <Image src={thumbnailUrl} alt="" fill className="object-cover" unoptimized />
  ) : null}
@@ -125,7 +125,7 @@ export function ProcessingView({
  <p className="mt-3 text-sm text-muted-foreground">
  Creating for {timeStr}...
  {longWaitHint ? (
- <span className="mt-1 block text-xs text-amber-800">
+ <span className="mt-1 block text-xs text-amber-800 dark:text-amber-200">
  This is taking longer than expected. Your video is still processing —
  check back in a few minutes.
  </span>
@@ -172,7 +172,7 @@ export function ProcessingView({
  <div
  className={
  "mt-1 w-px grow min-h-[12px] " +
- (done ? "bg-emerald-200" : "bg-border")
+ (done ? "bg-emerald-500/50 dark:bg-emerald-600/60" : "bg-border")
  }
  aria-hidden
  />

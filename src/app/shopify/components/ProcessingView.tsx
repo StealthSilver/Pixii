@@ -45,9 +45,9 @@ export function ProcessingView({
  };
 
  return (
- <section className="mt-4 max-w-xl rounded-xl border border-border bg-card p-6 shadow-sm">
- <div className="flex items-center gap-3 border-b border-border/55 pb-4">
- <div className="relative size-[60px] shrink-0 overflow-hidden rounded-lg bg-foreground/10">
+ <section className="mt-4 max-w-xl rounded-xl border border-border/80 bg-card/95 p-6 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
+ <div className="flex items-center gap-3 border-b border-border/70 pb-4">
+ <div className="relative size-[60px] shrink-0 overflow-hidden rounded-lg border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  {productThumbUrl ? (
  <Image src={productThumbUrl} alt="" fill sizes="60px" className="object-cover" />
  ) : null}
@@ -60,24 +60,24 @@ export function ProcessingView({
 
  {failed ? (
  <div className="mt-5 space-y-4">
- <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+ <p className="rounded-lg border border-red-200/90 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-500/35 dark:bg-red-950/40 dark:text-red-200">
  {failMessage ?? "Something went wrong."}
  </p>
  <button
  type="button"
  onClick={() => onTryAgain()}
- className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary/90"
+ className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 dark:ring-white/15"
  >
  Try Again
  </button>
  </div>
  ) : (
  <>
- <ol className="mt-5 space-y-3 rounded-lg border border-border bg-card/80 px-3 py-3 text-sm">
+ <ol className="mt-5 space-y-3 rounded-lg border border-border/80 bg-muted/40 px-3 py-3 text-sm ring-1 ring-black/[0.03] dark:bg-muted/30 dark:ring-white/[0.06]">
  <li className="flex items-start gap-3 text-foreground/90">
- <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-xs font-bold">
+ <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-xs font-bold ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  {step1Done && !step1Active ? (
- <FaCheck className="size-3.5 text-emerald-600" aria-hidden />
+ <FaCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden />
  ) : step1Active ? (
  <FaSpinner className="size-3.5 animate-spin text-primary" aria-hidden />
  ) : (
@@ -97,9 +97,9 @@ export function ProcessingView({
  </div>
  </li>
  <li className="flex items-start gap-3 text-foreground/90">
- <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-xs font-bold">
+ <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-xs font-bold ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  {step2Done ? (
- <FaCheck className="size-3.5 text-emerald-600" aria-hidden />
+ <FaCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden />
  ) : step2Active ? (
  <FaSpinner className="size-3.5 animate-spin text-primary" aria-hidden />
  ) : (
@@ -121,9 +121,9 @@ export function ProcessingView({
  </ol>
 
  <div className="mt-4">
- <div className="h-2 overflow-hidden rounded-full bg-foreground/10">
+ <div className="h-2 overflow-hidden rounded-full bg-muted">
  <div
- className="h-full rounded-full bg-emerald-500 transition-[width] duration-700 ease-out"
+ className="h-full rounded-full bg-primary transition-[width] duration-700 ease-out"
  style={{ width: `${progress}%` }}
  />
  </div>

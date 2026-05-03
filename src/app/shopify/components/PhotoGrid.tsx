@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback } from "react";
+import { FaCheck } from "react-icons/fa";
 
 type PhotoGridProps = {
  urls: string[];
@@ -45,7 +46,7 @@ export function PhotoGrid({
  <div
  key={url + i}
  className={
- "group relative overflow-hidden rounded-xl border-2 bg-foreground/10 shadow-sm transition-all " +
+ "group relative overflow-hidden rounded-xl border-2 bg-muted/50 shadow-sm ring-1 ring-black/[0.04] transition-all dark:bg-muted/40 dark:ring-white/[0.06] " +
  (selectedUrl === url
  ? "border-primary ring-2 ring-primary/30"
  : "border-border")
@@ -61,22 +62,22 @@ export function PhotoGrid({
  unoptimized
  />
  {selectedUrl === url ? (
- <span className="absolute right-2 top-2 flex size-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-white shadow">
- 
+ <span className="absolute right-2 top-2 flex size-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow ring-1 ring-black/10 dark:ring-white/15">
+ <FaCheck className="size-3" aria-hidden />
  </span>
  ) : null}
  <div className="absolute inset-0 flex flex-col justify-end gap-2 bg-black/0 p-3 opacity-0 transition-all group-hover:bg-foreground/55 group-hover:opacity-100">
  <button
  type="button"
  onClick={() => onSelect(url)}
- className="w-full rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-primary/90"
+ className="w-full rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 dark:ring-white/15"
  >
  Select
  </button>
  <button
  type="button"
  onClick={() => void download(url, i)}
- className="w-full rounded-lg border border-white/40 bg-card/90 px-3 py-2 text-xs font-semibold text-foreground hover:bg-card"
+ className="w-full rounded-lg border border-white/50 bg-card/95 px-3 py-2 text-xs font-semibold text-foreground shadow-sm ring-1 ring-white/20 hover:bg-card"
  >
  Download
  </button>
@@ -86,7 +87,7 @@ export function PhotoGrid({
  ) : (
  <div
  key={`empty-${i}`}
- className="flex aspect-[4/3] items-center justify-center rounded-xl border border-dashed border-border bg-muted text-xs text-muted-foreground/75"
+ className="flex aspect-[4/3] items-center justify-center rounded-xl border border-dashed border-border/80 bg-muted/50 text-xs text-muted-foreground/75 ring-1 ring-black/[0.03] dark:bg-muted/30 dark:ring-white/[0.06]"
  >
  —
  </div>

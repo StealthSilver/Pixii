@@ -57,16 +57,18 @@ export function LifestyleSelector({ value, onChange }: LifestyleSelectorProps) {
  type="button"
  onClick={() => onChange(opt.id)}
  className={
- "flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-colors " +
+ "flex flex-col items-center gap-1 rounded-lg border p-3 text-center ring-1 transition-colors " +
  (sel
- ? "border-primary/60 bg-primary/5 shadow-sm"
- : "border-border bg-card hover:border-muted-foreground/35")
+ ? "border-primary/60 bg-primary/5 shadow-sm ring-primary/15 dark:bg-primary/10"
+ : "border-border bg-card ring-black/[0.04] hover:border-muted-foreground/35 dark:ring-white/[0.06]")
  }
  >
  <span
  className={
- "flex size-8 items-center justify-center rounded-md text-primary " +
- (opt.id === "studio_dark" ? "bg-foreground text-background" : "bg-primary/10")
+ "flex size-8 items-center justify-center rounded-md text-primary ring-1 " +
+ (opt.id === "studio_dark"
+ ? "border border-border bg-foreground text-background ring-black/15 dark:ring-white/15"
+ : "bg-primary/10 ring-black/[0.05] dark:bg-primary/15 dark:ring-white/10")
  }
  aria-hidden
  >

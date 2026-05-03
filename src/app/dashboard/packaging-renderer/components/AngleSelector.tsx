@@ -27,10 +27,10 @@ export function AngleSelector({ value, onChange }: AngleSelectorProps) {
  type="button"
  onClick={() => onChange(o.id)}
  className={
- "rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm transition-colors " +
+ "rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm ring-1 transition-colors " +
  (active
- ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/25"
- : "border-border bg-card text-foreground hover:bg-muted")
+ ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/25 dark:bg-primary/15"
+ : "border-border bg-card text-foreground ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]")
  }
  >
  {o.label}

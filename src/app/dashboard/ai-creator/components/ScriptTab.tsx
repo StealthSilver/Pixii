@@ -98,7 +98,7 @@ export function ScriptTab({
  {SECTIONS.map(({ key, title, border }) => (
  <div
  key={key}
- className={`rounded-xl border-l-4 ${border} border-y border-r border-border bg-card p-4 shadow-sm`}
+ className={`rounded-xl border-l-4 ${border} border-y border-r border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]`}
  >
  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
  {title}
@@ -114,7 +114,7 @@ export function ScriptTab({
  <button
  type="button"
  onClick={() => void copyFull()}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy full script
  </button>
@@ -122,7 +122,7 @@ export function ScriptTab({
  type="button"
  disabled={loading}
  onClick={() => void regenerate()}
- className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 disabled:opacity-60"
+ className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 disabled:opacity-60 dark:ring-white/15"
  >
  {loading ? "Working..." : "Regenerate script"}
  </button>
@@ -132,7 +132,7 @@ export function ScriptTab({
  <input
  type="text"
  placeholder="Optional feedback for rewrite..."
- className="h-11 flex-1 rounded-lg border border-border px-3 text-sm"
+ className="h-11 flex-1 rounded-lg border border-border bg-card px-3 text-sm shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
  value={feedback}
  onChange={(e) => setFeedback(e.target.value)}
  />
@@ -140,7 +140,7 @@ export function ScriptTab({
  type="button"
  disabled={loading}
  onClick={() => void regenerate(feedback)}
- className="rounded-lg border border-primary/40 bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary/15 disabled:opacity-60"
+ className="rounded-lg border border-primary/40 bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary shadow-sm ring-1 ring-primary/20 hover:bg-primary/15 disabled:opacity-60 dark:ring-primary/30"
  >
  Regenerate with feedback
  </button>

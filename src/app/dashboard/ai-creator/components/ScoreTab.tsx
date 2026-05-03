@@ -72,7 +72,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
 
  return (
  <div className="space-y-6">
- <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-6 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-center sm:gap-10">
  <div className="relative flex size-36 items-center justify-center">
  <svg
@@ -85,7 +85,8 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
  cy="60"
  r={r}
  fill="none"
- stroke="#e5e5e5"
+ stroke="currentColor"
+ className="text-border"
  strokeWidth="10"
  />
  <circle
@@ -126,7 +127,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
  </div>
  </section>
 
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <h3 className="font-heading text-lg font-semibold text-foreground">
  Score breakdown
  </h3>
@@ -159,7 +160,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
  {(analysis?.conversionKillers ?? []).map((t, i) => (
  <li
  key={i}
- className="flex gap-2 rounded-lg border border-red-100 bg-red-50/80 px-3 py-2 text-sm text-red-950"
+ className="flex gap-2 rounded-lg border border-red-200/90 bg-red-50/80 px-3 py-2 text-sm text-red-950 dark:border-red-500/30 dark:bg-red-950/25 dark:text-red-100"
  >
  <svg
  className="mt-0.5 size-4 shrink-0 text-red-600"
@@ -184,7 +185,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
  {(analysis?.strengths ?? []).map((t, i) => (
  <li
  key={i}
- className="flex gap-2 rounded-lg border border-emerald-100 bg-emerald-50/80 px-3 py-2 text-sm text-emerald-950"
+ className="flex gap-2 rounded-lg border border-emerald-200/90 bg-emerald-50/80 px-3 py-2 text-sm text-emerald-950 dark:border-emerald-500/30 dark:bg-emerald-950/25 dark:text-emerald-100"
  >
  <svg
  className="mt-0.5 size-4 shrink-0 text-emerald-600"
@@ -203,7 +204,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
  </section>
  </div>
 
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <h3 className="font-heading text-lg font-semibold text-foreground">
  Keywords you&apos;re missing
  </h3>
@@ -211,7 +212,7 @@ export function ScoreTab({ analysis }: ScoreTabProps) {
  {(analysis?.missedKeywords ?? []).map((k, i) => (
  <span
  key={i}
- className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-950"
+ className="inline-flex items-center gap-1 rounded-full border border-amber-200/90 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/40 dark:text-amber-100"
  >
  <span aria-hidden>+</span>
  {k}

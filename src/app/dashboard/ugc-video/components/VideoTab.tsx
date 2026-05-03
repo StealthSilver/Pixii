@@ -54,14 +54,14 @@ export function VideoTab({
  <button
  type="button"
  onClick={onDownloadVideo}
- className="flex-1 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary/90"
+ className="flex-1 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 dark:ring-white/15"
  >
  Download Video
  </button>
  <button
  type="button"
  onClick={onDownloadWithCaptionsZip}
- className="flex-1 rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="flex-1 rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Download with Captions
  </button>

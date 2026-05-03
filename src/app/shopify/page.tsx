@@ -4,7 +4,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
-import { FeaturePage } from "@/components/FeaturePage";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import {
  SHOPIFY_PHOTO_LIFESTYLES,
@@ -70,6 +70,21 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
  return body as T;
 }
 
+const primaryBtn =
+ "inline-flex items-center justify-center rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 disabled:cursor-not-allowed disabled:opacity-60 dark:ring-white/15";
+
+const secondaryBtn =
+ "rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+
+function segmentTabClass(active: boolean): string {
+ return (
+ "rounded-lg px-4 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+ (active
+ ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+ : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+ );
+}
+
 function readStoredLifestyle(): ShopifyPhotoLifestyle {
  if (typeof window === "undefined") {
  return "studio_white";
@@ -108,6 +123,8 @@ function ShopifyPhotosPageContent() {
  message: string;
  variant: "success" | "error" | "info";
  } | null>(null);
+
+ const [mainTab, setMainTab] = useState<"shop" | "history">("shop");
 
  const [initialShop, setInitialShop] = useState("");
 
@@ -317,6 +334,7 @@ function ShopifyPhotosPageContent() {
  }, [selectedProduct, productCategory, lifestyle]);
 
  const openJobFromHistory = useCallback(async (id: string) => {
+ setMainTab("shop");
  try {
  const doc = await fetchJson<JobPayload>(`/api/shopify/status/${id}`);
  setJobId(id);
@@ -345,22 +363,34 @@ function ShopifyPhotosPageContent() {
  }, []);
 
  const inputClass =
- "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
  const connected = connection?.connected === true;
+ const processingLocked = view === "processing";
 
  return (
  <>
- <FeaturePage
- title="Shopify Photos"
- description="Connect your Shopify store to generate and publish lifestyle photos automatically."
- >
+ <div className="relative min-h-full overflow-x-hidden">
+ <GridBackdrop />
+ <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <header className="border-b border-border/70 pb-6">
+ <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+ Commerce
+ </p>
+ <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ Shopify Photos
+ </h1>
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ Connect your Shopify store to generate and publish lifestyle photos automatically.
+ </p>
+ </header>
+
  {connLoading ? (
  <div className="mt-8 max-w-6xl space-y-3">
- <div className="h-10 max-w-md animate-pulse rounded-lg bg-foreground/10" />
- <div className="h-48 max-w-lg animate-pulse rounded-xl bg-foreground/10" />
+ <div className="h-10 max-w-md animate-pulse rounded-lg bg-muted dark:bg-muted/60" />
+ <div className="h-48 max-w-lg animate-pulse rounded-xl bg-muted dark:bg-muted/60" />
  </div>
- ) : view === "connect" ? (
+ ) : !connected ? (
  <div className="mt-8 max-w-6xl">
  <ConnectView
  initialShop={initialShop}
@@ -374,14 +404,88 @@ function ShopifyPhotosPageContent() {
  />
  </div>
  ) : (
+ <>
+ <div
+ className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ role="tablist"
+ aria-label="Shopify workspace"
+ >
+ <button
+ type="button"
+ role="tab"
+ aria-selected={mainTab === "shop"}
+ className={segmentTabClass(mainTab === "shop")}
+ onClick={() => setMainTab("shop")}
+ >
+ Shop
+ </button>
+ <button
+ type="button"
+ role="tab"
+ aria-selected={mainTab === "history"}
+ disabled={processingLocked}
+ className={
+ segmentTabClass(mainTab === "history") +
+ (processingLocked ? " cursor-not-allowed opacity-50" : "")
+ }
+ onClick={() => {
+ if (!processingLocked) {
+ setMainTab("history");
+ }
+ }}
+ >
+ History
+ </button>
+ </div>
+
  <div className="mt-8 max-w-6xl">
- {connected && connection.connected ? (
+ {mainTab === "history" ? (
+ <>
+ {(historyData?.items ?? []).length === 0 ? (
+ <p className="text-sm text-muted-foreground">
+ No generations yet. Open the Shop tab to create lifestyle photos.
+ </p>
+ ) : (
+ <>
+ <p className="text-sm text-muted-foreground">
+ Open a past generation to review or publish.
+ </p>
+ <ul className="mt-4 space-y-2">
+ {(historyData?.items ?? []).map((h) => (
+ <li key={h._id}>
+ <button
+ type="button"
+ onClick={() => void openJobFromHistory(h._id)}
+ className="flex w-full items-center gap-3 rounded-xl border border-border/80 bg-card/95 px-4 py-3 text-left shadow-sm ring-1 ring-black/[0.03] transition-colors hover:border-primary/25 dark:ring-white/[0.05]"
+ >
+ <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
+ {(h.cloudinaryUrls?.[0] ?? h.productImageUrl) ? (
+ <Image
+ src={h.cloudinaryUrls?.[0] ?? h.productImageUrl}
+ alt=""
+ fill
+ className="object-cover"
+ unoptimized
+ />
+ ) : null}
+ </div>
+ <span className="min-w-0 flex-1 truncate text-sm font-semibold text-foreground">
+ {h.productTitle}
+ </span>
+ </button>
+ </li>
+ ))}
+ </ul>
+ </>
+ )}
+ </>
+ ) : (
+ <>
  <ConnectionBar
  shopName={connection.shopName}
  shopDomain={connection.shopDomain}
  onDisconnect={() => void onDisconnect()}
  />
- ) : null}
 
  {view === "products" && (
  <div className="grid gap-8 lg:grid-cols-[minmax(0,40%)_minmax(0,60%)]">
@@ -405,9 +509,9 @@ function ShopifyPhotosPageContent() {
  }
  >
  {selectedProduct ? (
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <div className="flex items-start gap-4">
- <div className="relative size-[120px] shrink-0 overflow-hidden rounded-lg bg-foreground/10">
+ <div className="relative size-[120px] shrink-0 overflow-hidden rounded-lg border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  {selectedProduct.images?.[0]?.src ? (
  <Image
  src={selectedProduct.images[0].src}
@@ -437,7 +541,7 @@ function ShopifyPhotosPageContent() {
  </div>
  ) : null}
 
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <LifestyleSelector value={lifestyle} onChange={setLifestyle} />
  <label className="mt-6 block text-sm font-medium text-foreground/90">
  Product Category
@@ -459,7 +563,7 @@ function ShopifyPhotosPageContent() {
  type="button"
  disabled={!selectedProduct}
  onClick={() => void onGenerate()}
- className="mt-6 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+ className={primaryBtn + " mt-6 w-full"}
  >
  Generate Lifestyle Photos →
  </button>
@@ -490,7 +594,7 @@ function ShopifyPhotosPageContent() {
  <div>
  <div className="flex flex-wrap items-center justify-between gap-4">
  <div className="flex min-w-0 items-center gap-3">
- <div className="relative size-10 shrink-0 overflow-hidden rounded-md bg-foreground/10">
+ <div className="relative size-10 shrink-0 overflow-hidden rounded-md border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  {selectedProduct.images?.[0]?.src ? (
  <Image
  src={selectedProduct.images[0].src}
@@ -514,7 +618,7 @@ function ShopifyPhotosPageContent() {
  setJob(null);
  setJobId(null);
  }}
- className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted"
+ className={secondaryBtn}
  >
  Generate Another
  </button>
@@ -528,14 +632,14 @@ function ShopifyPhotosPageContent() {
  setJob(null);
  setJobId(null);
  }}
- className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted"
+ className={secondaryBtn}
  >
  New Product
  </button>
  </div>
  </div>
 
- <div className="mt-6 rounded-xl border border-border bg-card p-5 shadow-sm">
+ <div className="mt-6 rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <PhotoGrid
  urls={job.cloudinaryUrls ?? []}
  lifestyleKey={job.lifestyle}
@@ -572,9 +676,13 @@ function ShopifyPhotosPageContent() {
  />
  </div>
  ) : null}
- </div>
+ </>
  )}
- </FeaturePage>
+ </div>
+ </>
+ )}
+ </div>
+ </div>
 
  {toast ? (
  <Toast message={toast.message} variant={toast.variant} onDismiss={() => setToast(null)} />
@@ -587,15 +695,16 @@ export default function ShopifyPhotosPage() {
  return (
  <Suspense
  fallback={
- <FeaturePage
- title="Shopify Photos"
- description="Connect your Shopify store to generate and publish lifestyle photos automatically."
- >
+ <div className="relative min-h-full overflow-x-hidden">
+ <GridBackdrop />
+ <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <div className="h-8 max-w-xs animate-pulse rounded-lg bg-muted dark:bg-muted/60" />
  <div className="mt-8 max-w-6xl space-y-3">
- <div className="h-10 max-w-md animate-pulse rounded-lg bg-foreground/10" />
- <div className="h-48 max-w-lg animate-pulse rounded-xl bg-foreground/10" />
+ <div className="h-10 max-w-md animate-pulse rounded-lg bg-muted dark:bg-muted/60" />
+ <div className="h-48 max-w-lg animate-pulse rounded-xl bg-muted dark:bg-muted/60" />
  </div>
- </FeaturePage>
+ </div>
+ </div>
  }
  >
  <ShopifyPhotosPageContent />

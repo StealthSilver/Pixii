@@ -1,7 +1,8 @@
 import type { SVGProps } from "react";
 
+/** Stroke matches navbar chrome (SidebarCollapseIcon default 1.5); slightly finer so dense glyphs read lighter at ~17px. */
 const stroke = {
-  strokeWidth: 1.5 as number,
+  strokeWidth: 1.25 as number,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
 };

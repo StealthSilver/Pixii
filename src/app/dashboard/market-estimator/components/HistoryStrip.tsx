@@ -14,15 +14,15 @@ type HistoryStripProps = {
 function competitionPill(level: string): string {
  switch (level) {
  case "low":
- return "bg-emerald-100 text-emerald-900";
+ return "border border-emerald-200/90 bg-emerald-50 text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/45 dark:text-emerald-100";
  case "medium":
- return "bg-amber-100 text-amber-900";
+ return "border border-amber-200/90 bg-amber-50 text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/45 dark:text-amber-100";
  case "high":
- return "bg-orange-100 text-orange-900";
+ return "border border-orange-200/90 bg-orange-50 text-orange-950 dark:border-orange-500/35 dark:bg-orange-950/45 dark:text-orange-100";
  case "very_high":
- return "bg-red-100 text-red-900";
+ return "border border-red-200/90 bg-red-50 text-red-950 dark:border-red-500/35 dark:bg-red-950/45 dark:text-red-100";
  default:
- return "bg-foreground/10 text-foreground";
+ return "border border-border bg-muted/80 text-foreground";
  }
 }
 
@@ -34,8 +34,8 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
 
  return (
  <div className="mt-8">
- <h3 className="font-heading text-sm font-semibold text-foreground">
- Previous Analyses
+ <h3 className="font-heading text-sm font-semibold tracking-tight text-foreground">
+ Previous analyses
  </h3>
  <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
  {show.map((h) => (
@@ -44,7 +44,7 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
  type="button"
  disabled={busyId === h._id}
  onClick={() => onSelect(h._id)}
- className="group flex w-[200px] shrink-0 flex-col rounded-xl border border-border bg-card p-3 text-left shadow-sm transition hover:border-muted-foreground/35 disabled:opacity-60"
+ className="group flex w-[200px] shrink-0 flex-col rounded-xl border border-border/80 bg-card/95 p-3 text-left shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] transition hover:border-muted-foreground/35 disabled:opacity-60 dark:ring-white/[0.05]"
  >
  <div className="relative mb-2 h-14 w-full overflow-hidden rounded-lg border border-border/55 bg-muted">
  {h.products?.[0]?.imageUrl ? (
@@ -61,7 +61,7 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
  <p className="line-clamp-2 text-xs font-semibold text-foreground">
  {h.category || "Analysis"}
  </p>
- <p className="mt-1 text-sm font-bold text-emerald-700">
+ <p className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-400">
  {formatRevenue(h.marketAnalysis.totalMarketSizeMonthly)}
  </p>
  <span

@@ -34,7 +34,7 @@ export function UploadZone({
  <div className="space-y-3">
  <div
  {...dropHandlers}
- className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/80 px-4 py-10 text-center transition-colors hover:border-muted-foreground/35"
+ className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/70 px-4 py-10 text-center ring-1 ring-black/[0.03] transition-colors hover:border-primary/35 hover:bg-muted/90 dark:bg-muted/40 dark:ring-white/[0.06]"
  >
  <svg
  className="mx-auto size-14 text-muted-foreground/75"
@@ -79,21 +79,21 @@ export function UploadZone({
  e.target.value = "";
  }}
  />
- <span className="inline-flex cursor-pointer rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted disabled:opacity-60">
+ <span className="inline-flex cursor-pointer rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted disabled:opacity-60 dark:ring-white/[0.06]">
  Choose PDF
  </span>
  </label>
  </div>
 
  {error ? (
- <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+ <p className="rounded-lg border border-red-200/90 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-500/35 dark:bg-red-950/40 dark:text-red-200">
  {error}
  </p>
  ) : null}
 
  {file ? (
  <div className="flex flex-wrap items-center gap-2">
- <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm">
+ <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <span className="max-w-[200px] truncate font-semibold text-foreground">
  {file.name}
  </span>

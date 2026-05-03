@@ -38,13 +38,13 @@ export function URLInput({ value, onChange }: URLInputProps) {
 
  const hintCls =
  hint?.tone === "ok"
- ? "text-emerald-700"
+ ? "text-emerald-700 dark:text-emerald-400"
  : hint?.tone === "warn"
- ? "text-amber-800"
+ ? "text-amber-800 dark:text-amber-200"
  : hint?.tone === "short"
- ? "text-amber-800"
+ ? "text-amber-800 dark:text-amber-200"
  : hint?.tone === "err"
- ? "text-red-700"
+ ? "text-red-700 dark:text-red-300"
  : "";
 
  return (
@@ -60,7 +60,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
  type="url"
  autoComplete="off"
  placeholder="https://www.amazon.com/dp/B08XXXXX..."
- className="mt-2 h-[52px] w-full rounded-lg border border-border bg-card px-4 text-sm text-foreground shadow-sm outline-none ring-primary/0 transition-[box-shadow,border-color] placeholder:text-muted-foreground/75 focus:border-primary/35 focus:ring-4 focus:ring-primary/10"
+ className="mt-2 h-[52px] w-full rounded-lg border border-border bg-card px-4 text-sm text-foreground shadow-sm ring-1 ring-black/[0.04] outline-none transition-[box-shadow,border-color] placeholder:text-muted-foreground/75 focus:border-primary/35 focus:ring-4 focus:ring-primary/10 dark:ring-white/[0.06]"
  value={value}
  onChange={(e) => onChange(e.target.value)}
  />
@@ -99,7 +99,7 @@ export function URLInput({ value, onChange }: URLInputProps) {
  key={chip.url}
  type="button"
  onClick={() => onChange(chip.url)}
- className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-medium text-foreground/90 transition-colors hover:border-primary/25 hover:bg-card"
+ className="rounded-full border border-border/80 bg-card/80 px-3 py-1.5 text-xs font-semibold text-muted-foreground backdrop-blur-[1px] transition-colors hover:border-muted-foreground/30 hover:text-foreground"
  >
  {chip.label}
  </button>

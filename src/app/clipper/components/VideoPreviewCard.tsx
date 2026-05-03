@@ -18,8 +18,8 @@ type VideoPreviewCardProps = {
 
 export function VideoPreviewCard({ meta, tooLong, longWarning }: VideoPreviewCardProps) {
  return (
- <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
- <div className="relative aspect-video w-full bg-foreground/10">
+ <div className="overflow-hidden rounded-xl border border-border/80 bg-card/95 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
+ <div className="relative aspect-video w-full bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  <Image
  src={meta.thumbnailUrl}
  alt=""
@@ -38,11 +38,11 @@ export function VideoPreviewCard({ meta, tooLong, longWarning }: VideoPreviewCar
  Duration: {formatSeconds(meta.duration)}
  </p>
  {tooLong ? (
- <p className="mt-3 text-sm font-semibold text-red-700">
+ <p className="mt-3 text-sm font-semibold text-red-700 dark:text-red-300">
  Video too long. Maximum 60 minutes.
  </p>
  ) : longWarning ? (
- <p className="mt-3 text-sm text-amber-800">
+ <p className="mt-3 text-sm text-amber-800 dark:text-amber-200">
  Long video — processing may take 5-10 minutes
  </p>
  ) : null}

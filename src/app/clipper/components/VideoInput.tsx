@@ -131,7 +131,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
  }, [url, runPreview]);
 
  const inputClass =
- "mt-1.5 w-full rounded-lg border border-border bg-card px-3 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 w-full rounded-lg border border-border bg-card px-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
  const durationSec = meta?.duration ?? 0;
  const tooLong = durationSec > 3600;
@@ -141,7 +141,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
 
  return (
  <section
- className="rounded-xl border border-border bg-card p-5 shadow-sm"
+ className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]"
  aria-labelledby="vc-input-heading"
  >
  <h2
@@ -164,7 +164,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
  key={ex.url}
  type="button"
  onClick={() => setUrl(ex.url)}
- className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-colors hover:bg-foreground/10"
+ className="rounded-full border border-border/80 bg-muted/60 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.03] transition-colors hover:bg-muted hover:text-foreground dark:bg-muted/40 dark:ring-white/[0.06]"
  >
  {ex.label}
  </button>
@@ -186,10 +186,10 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
  </label>
 
  {urlError ? (
- <p className="mt-2 text-sm font-medium text-red-700">{urlError}</p>
+ <p className="mt-2 text-sm font-medium text-red-700 dark:text-red-300">{urlError}</p>
  ) : null}
  {previewErr ? (
- <p className="mt-2 text-sm font-medium text-red-700">{previewErr}</p>
+ <p className="mt-2 text-sm font-medium text-red-700 dark:text-red-300">{previewErr}</p>
  ) : null}
 
  {previewLoading ? (
@@ -223,8 +223,8 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
  onClick={() => setNumberOfClips(n)}
  className={
  numberOfClips === n
- ? "rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm"
- : "rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ ? "rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 dark:ring-white/15"
+ : "rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  }
  >
  {n}
@@ -270,7 +270,7 @@ export function VideoInput({ onSubmit, busy }: VideoInputProps) {
  includeBlogPost,
  })
  }
- className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+ className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/15"
  >
  {busy ? (
  <>

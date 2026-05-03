@@ -67,8 +67,8 @@ export function PushPanel({
 
  if (done) {
  return (
- <div className="mt-8 rounded-xl border border-emerald-200 bg-emerald-50/50 p-8 text-left shadow-sm">
- <div className="flex size-16 items-center justify-center rounded-full bg-emerald-500 text-white">
+ <div className="mt-8 rounded-xl border border-emerald-200/90 bg-emerald-50/80 p-8 text-left shadow-sm ring-1 ring-black/[0.04] dark:border-emerald-500/30 dark:bg-emerald-950/40 dark:ring-emerald-500/15">
+ <div className="flex size-16 items-center justify-center rounded-full bg-emerald-500 text-white ring-1 ring-black/15 dark:bg-emerald-600 dark:ring-white/15">
  <svg className="size-9" viewBox="0 0 24 24" fill="none" aria-hidden>
  <path
  d="M5 13l4 4L19 7"
@@ -96,7 +96,7 @@ export function PushPanel({
  <button
  type="button"
  onClick={() => onGenerateMore()}
- className="mt-6 w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="mt-6 w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Generate More Photos
  </button>
@@ -105,14 +105,14 @@ export function PushPanel({
  }
 
  return (
- <div className="mt-8 rounded-xl border border-border bg-card p-5 shadow-sm">
+ <div className="mt-8 rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  {!selectedImageUrl ? (
  <p className="py-6 text-left text-sm text-muted-foreground">
  Select a photo above to publish it to your listing
  </p>
  ) : (
  <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
- <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+ <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border bg-muted/60 ring-1 ring-black/[0.04] dark:bg-muted/40 dark:ring-white/[0.06]">
  <Image
  src={selectedImageUrl}
  alt=""
@@ -136,7 +136,7 @@ export function PushPanel({
  type="button"
  disabled={!selectedImageUrl || publishing}
  onClick={() => void onPush()}
- className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-white shadow-sm transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
+ className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-white shadow-sm ring-1 ring-black/20 transition-opacity disabled:cursor-not-allowed disabled:opacity-50 dark:ring-white/20"
  style={{ backgroundColor: SHOPIFY_GREEN }}
  >
  {publishing ? (

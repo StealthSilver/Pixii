@@ -57,10 +57,10 @@ export function StyleSelector({ value, onChange }: StyleSelectorProps) {
  type="button"
  onClick={() => onChange(o.id)}
  className={
- "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm transition-colors " +
+ "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm ring-1 transition-colors " +
  (active
- ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/25"
- : "border-border bg-card text-foreground hover:bg-muted")
+ ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/25 dark:bg-primary/15"
+ : "border-border bg-card text-foreground ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]")
  }
  >
  <span className={`size-2.5 shrink-0 rounded-full ${o.dot}`} aria-hidden />

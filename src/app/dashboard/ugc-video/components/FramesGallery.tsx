@@ -28,7 +28,7 @@ export function FramesGallery({
  type="button"
  disabled={regenerating}
  onClick={onRegenerate}
- className="text-sm font-semibold text-primary hover:underline disabled:opacity-50"
+ className="rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted disabled:opacity-50 dark:ring-white/[0.06]"
  >
  {regenerating ? "Regenerating…" : "Regenerate Frames"}
  </button>
@@ -36,14 +36,14 @@ export function FramesGallery({
 
  <div className="relative mt-4">
  {regenerating ? (
- <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-card/70">
+ <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl border border-border/80 bg-card/80 backdrop-blur-[2px] ring-1 ring-black/[0.04] dark:bg-card/85 dark:ring-white/[0.06]">
  <FaSpinner className="size-8 animate-spin text-primary" aria-hidden />
  </div>
  ) : null}
  <div className="flex flex-wrap gap-4">
  {frameUrls.slice(0, 4).map((url, i) => (
  <div key={`${url}-${i}`} className="w-[140px] shrink-0">
- <div className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-border bg-foreground/10">
+ <div className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  <Image
  src={url}
  alt={`Frame ${i + 1}`}
@@ -55,7 +55,7 @@ export function FramesGallery({
  <button
  type="button"
  onClick={() => onDownloadFrame(url, i)}
- className="rounded-lg bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow"
+ className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]"
  >
  Download
  </button>

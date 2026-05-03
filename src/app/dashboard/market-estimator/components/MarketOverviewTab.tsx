@@ -9,36 +9,36 @@ type MarketOverviewTabProps = {
 
 function opportunityColor(score: number): string {
  if (score >= 70) {
- return "text-emerald-600";
+ return "text-emerald-600 dark:text-emerald-400";
  }
  if (score >= 40) {
- return "text-amber-600";
+ return "text-amber-600 dark:text-amber-400";
  }
- return "text-red-600";
+ return "text-red-600 dark:text-red-400";
 }
 
 function entryLabel(score: number): { text: string; color: string } {
  if (score <= 30) {
  return {
- text: "Low — Good opportunity for new sellers",
- color: "text-emerald-700",
+ text: "Low — good opportunity for new sellers",
+ color: "text-emerald-700 dark:text-emerald-400",
  };
  }
  if (score <= 55) {
  return {
- text: "Medium — Requires differentiation",
- color: "text-amber-700",
+ text: "Medium — requires differentiation",
+ color: "text-amber-700 dark:text-amber-300",
  };
  }
  if (score <= 75) {
  return {
- text: "High — Established market, hard to break in",
- color: "text-orange-700",
+ text: "High — established market, hard to break in",
+ color: "text-orange-700 dark:text-orange-300",
  };
  }
  return {
- text: "Very High — Dominated market, enter with caution",
- color: "text-red-700",
+ text: "Very high — dominated market, enter with caution",
+ color: "text-red-700 dark:text-red-300",
  };
 }
 
@@ -46,24 +46,28 @@ function competitionBadge(level: string): { label: string; className: string } {
  switch (level) {
  case "low":
  return {
- label: " Low Competition",
- className: "bg-emerald-100 text-emerald-900 border-emerald-200",
+ label: "Low competition",
+ className:
+ "border border-emerald-200/90 bg-emerald-50 text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/45 dark:text-emerald-100",
  };
  case "medium":
  return {
- label: " Medium Competition",
- className: "bg-amber-100 text-amber-900 border-amber-200",
+ label: "Medium competition",
+ className:
+ "border border-amber-200/90 bg-amber-50 text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/45 dark:text-amber-100",
  };
  case "high":
  return {
- label: " High Competition",
- className: "bg-orange-100 text-orange-900 border-orange-200",
+ label: "High competition",
+ className:
+ "border border-orange-200/90 bg-orange-50 text-orange-950 dark:border-orange-500/35 dark:bg-orange-950/45 dark:text-orange-100",
  };
  case "very_high":
  default:
  return {
- label: " Very High Competition",
- className: "bg-red-100 text-red-900 border-red-200",
+ label: "Very high competition",
+ className:
+ "border border-red-200/90 bg-red-50 text-red-950 dark:border-red-500/35 dark:bg-red-950/45 dark:text-red-100",
  };
  }
 }
@@ -88,32 +92,32 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
  return (
  <div className="space-y-6">
  <div className="grid gap-4 sm:grid-cols-3">
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-2xl font-bold tracking-tight text-foreground">
  {formatRevenue(m.totalMarketSizeMonthly)}
  </p>
  <p className="mt-1 text-sm font-semibold text-foreground">
- Est. Monthly Market Size
+ Est. monthly market size
  </p>
  <p className="text-xs text-muted-foreground">Top 10 combined revenue</p>
  </div>
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-2xl font-bold tracking-tight text-foreground">
  {formatRevenue(m.totalMarketSizeAnnual)}
  </p>
  <p className="mt-1 text-sm font-semibold text-foreground">
- Est. Annual Market Size
+ Est. annual market size
  </p>
  <p className="text-xs text-muted-foreground">Extrapolated from top 10</p>
  </div>
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p
  className={`font-heading text-2xl font-bold tracking-tight ${opportunityColor(m.opportunityScore)}`}
  >
  {m.opportunityScore}/100
  </p>
  <p className="mt-1 text-sm font-semibold text-foreground">
- Opportunity Score
+ Opportunity score
  </p>
  <p className="text-xs text-muted-foreground">
  Based on entry difficulty and concentration
@@ -126,27 +130,27 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
  </p>
 
  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
- <div className="rounded-lg border border-border bg-muted/80 px-3 py-3">
- <p className="text-xs font-medium text-muted-foreground"> Avg Price</p>
+ <div className="rounded-lg border border-border/80 bg-muted/60 px-3 py-3 dark:bg-muted/40">
+ <p className="text-xs font-medium text-muted-foreground"> Avg price</p>
  <p className="mt-1 font-heading text-lg font-semibold text-foreground">
  ${m.averagePrice.toFixed(2)}
  </p>
  </div>
- <div className="rounded-lg border border-border bg-muted/80 px-3 py-3">
- <p className="text-xs font-medium text-muted-foreground">⭐ Avg Rating</p>
+ <div className="rounded-lg border border-border/80 bg-muted/60 px-3 py-3 dark:bg-muted/40">
+ <p className="text-xs font-medium text-muted-foreground">⭐ Avg rating</p>
  <p className="mt-1 font-heading text-lg font-semibold text-foreground">
  {m.averageRating.toFixed(1)} / 5.0
  </p>
  </div>
- <div className="rounded-lg border border-border bg-muted/80 px-3 py-3">
- <p className="text-xs font-medium text-muted-foreground"> Avg Reviews</p>
+ <div className="rounded-lg border border-border/80 bg-muted/60 px-3 py-3 dark:bg-muted/40">
+ <p className="text-xs font-medium text-muted-foreground"> Avg reviews</p>
  <p className="mt-1 font-heading text-lg font-semibold text-foreground">
  {fmtReviews(m.averageReviewCount)}
  </p>
  </div>
- <div className="rounded-lg border border-border bg-muted/80 px-3 py-3">
+ <div className="rounded-lg border border-border/80 bg-muted/60 px-3 py-3 dark:bg-muted/40">
  <p className="text-xs font-medium text-muted-foreground">
- Market Concentration
+ Market concentration
  </p>
  <p className="mt-1 font-heading text-lg font-semibold text-foreground">
  {m.marketConcentrationScore}%
@@ -155,8 +159,8 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
  </div>
  </div>
 
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
- <p className="text-sm font-semibold text-foreground">Entry Difficulty</p>
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
+ <p className="text-sm font-semibold text-foreground">Entry difficulty</p>
  <p className={`mt-1 text-xs ${entry.color}`}>{entry.text}</p>
  <div className="mt-3 h-3 overflow-hidden rounded-full bg-foreground/10">
  <div
@@ -169,8 +173,8 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
  </p>
  </div>
 
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
- <p className="text-sm font-semibold text-foreground">Revenue Distribution</p>
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
+ <p className="text-sm font-semibold text-foreground">Revenue distribution</p>
  <p className="mt-1 text-xs text-muted-foreground">
  Top 10 by Best Sellers rank · bar width vs top earner
  </p>
@@ -193,7 +197,7 @@ export function MarketOverviewTab({ job }: MarketOverviewTabProps) {
  />
  </div>
  </div>
- <span className="shrink-0 text-xs font-semibold text-emerald-700">
+ <span className="shrink-0 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
  {formatRevenue(p.estimatedMonthlyRevenue)}
  </span>
  </li>

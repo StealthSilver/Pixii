@@ -38,7 +38,7 @@ export function HistoryStrip({ items, onSelect }: HistoryStripProps) {
  onClick={() => onSelect(h._id)}
  className="w-[88px] shrink-0 text-left"
  >
- <div className="relative size-20 overflow-hidden rounded-lg border border-border bg-foreground/10">
+ <div className="relative size-20 overflow-hidden rounded-lg border border-border bg-muted/40 ring-1 ring-black/[0.04] transition-colors hover:border-primary/30 hover:ring-primary/20 dark:bg-muted/30 dark:ring-white/[0.06]">
  <Image
  src={thumb}
  alt=""

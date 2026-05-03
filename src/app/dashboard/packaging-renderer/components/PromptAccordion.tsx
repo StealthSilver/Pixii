@@ -10,7 +10,7 @@ export function PromptAccordion({
  renderEngine,
 }: PromptAccordionProps) {
  return (
- <details className="rounded-xl border border-border bg-card shadow-sm">
+ <details className="rounded-xl border border-border/80 bg-card/95 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-foreground">
  View AI prompt used
  </summary>
@@ -18,7 +18,7 @@ export function PromptAccordion({
  <p className="text-xs font-medium text-muted-foreground">
  Engine: {renderEngine ?? "—"}
  </p>
- <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap rounded-lg bg-muted p-3 text-xs text-foreground">
+ <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap rounded-lg border border-border/80 bg-muted p-3 text-xs text-foreground ring-1 ring-black/[0.03] dark:ring-white/[0.06]">
  {promptUsed ?? "—"}
  </pre>
  <button
@@ -28,7 +28,7 @@ export function PromptAccordion({
  void navigator.clipboard.writeText(promptUsed);
  }
  }}
- className="mt-3 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="mt-3 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy prompt
  </button>

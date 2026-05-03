@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { FaCheck, FaSpinner } from "react-icons/fa";
-import { FeaturePage } from "@/components/FeaturePage";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
 
@@ -63,6 +63,12 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
  }
  return body as T;
 }
+
+const primaryBtn =
+ "inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 disabled:cursor-not-allowed disabled:opacity-60 dark:ring-white/15";
+
+const secondaryBtn =
+ "rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
 function stepProgress(status: string, currentStep: number): {
  activeIndex: number;
@@ -282,7 +288,7 @@ export default function PhotoUpgraderPage() {
  );
 
  const inputClass =
- "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
  const dropHandlers = {
  onDragOver: (e: React.DragEvent) => {
@@ -301,15 +307,27 @@ export default function PhotoUpgraderPage() {
 
  return (
  <>
- <FeaturePage
- title="Photo Upgrader"
- description="Turn low-res, poorly lit product photos into studio-quality shots: upscale, remove the background, apply a clean studio backdrop, then relight and polish."
- >
+ <div className="relative min-h-full overflow-x-hidden">
+ <GridBackdrop />
+ <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <header className="border-b border-border/70 pb-6">
+ <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+ Studio
+ </p>
+ <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ Photo Upgrader
+ </h1>
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ Turn low-res, poorly lit product photos into studio-quality shots: upscale,
+ remove the background, apply a clean studio backdrop, then relight and polish.
+ </p>
+ </header>
+
  <div className="mt-8 grid max-w-6xl gap-8 lg:grid-cols-[1fr_320px]">
  <div className="space-y-6">
  {view === "upload" && (
  <section
- className="rounded-xl border border-border bg-card p-5 shadow-sm"
+ className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]"
  aria-labelledby="pu-upload-heading"
  >
  <h2
@@ -325,7 +343,7 @@ export default function PhotoUpgraderPage() {
 
  <div
  {...dropHandlers}
- className="mt-5 flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/80 px-4 py-8 text-center transition-colors hover:border-muted-foreground/35"
+ className="mt-5 flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/60 px-4 py-8 text-center ring-1 ring-black/[0.03] transition-colors hover:border-primary/30 hover:bg-muted/80 dark:bg-muted/40 dark:ring-white/[0.05]"
  >
  <label className="cursor-pointer text-sm font-semibold text-primary">
  <input
@@ -361,14 +379,16 @@ export default function PhotoUpgraderPage() {
  type="button"
  disabled={uploading}
  onClick={() => void onUploadFromUrl()}
- className="mt-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted disabled:opacity-60"
+ className={
+ secondaryBtn + " mt-2 px-4 py-2 disabled:opacity-60"
+ }
  >
  Import from URL
  </button>
  </div>
 
  {previewUrl && (
- <div className="mt-5 overflow-hidden rounded-lg border border-border bg-muted">
+ <div className="mt-5 overflow-hidden rounded-lg border border-border/80 bg-muted/70 ring-1 ring-black/[0.04] dark:bg-muted/50 dark:ring-white/[0.06]">
  <div className="relative mx-auto aspect-square max-h-72 w-full max-w-sm">
  <Image
  src={previewUrl}
@@ -485,7 +505,7 @@ export default function PhotoUpgraderPage() {
  </ol>
 
  {statusPayload?.status === "failed" && statusPayload.errorMessage ? (
- <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+ <p className="mt-4 rounded-lg border border-red-200/90 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-500/35 dark:bg-red-950/40 dark:text-red-200">
  {statusPayload.errorMessage}
  </p>
  ) : null}
@@ -511,7 +531,7 @@ export default function PhotoUpgraderPage() {
  : null}
  Background: {statusPayload.backgroundStyle}
  </p>
- <div className="mt-4 overflow-hidden rounded-lg border border-border bg-muted">
+ <div className="mt-4 overflow-hidden rounded-lg border border-border/80 bg-muted/70 ring-1 ring-black/[0.04] dark:bg-muted/50 dark:ring-white/[0.06]">
  <div className="relative mx-auto aspect-square max-h-[min(80vh,560px)] w-full">
  <Image
  src={statusPayload.outputUrl}
@@ -529,14 +549,14 @@ export default function PhotoUpgraderPage() {
  download
  target="_blank"
  rel="noreferrer"
- className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90"
+ className={primaryBtn}
  >
  Open full size
  </a>
  <button
  type="button"
  onClick={resetUpload}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className={secondaryBtn}
  >
  Process another photo
  </button>
@@ -546,19 +566,19 @@ export default function PhotoUpgraderPage() {
  </div>
 
  <aside className="space-y-4">
- <section className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <h3 className="font-heading text-sm font-semibold text-foreground">
  Recent outputs
  </h3>
  {historyError ? (
- <p className="mt-2 text-sm text-red-700">{historyError.message}</p>
+ <p className="mt-2 text-sm text-red-700 dark:text-red-300">{historyError.message}</p>
  ) : null}
  {historyLoading && !historyData?.items?.length ? (
  <div className="mt-3 space-y-2">
  {[0, 1, 2].map((i) => (
  <div
  key={i}
- className="h-16 animate-pulse rounded-lg bg-foreground/10"
+ className="h-16 animate-pulse rounded-lg bg-muted dark:bg-muted/60"
  />
  ))}
  </div>
@@ -571,9 +591,9 @@ export default function PhotoUpgraderPage() {
  {historyData.items.map((item) => (
  <li
  key={item._id}
- className="flex gap-3 rounded-lg border border-border/55 p-2"
+ className="flex gap-3 rounded-lg border border-border/80 bg-card/80 p-2 ring-1 ring-black/[0.03] dark:ring-white/[0.06]"
  >
- <div className="relative size-14 shrink-0 overflow-hidden rounded-md bg-foreground/10">
+ <div className="relative size-14 shrink-0 overflow-hidden rounded-md border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  {item.outputUrl ? (
  <Image
  src={item.outputUrl}
@@ -598,7 +618,7 @@ export default function PhotoUpgraderPage() {
  <button
  type="button"
  onClick={() => void deleteHistoryItem(item._id)}
- className="mt-1 text-[11px] font-semibold text-red-600 hover:underline"
+ className="mt-1 text-[11px] font-semibold text-red-600 hover:underline dark:text-red-400"
  >
  Delete
  </button>
@@ -609,7 +629,7 @@ export default function PhotoUpgraderPage() {
  )}
  </section>
 
- <section className="rounded-xl border border-dashed border-border bg-card/60 px-4 py-4 text-sm text-muted-foreground">
+ <section className="rounded-xl border border-dashed border-border/80 bg-card/70 px-4 py-4 text-sm text-muted-foreground ring-1 ring-black/[0.03] dark:bg-card/50 dark:ring-white/[0.05]">
  <p className="font-heading font-semibold text-foreground">Pipeline</p>
  <ol className="mt-2 list-decimal space-y-1 pl-4">
  <li>Upscale (Replicate Real-ESRGAN)</li>
@@ -621,7 +641,8 @@ export default function PhotoUpgraderPage() {
  </section>
  </aside>
  </div>
- </FeaturePage>
+ </div>
+ </div>
 
  {toast ? (
  <Toast

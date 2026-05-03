@@ -12,13 +12,13 @@ type ProductTableTabProps = {
 
 function rankBadgeClass(rank: number): string {
  if (rank === 1) {
- return "bg-amber-100 text-amber-900 ring-1 ring-amber-300";
+ return "bg-amber-100 text-amber-950 ring-1 ring-amber-300/80 dark:bg-amber-950/50 dark:text-amber-100 dark:ring-amber-500/30";
  }
  if (rank === 2) {
- return "bg-border text-foreground ring-1 ring-muted-foreground/45";
+ return "bg-border text-foreground ring-1 ring-muted-foreground/40 dark:bg-muted/80";
  }
  if (rank === 3) {
- return "bg-orange-100 text-orange-900 ring-1 ring-orange-300";
+ return "bg-orange-100 text-orange-950 ring-1 ring-orange-300/80 dark:bg-orange-950/45 dark:text-orange-100 dark:ring-orange-500/30";
  }
  return "bg-foreground/10 text-muted-foreground";
 }
@@ -59,7 +59,7 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  value={minRev}
  onChange={(e) => setMinRev(e.target.value)}
  placeholder="0"
- className="mt-1 block w-28 rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm"
+ className="mt-1 block w-28 rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
  />
  </label>
  <label className="text-xs font-medium text-foreground/90">
@@ -70,14 +70,14 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  value={minRating}
  onChange={(e) => setMinRating(e.target.value)}
  placeholder="0"
- className="mt-1 block w-24 rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm"
+ className="mt-1 block w-24 rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
  />
  </label>
  </div>
 
- <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
+ <div className="overflow-x-auto rounded-xl border border-border/80 bg-card/95 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <table className="min-w-[720px] w-full text-left text-sm">
- <thead className="border-b border-border bg-muted text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+ <thead className="border-b border-border bg-muted text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:bg-muted/50">
  <tr>
  <th className="px-3 py-2">Rank</th>
  <th className="px-3 py-2">Product</th>
@@ -140,7 +140,7 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  <td className="whitespace-nowrap px-3 py-2 text-xs">
  {p.estimatedMonthlySales.toLocaleString()}
  </td>
- <td className="whitespace-nowrap px-3 py-2 text-xs font-semibold text-emerald-700">
+ <td className="whitespace-nowrap px-3 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
  {formatRevenue(p.estimatedMonthlyRevenue)}
  </td>
  <td className="px-3 py-2">

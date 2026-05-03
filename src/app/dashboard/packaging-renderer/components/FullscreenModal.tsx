@@ -37,7 +37,7 @@ export function FullscreenModal({
  <button
  type="button"
  onClick={onClose}
- className="absolute right-4 top-4 rounded-lg bg-card/10 px-3 py-2 text-sm font-semibold text-white hover:bg-card/20"
+ className="absolute right-4 top-4 rounded-lg border border-white/20 bg-black/35 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-white/15 backdrop-blur-sm hover:bg-black/50"
  >
  ×
  </button>
@@ -47,7 +47,7 @@ export function FullscreenModal({
  <button
  type="button"
  onClick={onPrev}
- className="absolute left-0 z-10 rounded-lg bg-card/10 px-3 py-4 text-white hover:bg-card/20 md:left-4"
+ className="absolute left-0 z-10 rounded-lg border border-white/20 bg-black/35 px-3 py-4 text-white shadow-sm ring-1 ring-white/15 backdrop-blur-sm hover:bg-black/50 md:left-4"
  aria-label="Previous image"
  >
  ‹
@@ -67,7 +67,7 @@ export function FullscreenModal({
  <button
  type="button"
  onClick={onNext}
- className="absolute right-0 z-10 rounded-lg bg-card/10 px-3 py-4 text-white hover:bg-card/20 md:right-4"
+ className="absolute right-0 z-10 rounded-lg border border-white/20 bg-black/35 px-3 py-4 text-white shadow-sm ring-1 ring-white/15 backdrop-blur-sm hover:bg-black/50 md:right-4"
  aria-label="Next image"
  >
  ›
@@ -78,7 +78,7 @@ export function FullscreenModal({
  <button
  type="button"
  onClick={() => onDownload(url)}
- className="mt-6 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow hover:bg-primary/90"
+ className="mt-6 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 dark:ring-white/15"
  >
  Download
  </button>

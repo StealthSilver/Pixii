@@ -36,7 +36,7 @@ export function BlogTab({ blog, loadingBlog, onToast }: BlogTabProps) {
 
  if (loadingBlog && !blog) {
  return (
- <div className="flex items-center gap-2 rounded-xl border border-border bg-card p-8 text-sm text-muted-foreground shadow-sm">
+ <div className="flex items-center gap-2 rounded-xl border border-border/80 bg-card/95 p-8 text-sm text-muted-foreground shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <span className="inline-block size-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
  Generating blog post…
  </div>
@@ -45,7 +45,7 @@ export function BlogTab({ blog, loadingBlog, onToast }: BlogTabProps) {
 
  if (!blog) {
  return (
- <p className="rounded-xl border border-border bg-muted px-4 py-6 text-sm text-muted-foreground">
+ <p className="rounded-xl border border-border/80 bg-muted/60 px-4 py-6 text-sm text-muted-foreground ring-1 ring-black/[0.04] dark:bg-muted/40 dark:ring-white/[0.06]">
  Blog generation was skipped or isn&apos;t available for this job.
  </p>
  );
@@ -73,14 +73,14 @@ export function BlogTab({ blog, loadingBlog, onToast }: BlogTabProps) {
 
  return (
  <div className="space-y-6">
- <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <h2 className="font-heading text-xl font-bold text-foreground">{blog.title}</h2>
  <p className="mt-2 text-sm italic text-muted-foreground">{blog.metaDescription}</p>
  <div className="mt-3 flex flex-wrap gap-2">
  {(blog.tags ?? []).map((t) => (
  <span
  key={t}
- className="rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-foreground/90"
+ className="rounded-full border border-border/80 bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-foreground/90 ring-1 ring-black/[0.03] dark:bg-muted/40 dark:ring-white/[0.06]"
  >
  {t}
  </span>
@@ -100,14 +100,14 @@ export function BlogTab({ blog, loadingBlog, onToast }: BlogTabProps) {
  <button
  type="button"
  onClick={() => void copyMd()}
- className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy Markdown
  </button>
  <button
  type="button"
  onClick={() => void copyHtml()}
- className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy HTML
  </button>
@@ -116,7 +116,7 @@ export function BlogTab({ blog, loadingBlog, onToast }: BlogTabProps) {
  onClick={() =>
  downloadTextFile(blog.content, `${safeSlug}.md`, "text/markdown;charset=utf-8")
  }
- className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Download .md
  </button>
@@ -129,14 +129,14 @@ export function BlogTab({ blog, loadingBlog, onToast }: BlogTabProps) {
  "text/plain;charset=utf-8",
  )
  }
- className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Download .txt
  </button>
  </div>
  </div>
 
- <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <BlogContent markdown={blog.content} />
  </div>
 

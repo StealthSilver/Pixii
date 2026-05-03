@@ -313,8 +313,16 @@ export default function AeoDashboardPage() {
               type="button"
               role="tab"
               aria-selected={view === "history"}
-              className={segmentTabClass(view === "history")}
-              onClick={() => setView("history")}
+              disabled={running}
+              className={
+                segmentTabClass(view === "history") +
+                (running ? " cursor-not-allowed opacity-50" : "")
+              }
+              onClick={() => {
+                if (!running) {
+                  setView("history");
+                }
+              }}
             >
               History
             </button>

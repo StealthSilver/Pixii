@@ -6,15 +6,15 @@ import { extractAsin } from "@/lib/aiCreator/extractAsin";
 
 const EXAMPLE_URLS = [
  {
- label: " Example: Electronics",
+ label: "Example: Electronics",
  url: "https://www.amazon.com/dp/B09B8RVKJF",
  },
  {
- label: " Example: Fitness",
+ label: "Example: Fitness",
  url: "https://www.amazon.com/dp/B07Y3B4HJK",
  },
  {
- label: " Example: Beauty",
+ label: "Example: Beauty",
  url: "https://www.amazon.com/dp/B08XCVT8CZ",
  },
 ] as const;
@@ -33,7 +33,10 @@ type URLInputProps = {
 };
 
 const inputClass =
- "mt-1.5 h-13 min-h-[52px] w-full rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 h-13 min-h-[52px] w-full rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+
+const chipClass =
+ "rounded-full border border-border/80 bg-card/80 px-3 py-1.5 text-xs font-semibold text-muted-foreground backdrop-blur-[1px] transition-colors hover:border-muted-foreground/30 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 disabled:opacity-60";
 
 export function URLInput({ value, onChange, disabled }: URLInputProps) {
  const [debounced, setDebounced] = useState(value);
@@ -67,17 +70,17 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
 
  return (
  <section
- className="rounded-xl border border-border bg-card p-5 shadow-sm"
+ className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]"
  aria-labelledby="ra-url-heading"
  >
  <h2
  id="ra-url-heading"
- className="font-heading text-lg font-semibold text-foreground"
+ className="font-heading text-lg font-semibold tracking-tight text-foreground"
  >
- Your Amazon Product Listing URL
+ Your Amazon product URL
  </h2>
  <label className="mt-4 block text-sm font-medium text-foreground/90">
- Paste your product page link
+ Paste a direct product page link
  <input
  type="url"
  value={value}
@@ -89,19 +92,19 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
  </label>
 
  {validation.kind === "valid" ? (
- <p className="mt-2 flex items-center gap-1.5 text-sm text-emerald-700">
+ <p className="mt-2 flex items-center gap-1.5 text-sm text-emerald-700 dark:text-emerald-400">
  <FaCheck className="size-3.5 shrink-0" aria-hidden />
- ASIN detected: {validation.asin}
+ ASIN: {validation.asin}
  </p>
  ) : null}
  {validation.kind === "no_asin" ? (
- <p className="mt-2 text-sm text-amber-800">
- Could not find a product ASIN. Make sure this is a direct product listing
- URL, not a search or category page.
+ <p className="mt-2 text-sm text-amber-800 dark:text-amber-200">
+ Could not find a product ASIN. Use a direct product URL, not search or
+ category.
  </p>
  ) : null}
  {validation.kind === "no_amazon" ? (
- <p className="mt-2 text-sm text-red-700">
+ <p className="mt-2 text-sm text-red-700 dark:text-red-300">
  Please enter an Amazon product listing URL
  </p>
  ) : null}
@@ -113,7 +116,7 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
  type="button"
  disabled={disabled}
  onClick={() => onChip(c.url)}
- className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-colors hover:bg-card disabled:opacity-60"
+ className={chipClass}
  >
  {c.label}
  </button>

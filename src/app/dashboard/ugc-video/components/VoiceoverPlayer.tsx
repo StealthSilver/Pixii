@@ -14,7 +14,7 @@ export function VoiceoverPlayer({
  onDownload,
 }: VoiceoverPlayerProps) {
  return (
- <section className="mt-8 rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="mt-8 rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <h3 className="font-heading text-base font-semibold text-foreground">
  Voiceover Audio
  </h3>
@@ -34,7 +34,7 @@ export function VoiceoverPlayer({
  <button
  type="button"
  onClick={onDownload}
- className="mt-3 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="mt-3 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Download MP3
  </button>

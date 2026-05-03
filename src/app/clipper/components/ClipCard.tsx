@@ -28,22 +28,22 @@ type ClipCardProps = {
 
 function scorePillClass(score: number): string {
  if (score >= 9) {
- return "bg-emerald-100 text-emerald-900";
+ return "bg-emerald-500/15 text-emerald-900 dark:bg-emerald-500/20 dark:text-emerald-100";
  }
  if (score >= 7) {
- return "bg-sky-100 text-sky-900";
+ return "bg-sky-500/15 text-sky-900 dark:bg-sky-400/15 dark:text-sky-100";
  }
  if (score >= 5) {
- return "bg-amber-100 text-amber-950";
+ return "bg-amber-500/15 text-amber-950 dark:bg-amber-500/15 dark:text-amber-100";
  }
- return "bg-foreground/10 text-foreground/90";
+ return "bg-muted text-foreground/90 ring-1 ring-black/[0.04] dark:ring-white/[0.06]";
 }
 
 function PlatformBadge({ platform }: { platform: string }) {
  const p = platform.toLowerCase();
  if (p === "tiktok") {
  return (
- <span className="rounded-md bg-foreground px-2 py-0.5 text-[10px] font-bold text-background">
+ <span className="rounded-md border border-border bg-card px-2 py-0.5 text-[10px] font-bold text-foreground shadow-sm ring-1 ring-black/[0.04] dark:bg-muted dark:ring-white/[0.06]">
  TikTok
  </span>
  );
@@ -57,13 +57,13 @@ function PlatformBadge({ platform }: { platform: string }) {
  }
  if (p === "youtube_shorts") {
  return (
- <span className="rounded-md bg-red-600 px-2 py-0.5 text-[10px] font-bold text-white">
+ <span className="rounded-md border border-red-600/80 bg-red-600 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm ring-1 ring-black/15 dark:ring-white/15">
  YouTube Shorts
  </span>
  );
  }
  return (
- <span className="rounded-md bg-sky-600 px-2 py-0.5 text-[10px] font-bold text-white">
+ <span className="rounded-md border border-sky-600/90 bg-sky-600 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm ring-1 ring-black/15 dark:ring-white/15">
  Twitter
  </span>
  );
@@ -114,7 +114,7 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
  };
 
  return (
- <div className="flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="flex flex-col rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <div className="flex items-start justify-between gap-2">
  <span
  className={
@@ -153,7 +153,7 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
  <p className="text-xs font-medium text-muted-foreground">Transcript:</p>
  <div
  className={
- "mt-1 rounded-lg border border-border/55 bg-muted px-3 py-2 text-sm text-foreground " +
+ "mt-1 rounded-lg border border-border/80 bg-muted/70 px-3 py-2 text-sm text-foreground ring-1 ring-black/[0.03] dark:bg-muted/50 dark:ring-white/[0.06] " +
  (expanded ? "" : "line-clamp-4")
  }
  >
@@ -177,14 +177,14 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
  download
  target="_blank"
  rel="noreferrer"
- className="inline-flex flex-1 items-center justify-center rounded-lg bg-primary px-3 py-2 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"
+ className="inline-flex flex-1 items-center justify-center rounded-lg bg-primary px-3 py-2 text-center text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition hover:bg-primary/90 dark:ring-white/15"
  >
  Download Clip
  </a>
  <button
  type="button"
  onClick={() => void copyTs()}
- className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy Timestamp
  </button>
@@ -192,16 +192,16 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
  href={ytUrl}
  target="_blank"
  rel="noreferrer"
- className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Open in YouTube
  </a>
  </div>
  ) : (
  <div className="mt-4 space-y-3 border-t border-border/55 pt-4">
- <div className="rounded-lg border border-amber-200 bg-amber-50/80 px-3 py-2 text-sm text-amber-950">
+ <div className="rounded-lg border border-amber-200/90 bg-amber-50/90 px-3 py-2 text-sm text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/35 dark:text-amber-100">
  <p className="flex items-center gap-2 font-semibold">
- <FaMapPin className="size-4 shrink-0 text-amber-700" aria-hidden />
+ <FaMapPin className="size-4 shrink-0 text-amber-700 dark:text-amber-400" aria-hidden />
  Manual cut required
  </p>
  <p className="mt-1 font-mono text-xs">
@@ -219,7 +219,7 @@ export function ClipCard({ clip, videoId, index, onToast }: ClipCardProps) {
  <button
  type="button"
  onClick={() => void copyCapcut()}
- className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy Timestamp for CapCut
  </button>

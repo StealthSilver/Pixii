@@ -13,9 +13,9 @@ export function AIInsightsTab({ job }: AIInsightsTabProps) {
 
  return (
  <div className="space-y-6">
- <div className="rounded-xl border-l-4 border-primary bg-primary/[0.06] p-4 shadow-sm">
+ <div className="rounded-xl border border-primary/25 bg-primary/[0.06] p-4 shadow-sm ring-1 ring-black/[0.03] dark:bg-primary/10 dark:ring-white/[0.06]">
  <p className="text-xs font-semibold uppercase tracking-wide text-primary">
- Key Insight
+ Key insight
  </p>
  <p className="mt-2 text-lg font-medium leading-relaxed text-foreground">
  <span className="mr-1 text-2xl text-primary/40" aria-hidden>
@@ -35,9 +35,9 @@ export function AIInsightsTab({ job }: AIInsightsTabProps) {
  {gaps.map((g, i) => (
  <li
  key={i}
- className="rounded-lg border border-emerald-100 bg-emerald-50/80 px-3 py-2.5 text-sm text-foreground"
+ className="rounded-lg border border-emerald-200/80 bg-emerald-50/80 px-3 py-2.5 text-sm text-foreground dark:border-emerald-500/25 dark:bg-emerald-950/25"
  >
- <span className="mr-2 inline-flex size-6 items-center justify-center rounded-full bg-emerald-200 text-xs font-bold text-emerald-900">
+ <span className="mr-2 inline-flex size-6 items-center justify-center rounded-full bg-emerald-200 text-xs font-bold text-emerald-950 dark:bg-emerald-800 dark:text-emerald-100">
  {i + 1}
  </span>
  {g}
@@ -52,7 +52,7 @@ export function AIInsightsTab({ job }: AIInsightsTabProps) {
  {trends.map((t, i) => (
  <li
  key={i}
- className="rounded-lg border border-sky-100 bg-sky-50/80 px-3 py-2.5 text-sm text-foreground"
+ className="rounded-lg border border-sky-200/80 bg-sky-50/80 px-3 py-2.5 text-sm text-foreground dark:border-sky-500/25 dark:bg-sky-950/25"
  >
  <span className="mr-1.5" aria-hidden>
  
@@ -64,9 +64,9 @@ export function AIInsightsTab({ job }: AIInsightsTabProps) {
  </div>
  </div>
 
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm ring-1 ring-border/45">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <p className="text-sm font-semibold text-foreground">
- Recommended Entry Strategy
+ Recommended entry strategy
  </p>
  <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-foreground">
  {m.entryStrategy || "—"}

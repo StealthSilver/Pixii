@@ -9,15 +9,15 @@ import {
 
 const EXAMPLE_URLS = [
  {
- label: " Electronics Best Sellers",
+ label: "Electronics Best Sellers",
  url: "https://www.amazon.com/Best-Sellers-Electronics/zgbs/electronics/",
  },
  {
- label: " Sports & Outdoors Best Sellers",
+ label: "Sports & Outdoors Best Sellers",
  url: "https://www.amazon.com/Best-Sellers-Sports-Outdoors/zgbs/sporting-goods/",
  },
  {
- label: " Beauty Best Sellers",
+ label: "Beauty Best Sellers",
  url: "https://www.amazon.com/Best-Sellers-Beauty/zgbs/beauty/",
  },
 ] as const;
@@ -36,7 +36,10 @@ type URLInputProps = {
 };
 
 const inputClass =
- "mt-1.5 h-13 min-h-[52px] w-full rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 h-13 min-h-[52px] w-full rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+
+const chipClass =
+ "rounded-full border border-border/80 bg-card/80 px-3 py-1.5 text-xs font-semibold text-muted-foreground backdrop-blur-[1px] transition-colors hover:border-muted-foreground/30 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 disabled:opacity-60";
 
 export function URLInput({ value, onChange, disabled }: URLInputProps) {
  const [debounced, setDebounced] = useState(value);
@@ -69,14 +72,14 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
 
  return (
  <section
- className="rounded-xl border border-border bg-card p-5 shadow-sm"
+ className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]"
  aria-labelledby="me-url-heading"
  >
  <h2
  id="me-url-heading"
- className="font-heading text-lg font-semibold text-foreground"
+ className="font-heading text-lg font-semibold tracking-tight text-foreground"
  >
- Amazon Best Sellers URL
+ Best Sellers category URL
  </h2>
  <label className="mt-4 block text-sm font-medium text-foreground/90">
  Paste a category Best Sellers page
@@ -91,19 +94,18 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
  </label>
 
  {validation.kind === "valid" ? (
- <p className="mt-2 flex items-center gap-1.5 text-sm text-emerald-700">
+ <p className="mt-2 flex items-center gap-1.5 text-sm text-emerald-700 dark:text-emerald-400">
  <FaCheck className="size-3.5 shrink-0" aria-hidden />
- Best Sellers page detected · Category: {validation.category}
+ Category: {validation.category}
  </p>
  ) : null}
  {validation.kind === "not_bestsellers" ? (
- <p className="mt-2 text-sm text-amber-800">
- This doesn&apos;t look like a Best Sellers page. Try navigating to a
- category&apos;s Best Sellers list on Amazon.
+ <p className="mt-2 text-sm text-amber-800 dark:text-amber-200">
+ Use a Best Sellers category URL (not a product or search page).
  </p>
  ) : null}
  {validation.kind === "no_amazon" ? (
- <p className="mt-2 text-sm text-red-700">Please enter an Amazon URL</p>
+ <p className="mt-2 text-sm text-red-700 dark:text-red-300">Please enter an Amazon URL</p>
  ) : null}
 
  <div className="mt-4 flex flex-wrap gap-2">
@@ -113,7 +115,7 @@ export function URLInput({ value, onChange, disabled }: URLInputProps) {
  type="button"
  disabled={disabled}
  onClick={() => onChip(c.url)}
- className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-colors hover:bg-card disabled:opacity-60"
+ className={chipClass}
  >
  {c.label}
  </button>

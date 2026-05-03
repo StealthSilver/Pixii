@@ -81,7 +81,7 @@ export function VideoTab({
  return (
  <div className="space-y-6">
  {hasVideo ? (
- <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <video
  controls
  width="100%"
@@ -94,7 +94,7 @@ export function VideoTab({
  <a
  href={finalVideoUrl}
  download
- className="inline-flex flex-1 items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 sm:flex-none"
+ className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 sm:flex-none dark:ring-white/15"
  >
  Download video
  </a>
@@ -103,14 +103,14 @@ export function VideoTab({
  onClick={() => {
  void navigator.clipboard.writeText(shareableLink);
  }}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy share link
  </button>
  <button
  type="button"
  onClick={downloadScript}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Download script
  </button>
@@ -118,7 +118,7 @@ export function VideoTab({
  </div>
  ) : (
  <div className="space-y-6">
- <div className="rounded-xl border border-violet-200 bg-violet-50/40 p-5 shadow-sm">
+ <div className="rounded-xl border border-violet-200/80 bg-violet-50/40 p-5 shadow-sm ring-1 ring-black/[0.03] dark:border-violet-500/25 dark:bg-violet-950/30 dark:ring-white/[0.05]">
  <h3 className="font-heading text-lg font-semibold text-foreground">
  Your Roast Package
  </h3>
@@ -140,12 +140,12 @@ export function VideoTab({
  </div>
  </div>
 
- <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <h3 className="font-heading text-base font-semibold text-foreground">
  Download package
  </h3>
  <div className="mt-4 grid gap-4 sm:grid-cols-2">
- <div className="rounded-lg border border-border bg-muted/50 p-4">
+ <div className="rounded-lg border border-border/80 bg-muted/50 p-4 dark:bg-muted/40">
  <p className="text-sm font-semibold text-foreground"> Voiceover</p>
  <audio
  ref={audioRef}
@@ -175,7 +175,7 @@ export function VideoTab({
  </button>
  </div>
 
- <div className="rounded-lg border border-border bg-muted/50 p-4">
+ <div className="rounded-lg border border-border/80 bg-muted/50 p-4 dark:bg-muted/40">
  <p className="text-sm font-semibold text-foreground">
  Avatar frames ({avatarFrameUrls.length})
  </p>
@@ -200,7 +200,7 @@ export function VideoTab({
  </div>
  </div>
 
- <div className="mt-6 rounded-lg border border-border/55 bg-card p-4">
+ <div className="mt-6 rounded-lg border border-border/80 bg-muted/40 p-4 dark:bg-muted/30">
  <p className="text-sm font-semibold text-foreground">
  CapCut assembly — 5 steps
  </p>
@@ -217,7 +217,7 @@ export function VideoTab({
  )}
 
  <div
- className={`rounded-xl border-y border-r border-border bg-card p-5 shadow-sm border-l-4 ${left}`}
+ className={`rounded-xl border-y border-r border-border bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] border-l-4 dark:ring-white/[0.05] ${left}`}
  >
  <div className="flex items-start gap-3">
  <span className="flex shrink-0 text-primary" aria-hidden>

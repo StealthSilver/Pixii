@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
-import { FeaturePage } from "@/components/FeaturePage";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import { extractCategoryFromUrl } from "@/lib/marketEstimator/amazonUrl";
 import { URLInput, useDebouncedUrlValid } from "./components/URLInput";
@@ -18,6 +18,30 @@ import type {
  MarketProduct,
  MarketAnalysisDto,
 } from "./components/types";
+
+const secondaryBtn =
+  "rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+
+const primaryBtn =
+  "w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 dark:ring-white/15";
+
+function segmentTabClass(active: boolean): string {
+  return (
+    "rounded-lg px-4 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    (active
+      ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+      : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+  );
+}
+
+function resultTabClass(active: boolean): string {
+  return (
+    "rounded-lg px-3 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    (active
+      ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+      : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+  );
+}
 
 type View = "input" | "processing" | "result" | "history";
 
@@ -316,67 +340,101 @@ export default function MarketEstimatorPage() {
  job?.category ||
  (submittedUrl ? extractCategoryFromUrl(submittedUrl).category : "");
 
- const tabBtn = (active: boolean) =>
- `rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
- active
- ? "bg-primary text-white shadow-sm"
- : "border border-border bg-card text-foreground hover:bg-muted"
- }`;
+ const analyzeTabActive = view !== "history";
+ const processingLocked = view === "processing";
+
+ useEffect(() => {
+ if (!toast) {
+ return;
+ }
+ const t = window.setTimeout(() => setToast(null), 3800);
+ return () => window.clearTimeout(t);
+ }, [toast]);
 
  return (
  <>
- <FeaturePage
- title={
- <span className="flex flex-wrap items-center gap-3">
- Market Size Estimator
- {view !== "processing" ? (
+ <div className="relative min-h-full overflow-x-hidden">
+ <GridBackdrop />
+ <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <header className="border-b border-border/70 pb-6">
+ <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+ Amazon
+ </p>
+ <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ Market size estimator
+ </h1>
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ Paste any Amazon Best Sellers category URL. See estimated monthly revenue for the
+ top 10 and a concise read on market size and opportunity.
+ </p>
+ </header>
+
+ <div
+ className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ role="tablist"
+ aria-label="Markets sections"
+ >
  <button
  type="button"
- onClick={() => setView("history")}
- className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm hover:bg-muted"
+ role="tab"
+ aria-selected={analyzeTabActive}
+ className={segmentTabClass(analyzeTabActive)}
+ onClick={() => setView("input")}
+ >
+ Analyze
+ </button>
+ <button
+ type="button"
+ role="tab"
+ aria-selected={view === "history"}
+ disabled={processingLocked}
+ className={
+ segmentTabClass(view === "history") +
+ (processingLocked ? " cursor-not-allowed opacity-50" : "")
+ }
+ onClick={() => {
+ if (!processingLocked) {
+ setView("history");
+ }
+ }}
  >
  History
  </button>
- ) : null}
- </span>
- }
- description="Paste any Amazon Best Sellers page URL and get the estimated monthly revenue of the entire market and top 10 competitors."
- >
- <div className="mt-6 max-w-6xl space-y-6">
+ </div>
+
+ <div className="mt-8 max-w-6xl space-y-6">
  {view === "input" && (
  <>
  <div className="flex flex-wrap gap-2">
- <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-900">
+ <span className="rounded-full border border-sky-200/90 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-950 dark:border-sky-500/35 dark:bg-sky-950/40 dark:text-sky-100">
  Top 10 competitors
  </span>
- <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-900">
+ <span className="rounded-full border border-emerald-200/90 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/40 dark:text-emerald-100">
  Revenue estimates
  </span>
- <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-900">
+ <span className="rounded-full border border-violet-200/90 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-950 dark:border-violet-500/35 dark:bg-violet-950/40 dark:text-violet-100">
  AI market insights
  </span>
  </div>
 
  {resumeOffer && !resumeDismissed ? (
- <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-sm">
+ <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-sm shadow-sm ring-1 ring-black/[0.03] dark:bg-primary/10 dark:ring-white/[0.06]">
  <p className="font-medium text-foreground">
  Resume last analysis:{" "}
- <span className="font-semibold text-primary">
- {resumeOffer.category}
- </span>
+ <span className="font-semibold text-primary">{resumeOffer.category}</span>
  </p>
- <div className="flex gap-2">
+ <div className="flex flex-wrap gap-2">
  <button
  type="button"
  onClick={() => void onOpenHistoryItem(resumeOffer.jobId)}
- className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary/90"
+ className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 dark:ring-white/15"
  >
- Open
+ View results
  </button>
  <button
  type="button"
  onClick={() => setResumeDismissed(true)}
- className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Dismiss
  </button>
@@ -387,49 +445,47 @@ export default function MarketEstimatorPage() {
  <URLInput value={urlInput} onChange={setUrlInput} />
 
  <div className="grid gap-4 md:grid-cols-3">
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-sm font-semibold text-foreground">
- Top 10 Products
+ Top 10 products
  </p>
  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
- Ranked by estimated monthly revenue with real pricing data
+ Ranked by estimated monthly revenue with pricing signals from the listing
  </p>
  </div>
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-sm font-semibold text-foreground">
- Market Size
+ Market size
  </p>
  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
- Total monthly revenue of the top 10 and annualized market
- estimate
+ Combined top-10 revenue and annualized market estimate
  </p>
  </div>
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-sm font-semibold text-foreground">
- AI Insights
+ AI insights
  </p>
  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
- Opportunity gaps, entry difficulty, and recommended strategy
+ Opportunity gaps, entry difficulty, and a practical entry angle
  </p>
  </div>
  </div>
 
  <p className="text-center text-xs text-muted-foreground">
- ~1-2 minutes · Top 10 analysis · 4-step research pipeline
+ ~1–2 minutes · Top 10 · Four-step research pipeline
  </p>
 
  <button
  type="button"
  disabled={!urlValid}
  onClick={() => void onAnalyze()}
- className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+ className={primaryBtn}
  >
- Analyze Market →
+ Analyze market →
  </button>
 
  <p className="text-center text-[11px] text-muted-foreground">
- * Estimates based on Best Sellers Rank position. For directional
- research only.
+ * Estimates use Best Sellers Rank. Directional research only.
  </p>
 
  <HistoryStrip
@@ -453,34 +509,34 @@ export default function MarketEstimatorPage() {
 
  {view === "result" && job && job.status === "complete" ? (
  <>
- <div className="rounded-xl border border-border bg-muted/80 px-4 py-3 text-sm">
- <p className="font-semibold text-foreground">{job.category}</p>
+ <div className="rounded-xl border border-border/80 bg-muted/50 px-4 py-3 text-sm shadow-sm ring-1 ring-black/[0.03] dark:bg-muted/30 dark:ring-white/[0.05]">
+ <p className="font-heading font-semibold text-foreground">{job.category}</p>
  <p className="mt-1 truncate text-xs text-muted-foreground" title={job.amazonUrl}>
  {job.amazonUrl}
  </p>
  </div>
 
- <div className="flex flex-wrap gap-2 border-b border-border pb-2">
+ <div className="inline-flex flex-wrap gap-1 rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25">
  <button
  type="button"
- className={tabBtn(tab === "overview")}
+ className={resultTabClass(tab === "overview")}
  onClick={() => setTab("overview")}
  >
- Market Overview
+ Market overview
  </button>
  <button
  type="button"
- className={tabBtn(tab === "products")}
+ className={resultTabClass(tab === "products")}
  onClick={() => setTab("products")}
  >
- Top 10 Products
+ Top 10 products
  </button>
  <button
  type="button"
- className={tabBtn(tab === "insights")}
+ className={resultTabClass(tab === "insights")}
  onClick={() => setTab("insights")}
  >
- AI Insights
+ AI insights
  </button>
  </div>
 
@@ -488,12 +544,8 @@ export default function MarketEstimatorPage() {
  {tab === "products" ? <ProductTableTab job={job} /> : null}
  {tab === "insights" ? <AIInsightsTab job={job} /> : null}
 
- <button
- type="button"
- onClick={resetToInput}
- className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
- >
- ← Analyze Another Market
+ <button type="button" onClick={resetToInput} className={secondaryBtn + " w-full"}>
+ ← Analyze another market
  </button>
 
  <HistoryStrip
@@ -505,24 +557,16 @@ export default function MarketEstimatorPage() {
  ) : null}
 
  {view === "history" ? (
- <>
- <button
- type="button"
- onClick={() => setView("input")}
- className="text-sm font-semibold text-muted-foreground hover:text-foreground"
- >
- ← Back to analyze
- </button>
  <HistoryView
  items={historyData?.items ?? []}
  onView={(id) => void onOpenHistoryItem(id)}
  onDelete={(id) => void onDeleteHistory(id)}
  busyId={busyHistoryId}
  />
- </>
  ) : null}
  </div>
- </FeaturePage>
+ </div>
+ </div>
 
  {toast ? (
  <Toast

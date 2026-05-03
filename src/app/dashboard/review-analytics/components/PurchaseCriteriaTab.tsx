@@ -37,14 +37,14 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
  );
  if (diff > 10) {
  badge = (
- <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-900">
- You win here 
+ <span className="rounded-full border border-emerald-200/90 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/40 dark:text-emerald-100">
+ You win here
  </span>
  );
  } else if (diff < -10) {
  badge = (
- <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-semibold text-red-900">
- Competitors win 
+ <span className="rounded-full border border-red-200/90 bg-red-50 px-2 py-0.5 text-[10px] font-semibold text-red-950 dark:border-red-500/35 dark:bg-red-950/40 dark:text-red-100">
+ Competitors win
  </span>
  );
  }
@@ -52,14 +52,14 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
  return (
  <article
  key={c.criteriaName + c.importanceScore}
- className="rounded-xl border border-border bg-card p-4 shadow-sm"
+ className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]"
  >
  <div className="flex flex-wrap items-start justify-between gap-2">
  <h3 className="font-heading text-base font-semibold text-foreground">
  {c.criteriaName}
  </h3>
  <div className="flex flex-wrap items-center gap-2">
- <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-semibold text-sky-900">
+ <span className="rounded-full border border-sky-200/90 bg-sky-50 px-2 py-0.5 text-[10px] font-semibold text-sky-950 dark:border-sky-500/35 dark:bg-sky-950/40 dark:text-sky-100">
  Mentioned in ~{c.mentionCount} reviews
  </span>
  {badge}
@@ -107,7 +107,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
  </div>
 
  {keyInsight ? (
- <div className="rounded-xl border border-primary/30 bg-primary/[0.07] p-5 shadow-sm">
+ <div className="rounded-xl border border-primary/30 bg-primary/[0.07] p-5 shadow-sm ring-1 ring-black/[0.03] dark:bg-primary/10 dark:ring-white/[0.06]">
  <p className="text-xs font-semibold uppercase tracking-wide text-primary">
  Key Insight
  </p>

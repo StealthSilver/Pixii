@@ -44,16 +44,17 @@ const ETHNICITY_OPTIONS: { value: string; label: string }[] = [
 
 const pill =
  "rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors";
-const pillActive = "border-primary bg-primary text-white";
+const pillActive =
+ "border-primary bg-primary text-primary-foreground shadow-sm ring-1 ring-black/10 dark:ring-white/15";
 const pillIdle =
- "border-border bg-card text-foreground hover:border-muted-foreground/35";
+ "border-border bg-card text-foreground shadow-sm ring-1 ring-black/[0.04] hover:border-muted-foreground/35 dark:ring-white/[0.06]";
 
 export function PersonaSelector({ persona, onChange }: PersonaSelectorProps) {
  const inputClass =
- "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <h2 className="font-heading text-lg font-semibold text-foreground">
  Creator Persona
  </h2>
@@ -118,8 +119,8 @@ export function PersonaSelector({ persona, onChange }: PersonaSelectorProps) {
  className={
  "flex flex-col items-start rounded-lg border p-3 text-left text-sm transition-colors " +
  (persona.style === s.id
- ? "border-primary bg-primary/5 ring-1 ring-primary/25"
- : "border-border bg-card hover:border-muted-foreground/35")
+ ? "border-primary bg-primary/10 ring-1 ring-primary/25 dark:bg-primary/15"
+ : "border-border bg-card shadow-sm ring-1 ring-black/[0.03] hover:border-muted-foreground/35 dark:ring-white/[0.05]")
  }
  >
  <span className="flex size-8 items-center justify-center rounded-md bg-primary/10 text-primary">

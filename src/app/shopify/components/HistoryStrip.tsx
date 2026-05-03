@@ -37,9 +37,9 @@ export function HistoryStrip({ items, onSelectJob }: HistoryStripProps) {
  key={item._id}
  type="button"
  onClick={() => onSelectJob(item._id)}
- className="w-24 shrink-0 rounded-lg border border-border bg-card p-2 text-left shadow-sm transition-colors hover:border-primary/40"
+ className="w-24 shrink-0 rounded-lg border border-border/80 bg-card/95 p-2 text-left shadow-sm ring-1 ring-black/[0.04] transition-colors hover:border-primary/40 dark:ring-white/[0.06]"
  >
- <div className="relative size-20 overflow-hidden rounded-md bg-foreground/10">
+ <div className="relative size-20 overflow-hidden rounded-md border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  {thumb ? (
  <Image src={thumb} alt="" fill sizes="80px" className="object-cover" unoptimized />
  ) : null}
@@ -48,7 +48,7 @@ export function HistoryStrip({ items, onSelectJob }: HistoryStripProps) {
  {shortTitle(item.productTitle)}
  </p>
  {item.pushedToShopify ? (
- <span className="mt-1 block text-left text-[9px] font-bold uppercase tracking-wide text-emerald-600">
+ <span className="mt-1 block text-left text-[9px] font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
  Pushed
  </span>
  ) : null}

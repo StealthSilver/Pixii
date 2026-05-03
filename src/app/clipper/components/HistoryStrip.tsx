@@ -34,7 +34,7 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
  onClick={() => onSelect(h._id)}
  className="group flex w-32 shrink-0 flex-col items-stretch text-left"
  >
- <div className="relative size-20 overflow-hidden rounded-lg border border-border bg-foreground/10">
+ <div className="relative size-20 overflow-hidden rounded-lg border border-border bg-muted/40 ring-1 ring-black/[0.04] transition-colors hover:border-primary/30 dark:bg-muted/30 dark:ring-white/[0.06]">
  {h.thumbnailUrl ? (
  <Image
  src={h.thumbnailUrl}

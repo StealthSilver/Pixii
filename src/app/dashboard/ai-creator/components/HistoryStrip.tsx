@@ -21,7 +21,7 @@ export function HistoryStrip({ items, onSelect }: HistoryStripProps) {
 
  return (
  <section className="mt-8 border-t border-border/55 pt-8">
- <h3 className="font-heading text-lg font-semibold text-foreground">
+ <h3 className="font-heading text-sm font-semibold tracking-tight text-muted-foreground">
  Previous roasts
  </h3>
  <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
@@ -30,9 +30,9 @@ export function HistoryStrip({ items, onSelect }: HistoryStripProps) {
  key={row._id}
  type="button"
  onClick={() => onSelect(row._id)}
- className="flex w-[200px] shrink-0 gap-3 rounded-xl border border-border bg-card p-3 text-left shadow-sm transition-colors hover:border-primary/25"
+ className="flex w-[200px] shrink-0 gap-3 rounded-xl border border-border/80 bg-card/95 p-3 text-left shadow-sm ring-1 ring-black/[0.03] transition-colors hover:border-primary/25 dark:ring-white/[0.05]"
  >
- <div className="relative size-[80px] shrink-0 overflow-hidden rounded-lg bg-foreground/10">
+ <div className="relative size-[80px] shrink-0 overflow-hidden rounded-lg bg-muted">
  {row.thumbUrl ? (
  <Image
  src={row.thumbUrl}

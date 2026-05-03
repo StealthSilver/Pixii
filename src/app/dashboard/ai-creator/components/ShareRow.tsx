@@ -21,8 +21,8 @@ Working on fixing these now
 #Amazon #ecommerce #productlisting`;
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
- <p className="text-sm font-semibold text-foreground">Share this roast:</p>
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
+ <p className="text-sm font-semibold text-foreground">Share this roast</p>
  <div className="mt-3 flex flex-wrap gap-2">
  <button
  type="button"
@@ -30,7 +30,7 @@ Working on fixing these now
  void navigator.clipboard.writeText(shareableLink);
  onToast("Link copied.", "success");
  }}
- className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90"
+ className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 dark:ring-white/15"
  >
  Copy link
  </button>
@@ -40,7 +40,7 @@ Working on fixing these now
  void navigator.clipboard.writeText(linkedIn);
  onToast("LinkedIn text copied.", "success");
  }}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy for LinkedIn
  </button>

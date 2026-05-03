@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
-import { FeaturePage } from "@/components/FeaturePage";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import type {
  PackageShape,
@@ -108,6 +109,21 @@ async function downloadAllZip(urls: string[]) {
  URL.revokeObjectURL(a.href);
 }
 
+const primaryBtn =
+ "inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 disabled:cursor-not-allowed disabled:opacity-60 dark:ring-white/15";
+
+const secondaryBtn =
+ "rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+
+function segmentTabClass(active: boolean): string {
+ return (
+ "rounded-lg px-4 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+ (active
+ ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+ : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+ );
+}
+
 export default function PackagingRendererPage() {
  const [view, setView] = useState<View>("upload");
  const [pdfFile, setPdfFile] = useState<File | null>(null);
@@ -141,6 +157,8 @@ export default function PackagingRendererPage() {
  message: string;
  variant: "success" | "error";
  } | null>(null);
+
+ const [mainTab, setMainTab] = useState<"create" | "history">("create");
 
  const {
  data: historyData,
@@ -307,7 +325,7 @@ export default function PackagingRendererPage() {
  }, [modalOpen, statusPayload]);
 
  const inputClass =
- "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
  const onPdf = useCallback((file: File | null) => {
  setUploadError(null);
@@ -422,6 +440,7 @@ export default function PackagingRendererPage() {
  setJobId(id);
  setStatusPayload(data);
  setView("result");
+ setMainTab("create");
  } catch (e) {
  setToast({
  message: e instanceof Error ? e.message : "Could not load job.",
@@ -451,16 +470,104 @@ export default function PackagingRendererPage() {
  return `${Math.round(ms / 1000)}s`;
  }, [statusPayload?.processingTimeMs]);
 
+ const processingLocked = view === "processing";
+
  return (
  <>
- <FeaturePage
- title="Packaging Renderer"
- description="Drop in your dieline PDF and get a photorealistic 3D render of your packaging."
+ <div className="relative min-h-full overflow-x-hidden">
+ <GridBackdrop />
+ <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <header className="border-b border-border/70 pb-6">
+ <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+ Renderer
+ </p>
+ <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ Packaging Renderer
+ </h1>
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ Drop in your dieline PDF and get a photorealistic 3D render of your packaging.
+ </p>
+ </header>
+
+ <div
+ className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ role="tablist"
+ aria-label="Packaging renderer sections"
  >
+ <button
+ type="button"
+ role="tab"
+ aria-selected={mainTab === "create"}
+ className={segmentTabClass(mainTab === "create")}
+ onClick={() => setMainTab("create")}
+ >
+ Create
+ </button>
+ <button
+ type="button"
+ role="tab"
+ aria-selected={mainTab === "history"}
+ disabled={processingLocked}
+ className={
+ segmentTabClass(mainTab === "history") +
+ (processingLocked ? " cursor-not-allowed opacity-50" : "")
+ }
+ onClick={() => {
+ if (!processingLocked) {
+ setMainTab("history");
+ }
+ }}
+ >
+ History
+ </button>
+ </div>
+
  <div className="mt-8 max-w-3xl space-y-6">
+ {mainTab === "history" ? (
+ <>
+ {(historyData?.items ?? []).length === 0 ? (
+ <p className="text-sm text-muted-foreground">
+ No renders yet. Upload a PDF from the Create tab.
+ </p>
+ ) : (
+ <>
+ <p className="text-sm text-muted-foreground">
+ Open a past job to review or download renders.
+ </p>
+ <ul className="space-y-2">
+ {(historyData?.items ?? []).map((h) => (
+ <li key={h._id}>
+ <button
+ type="button"
+ onClick={() => void loadHistoryJob(h._id)}
+ className="flex w-full items-center gap-3 rounded-xl border border-border/80 bg-card/95 px-4 py-3 text-left shadow-sm ring-1 ring-black/[0.03] transition-colors hover:border-primary/25 dark:ring-white/[0.05]"
+ >
+ <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
+ {h.outputUrls?.[0] ? (
+ <Image
+ src={h.outputUrls[0]}
+ alt=""
+ fill
+ className="object-cover"
+ unoptimized
+ />
+ ) : null}
+ </div>
+ <span className="min-w-0 flex-1 truncate text-sm font-semibold text-foreground">
+ {h.packageShape}
+ </span>
+ </button>
+ </li>
+ ))}
+ </ul>
+ </>
+ )}
+ </>
+ ) : (
+ <>
  {view === "upload" && (
  <section
- className="rounded-xl border border-border bg-card p-5 shadow-sm"
+ className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]"
  aria-labelledby="pr-upload-heading"
  >
  <h2
@@ -479,7 +586,7 @@ export default function PackagingRendererPage() {
  </div>
 
  {pdfFile ? (
- <div className="mt-8 space-y-6 rounded-xl border border-border/55 bg-muted/50 p-4">
+ <div className="mt-8 space-y-6 rounded-xl border border-border/80 bg-muted/50 p-4 ring-1 ring-black/[0.03] dark:bg-muted/30 dark:ring-white/[0.06]">
  <h3 className="font-heading text-base font-semibold text-foreground">
  Package Configuration
  </h3>
@@ -557,10 +664,10 @@ export default function PackagingRendererPage() {
  type="button"
  onClick={() => setVariationCount(n)}
  className={
- "rounded-full border px-4 py-1.5 text-xs font-semibold shadow-sm " +
+ "rounded-full border px-4 py-1.5 text-xs font-semibold shadow-sm ring-1 transition-colors " +
  (variationCount === n
- ? "border-primary bg-primary/10 ring-2 ring-primary/25"
- : "border-border bg-card hover:bg-muted")
+ ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/25 dark:bg-primary/15"
+ : "border-border bg-card ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]")
  }
  >
  {n}
@@ -574,7 +681,7 @@ export default function PackagingRendererPage() {
  </div>
  ) : null}
 
- <div className="mt-6 rounded-xl border border-dashed border-border bg-card/80 px-4 py-3 text-sm text-muted-foreground">
+ <div className="mt-6 rounded-xl border border-dashed border-border/80 bg-card/70 px-4 py-3 text-sm text-muted-foreground ring-1 ring-black/[0.03] dark:bg-card/50 dark:ring-white/[0.05]">
  <p> Estimated time: 30–60 seconds</p>
  <p className="mt-1"> Estimated cost: ~$0.08</p>
  </div>
@@ -583,7 +690,7 @@ export default function PackagingRendererPage() {
  type="button"
  disabled={!pdfFile || busy}
  onClick={() => void submitUploadAndProcess()}
- className="mt-6 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+ className={primaryBtn + " mt-6 w-full py-3"}
  >
  Generate 3D Renders →
  </button>
@@ -615,7 +722,7 @@ export default function PackagingRendererPage() {
 
  {view === "result" && statusPayload?.outputUrls?.length ? (
  <div className="space-y-6">
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <h2 className="font-heading text-lg font-semibold text-foreground">
  Your renders
  </h2>
@@ -678,7 +785,7 @@ export default function PackagingRendererPage() {
  }),
  )
  }
- className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90"
+ className={primaryBtn}
  >
  Download All
  </button>
@@ -689,14 +796,14 @@ export default function PackagingRendererPage() {
  setRegenAngle(statusPayload.renderAngle as RenderAngle);
  setShowRegeneratePanel((v) => !v);
  }}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className={secondaryBtn}
  >
  Try Different Style
  </button>
  <button
  type="button"
  onClick={resetAll}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className={secondaryBtn}
  >
  Render New Packaging
  </button>
@@ -708,14 +815,14 @@ export default function PackagingRendererPage() {
  variant: "success",
  })
  }
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className={secondaryBtn}
  >
  Save to Gallery
  </button>
  </div>
 
  {showRegeneratePanel ? (
- <div className="mt-6 rounded-xl border border-border bg-muted/80 p-4">
+ <div className="mt-6 rounded-xl border border-border/80 bg-muted/60 p-4 ring-1 ring-black/[0.04] dark:bg-muted/40 dark:ring-white/[0.06]">
  <StyleSelector value={regenStyle} onChange={setRegenStyle} />
  <div className="mt-4">
  <AngleSelector value={regenAngle} onChange={setRegenAngle} />
@@ -724,7 +831,7 @@ export default function PackagingRendererPage() {
  type="button"
  disabled={busy}
  onClick={() => void confirmRegenerate()}
- className="mt-4 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 disabled:opacity-60"
+ className={primaryBtn + " mt-4 w-full"}
  >
  Regenerate with these settings
  </button>
@@ -749,8 +856,11 @@ export default function PackagingRendererPage() {
  />
  </div>
  ) : null}
+ </>
+ )}
  </div>
- </FeaturePage>
+ </div>
+ </div>
 
  <FullscreenModal
  open={modalOpen}

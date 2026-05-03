@@ -22,7 +22,7 @@ export function RenderCard({
 
  return (
  <div
- className="group relative overflow-hidden rounded-xl border border-border bg-muted shadow-sm"
+ className="group relative overflow-hidden rounded-xl border border-border/80 bg-muted/60 shadow-sm ring-1 ring-black/[0.04] dark:bg-muted/40 dark:ring-white/[0.06]"
  onMouseEnter={() => setHover(true)}
  onMouseLeave={() => setHover(false)}
  >
@@ -44,7 +44,7 @@ export function RenderCard({
  <button
  type="button"
  onClick={onDownload}
- className="rounded-lg bg-card/95 px-3 py-2 text-xs font-semibold text-foreground shadow hover:bg-card"
+ className="rounded-lg border border-border bg-card/95 px-3 py-2 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.06] hover:bg-card dark:ring-white/15"
  aria-label="Download render"
  >
  <svg className="mx-auto size-5" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -59,7 +59,7 @@ export function RenderCard({
  <button
  type="button"
  onClick={onExpand}
- className="rounded-lg bg-card/95 px-3 py-2 text-xs font-semibold text-foreground shadow hover:bg-card"
+ className="rounded-lg border border-border bg-card/95 px-3 py-2 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.06] hover:bg-card dark:ring-white/15"
  aria-label="Expand render"
  >
  <svg className="mx-auto size-5" viewBox="0 0 24 24" fill="none" aria-hidden>

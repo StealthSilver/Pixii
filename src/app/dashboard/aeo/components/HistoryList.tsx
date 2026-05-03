@@ -133,7 +133,7 @@ export function HistoryList({
                 Sure?
                 <button
                   type="button"
-                  className="rounded-md bg-red-600 px-2 py-1 font-semibold text-white shadow-sm ring-1 ring-black/15 hover:bg-red-700 dark:ring-white/10"
+                  className="rounded-md bg-red-600 px-2 py-1 text-xs font-semibold text-red-50 shadow-sm ring-1 ring-black/15 hover:bg-red-700 dark:bg-red-700 dark:text-red-50 dark:ring-white/15 dark:hover:bg-red-800"
                   onClick={async () => {
                     try {
                       const res = await fetch(`/api/aeo/history/${row._id}`, {

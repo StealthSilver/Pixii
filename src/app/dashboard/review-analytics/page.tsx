@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
-import { FeaturePage } from "@/components/FeaturePage";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import { extractAsin } from "@/lib/aiCreator/extractAsin";
 import { URLInput, useDebouncedAmazonProductUrlValid } from "./components/URLInput";
@@ -20,6 +20,30 @@ import type {
  ReviewJob,
  ReviewListingRow,
 } from "./components/types";
+
+const secondaryBtn =
+  "rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+
+const primaryBtn =
+  "w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 dark:ring-white/15";
+
+function segmentTabClass(active: boolean): string {
+  return (
+    "rounded-lg px-4 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    (active
+      ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+      : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+  );
+}
+
+function resultTabClass(active: boolean): string {
+  return (
+    "rounded-lg px-3 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    (active
+      ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+      : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+  );
+}
 
 type View = "input" | "processing" | "result" | "history";
 
@@ -351,68 +375,104 @@ export default function ReviewAnalyticsPage() {
  ? `${userListing.title.slice(0, 60)}…`
  : (userListing?.title ?? "Your product");
 
- const tabBtn = (active: boolean) =>
- `rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
- active
- ? "bg-primary text-white shadow-sm"
- : "border border-border bg-card text-foreground hover:bg-muted"
- }`;
+ const analyzeTabActive = view !== "history";
+ const processingLocked = view === "processing";
+
+ useEffect(() => {
+ if (!toast) {
+ return;
+ }
+ const t = window.setTimeout(() => setToast(null), 3800);
+ return () => window.clearTimeout(t);
+ }, [toast]);
 
  return (
  <>
- <FeaturePage
- title={
- <span className="flex flex-wrap items-center gap-3">
+ <div className="relative min-h-full overflow-x-hidden">
+ <GridBackdrop />
+ <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <header className="border-b border-border/70 pb-6">
+ <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+ Amazon
+ </p>
+ <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
  Review Analytics
- {view !== "processing" ? (
+ </h1>
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ Paste your Amazon listing URL. We&apos;ll scrape your listing, find up to 9
+ competitors, pull 1000+ reviews, and surface what shoppers actually care about.
+ </p>
+ </header>
+
+ <div
+ className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ role="tablist"
+ aria-label="Review Analytics sections"
+ >
  <button
  type="button"
- onClick={() => setView("history")}
- className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm hover:bg-muted"
+ role="tab"
+ aria-selected={analyzeTabActive}
+ className={segmentTabClass(analyzeTabActive)}
+ onClick={() => setView("input")}
+ >
+ Analyze
+ </button>
+ <button
+ type="button"
+ role="tab"
+ aria-selected={view === "history"}
+ disabled={processingLocked}
+ className={
+ segmentTabClass(view === "history") +
+ (processingLocked ? " cursor-not-allowed opacity-50" : "")
+ }
+ onClick={() => {
+ if (!processingLocked) {
+ setView("history");
+ }
+ }}
  >
  History
  </button>
- ) : null}
- </span>
- }
- description="Paste your Amazon listing URL. We'll scrape your listing, find 9 competitors, pull 1000+ reviews, and tell you exactly what customers care about."
- >
- <div className="mt-6 max-w-6xl space-y-6">
+ </div>
+
+ <div className="mt-8 max-w-6xl space-y-6">
  {view === "input" && (
  <>
  <div className="flex flex-wrap gap-2">
- <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-900">
+ <span className="rounded-full border border-sky-200/90 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-950 dark:border-sky-500/35 dark:bg-sky-950/40 dark:text-sky-100">
  10 listings analyzed
  </span>
- <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-900">
+ <span className="rounded-full border border-violet-200/90 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-950 dark:border-violet-500/35 dark:bg-violet-950/40 dark:text-violet-100">
  1000+ reviews scraped
  </span>
- <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
+ <span className="rounded-full border border-amber-200/90 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/40 dark:text-amber-100">
  AI purchase criteria
  </span>
- <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-900">
+ <span className="rounded-full border border-emerald-200/90 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/40 dark:text-emerald-100">
  Revenue estimates
  </span>
  </div>
 
  {resumeOffer && !resumeDismissed ? (
- <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-sm">
+ <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3 text-sm shadow-sm ring-1 ring-black/[0.03] dark:bg-primary/10 dark:ring-white/[0.06]">
  <p className="font-medium text-foreground">
  Resume last analysis:{" "}
  <span className="font-semibold text-primary">{resumeOffer.title}</span>
  </p>
- <div className="flex gap-2">
+ <div className="flex flex-wrap gap-2">
  <button
  type="button"
  onClick={() => void onOpenHistoryItem(resumeOffer.jobId)}
- className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary/90"
+ className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 dark:ring-white/15"
  >
- View Results
+ View results
  </button>
  <button
  type="button"
  onClick={() => setResumeDismissed(true)}
- className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm hover:bg-muted"
+ className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Dismiss
  </button>
@@ -423,36 +483,39 @@ export default function ReviewAnalyticsPage() {
  <URLInput value={urlInput} onChange={setUrlInput} />
 
  <div className="grid gap-4 md:grid-cols-3">
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-sm font-semibold text-foreground">
- Competitor Discovery
+ Competitor discovery
  </p>
  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
- Auto-finds 9 competing products from &apos;customers also bought&apos; data
+ Auto-finds up to 9 competing products from &apos;customers also bought&apos;
+ data
  </p>
  </div>
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="font-heading text-sm font-semibold text-foreground">
- Review Intelligence
+ Review intelligence
  </p>
  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
  1000+ reviews analyzed for purchase criteria and sentiment patterns
  </p>
  </div>
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
- <p className="font-heading text-sm font-semibold text-foreground"> Action Plan</p>
+ <div className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
+ <p className="font-heading text-sm font-semibold text-foreground">
+ Action plan
+ </p>
  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
- Specific listing improvements based on what customers love about competitors
+ Listing improvements based on what customers love about competitors
  </p>
  </div>
  </div>
 
  <p className="text-center text-xs text-muted-foreground">
- ~3-5 minutes · 1000+ reviews · 10 listings · AI-powered analysis
+ ~3–5 minutes · 1000+ reviews · 10 listings · AI-powered analysis
  </p>
 
  {competitorCount < 3 && job?.totalListingsScraped ? (
- <p className="text-center text-xs text-amber-800">
+ <p className="text-center text-xs text-amber-800 dark:text-amber-200">
  Found {competitorCount} competitors — analysis continues with available
  listings.
  </p>
@@ -462,9 +525,9 @@ export default function ReviewAnalyticsPage() {
  type="button"
  disabled={!urlValid}
  onClick={() => void onAnalyze()}
- className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+ className={primaryBtn}
  >
- Analyze Reviews →
+ Analyze reviews →
  </button>
 
  <HistoryStrip
@@ -490,51 +553,53 @@ export default function ReviewAnalyticsPage() {
 
  {view === "result" && job && job.status === "complete" ? (
  <>
- <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-muted/80 px-4 py-3 text-sm">
- <p className="font-semibold text-foreground">{titleHead}</p>
+ <div className="flex flex-wrap items-start gap-2">
+ <h2 className="min-w-0 flex-1 font-heading text-lg font-semibold tracking-tight text-foreground">
+ {titleHead}
+ </h2>
  {job.userAsin ? (
- <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
- {job.userAsin}
+ <span className="shrink-0 rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-semibold text-foreground">
+ ASIN: {job.userAsin}
  </span>
  ) : null}
  </div>
  <p className="text-xs text-muted-foreground">
  {job.totalReviewsScraped} reviews · {job.totalListingsScraped} listings
  {competitorCount < 3 ? (
- <span className="ml-2 text-amber-800">
+ <span className="ml-2 text-amber-800 dark:text-amber-200">
  · Found {competitorCount} competitor{competitorCount === 1 ? "" : "s"}
  </span>
  ) : null}
  </p>
 
- <div className="flex flex-wrap gap-2 border-b border-border pb-2">
+ <div className="inline-flex flex-wrap gap-1 rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25">
  <button
  type="button"
- className={tabBtn(tab === "criteria")}
+ className={resultTabClass(tab === "criteria")}
  onClick={() => setTab("criteria")}
  >
- Purchase Criteria
+ Purchase criteria
  </button>
  <button
  type="button"
- className={tabBtn(tab === "table")}
+ className={resultTabClass(tab === "table")}
  onClick={() => setTab("table")}
  >
- Competitor Table
+ Competitor table
  </button>
  <button
  type="button"
- className={tabBtn(tab === "themes")}
+ className={resultTabClass(tab === "themes")}
  onClick={() => setTab("themes")}
  >
- Review Themes
+ Review themes
  </button>
  <button
  type="button"
- className={tabBtn(tab === "plan")}
+ className={resultTabClass(tab === "plan")}
  onClick={() => setTab("plan")}
  >
- Action Plan
+ Action plan
  </button>
  </div>
 
@@ -558,12 +623,8 @@ export default function ReviewAnalyticsPage() {
  <ActionPlanTab job={job} intel={job.marketIntelligence} criteria={job.purchaseCriteria} />
  ) : null}
 
- <button
- type="button"
- onClick={resetToInput}
- className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
- >
- ← Analyze Another Product
+ <button type="button" onClick={resetToInput} className={secondaryBtn + " w-full"}>
+ ← Analyze another product
  </button>
 
  <HistoryStrip
@@ -575,24 +636,16 @@ export default function ReviewAnalyticsPage() {
  ) : null}
 
  {view === "history" ? (
- <>
- <button
- type="button"
- onClick={() => setView("input")}
- className="text-sm font-semibold text-muted-foreground hover:text-foreground"
- >
- ← Back to analyze
- </button>
  <HistoryView
  items={historyData?.items ?? []}
  onView={(id) => void onOpenHistoryItem(id)}
  onDelete={(id) => void onDeleteHistory(id)}
  busyId={busyHistoryId}
  />
- </>
  ) : null}
  </div>
- </FeaturePage>
+ </div>
+ </div>
 
  {toast ? (
  <Toast

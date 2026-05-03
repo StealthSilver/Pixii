@@ -25,12 +25,12 @@ type Props = {
 
 function sentimentPillClass(n: number): string {
  if (n >= 70) {
- return "bg-emerald-100 text-emerald-900";
+ return "border border-emerald-200/90 bg-emerald-50 text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/45 dark:text-emerald-100";
  }
  if (n >= 40) {
- return "bg-amber-100 text-amber-900";
+ return "border border-amber-200/90 bg-amber-50 text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/45 dark:text-amber-100";
  }
- return "bg-red-100 text-red-900";
+ return "border border-red-200/90 bg-red-50 text-red-950 dark:border-red-500/35 dark:bg-red-950/45 dark:text-red-100";
 }
 
 function formatBsr(n: number): string {
@@ -94,13 +94,13 @@ export function CompetitorTableTab({ listings, userAsin }: Props) {
  <div className="space-y-3">
  <p className="text-sm text-foreground/90">
  Showing {listings.length} listings · Total market est.{" "}
- <span className="font-semibold text-emerald-700">{formatRevenue(totalRev)}</span>
+ <span className="font-semibold text-emerald-700 dark:text-emerald-400">{formatRevenue(totalRev)}</span>
  /mo
  </p>
 
- <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
+ <div className="overflow-x-auto rounded-xl border border-border/80 bg-card/95 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <table className="min-w-[960px] w-full border-collapse text-sm">
- <thead className="border-b border-border bg-muted/90">
+ <thead className="border-b border-border bg-muted/90 dark:bg-muted/50">
  <tr>
  <th className="px-2 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
  #
@@ -169,7 +169,7 @@ export function CompetitorTableTab({ listings, userAsin }: Props) {
  <td
  className={
  "px-2 py-2 text-xs font-semibold " +
- (isYou ? "font-bold text-emerald-700" : "text-emerald-700")
+ (isYou ? "font-bold text-emerald-700 dark:text-emerald-400" : "text-emerald-700 dark:text-emerald-400")
  }
  >
  {formatRevenue(row.estimatedMonthlyRevenue)}

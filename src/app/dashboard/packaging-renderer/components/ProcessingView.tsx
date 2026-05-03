@@ -18,7 +18,12 @@ type ProcessingViewProps = {
 
 function CheckIcon() {
  return (
- <svg className="size-3.5 text-white" viewBox="0 0 12 12" fill="none" aria-hidden>
+ <svg
+ className="size-3.5 text-white dark:text-emerald-50"
+ viewBox="0 0 12 12"
+ fill="none"
+ aria-hidden
+ >
  <path
  d="M2 6l3 3 5-6"
  stroke="currentColor"
@@ -69,7 +74,7 @@ export function ProcessingView({
 
  if (status === "failed") {
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <h2 className="font-heading text-lg font-semibold text-foreground">
  Something went wrong
  </h2>
@@ -77,11 +82,11 @@ export function ProcessingView({
  We couldn&apos;t finish your renders. You can try again with a different file or settings.
  </p>
  {errorMessage ? (
- <details className="mt-4 rounded-lg border border-border bg-muted px-3 py-2 text-sm">
+ <details className="mt-4 rounded-lg border border-border/80 bg-muted/50 px-3 py-2 text-sm ring-1 ring-black/[0.03] dark:bg-muted/40 dark:ring-white/[0.06]">
  <summary className="cursor-pointer font-semibold text-foreground">
  Technical details
  </summary>
- <p className="mt-2 whitespace-pre-wrap font-mono text-xs text-red-800">
+ <p className="mt-2 whitespace-pre-wrap font-mono text-xs text-red-800 dark:text-red-300">
  {errorMessage}
  </p>
  </details>
@@ -89,7 +94,7 @@ export function ProcessingView({
  <button
  type="button"
  onClick={onTryAgain}
- className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90"
+ className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 dark:ring-white/15"
  >
  Try again
  </button>
@@ -98,7 +103,7 @@ export function ProcessingView({
  }
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <h2 className="font-heading text-lg font-semibold text-foreground">
  Processing
  </h2>
@@ -114,9 +119,9 @@ export function ProcessingView({
  className={
  "flex size-10 items-center justify-center rounded-full border-2 text-sm font-bold " +
  (step1Done
- ? "border-emerald-500 bg-emerald-500 text-white"
+ ? "border-emerald-500 bg-emerald-500 text-white dark:border-emerald-600 dark:bg-emerald-600"
  : step1Active
- ? "border-primary bg-card text-primary"
+ ? "border-primary bg-card text-primary ring-1 ring-primary/20 dark:bg-card"
  : "border-border bg-card text-muted-foreground/75")
  }
  >
@@ -150,7 +155,7 @@ export function ProcessingView({
  <div
  className={
  "absolute left-[-50%] top-5 hidden h-0.5 w-[calc(100%+1rem)] sm:block " +
- (step1Done ? "bg-emerald-500" : "bg-border")
+ (step1Done ? "bg-emerald-500/70 dark:bg-emerald-600/80" : "bg-border")
  }
  aria-hidden
  />
@@ -158,9 +163,9 @@ export function ProcessingView({
  className={
  "flex size-10 items-center justify-center rounded-full border-2 text-sm font-bold " +
  (step2Done
- ? "border-emerald-500 bg-emerald-500 text-white"
+ ? "border-emerald-500 bg-emerald-500 text-white dark:border-emerald-600 dark:bg-emerald-600"
  : step2Active
- ? "border-primary bg-card text-primary"
+ ? "border-primary bg-card text-primary ring-1 ring-primary/20 dark:bg-card"
  : "border-border bg-card text-muted-foreground/75")
  }
  >
@@ -192,9 +197,9 @@ export function ProcessingView({
  </div>
 
  <div className="mt-8">
- <div className="h-2 w-full overflow-hidden rounded-full bg-foreground/10">
+ <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
  <div
- className="h-full rounded-full bg-emerald-500 transition-[width] duration-500"
+ className="h-full rounded-full bg-primary transition-[width] duration-500"
  style={{ width: `${progressPct}%` }}
  />
  </div>
@@ -206,12 +211,12 @@ export function ProcessingView({
  {step2Active || step2Done ? (
  <div className="mt-4 flex flex-wrap items-center gap-2">
  {renderEngine === "fal" ? (
- <span className="rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-900">
+ <span className="rounded-full border border-violet-200/90 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-900 dark:border-violet-500/35 dark:bg-violet-950/40 dark:text-violet-100">
  Using FAL.AI
  </span>
  ) : null}
  {renderEngine === "replicate" ? (
- <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-900">
+ <span className="rounded-full border border-amber-200/90 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-900 dark:border-amber-500/35 dark:bg-amber-950/40 dark:text-amber-100">
  Using Replicate
  </span>
  ) : null}
@@ -229,12 +234,12 @@ export function ProcessingView({
  </p>
 
  {pollWarn ? (
- <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+ <div className="mt-4 rounded-lg border border-amber-200/90 bg-amber-50 px-3 py-2 text-sm text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/35 dark:text-amber-100">
  <p>This is taking longer than expected.</p>
  <button
  type="button"
  onClick={onRefreshStatus}
- className="mt-2 text-sm font-semibold text-amber-900 underline-offset-2 hover:underline"
+ className="mt-2 text-sm font-semibold text-amber-900 underline-offset-2 hover:underline dark:text-amber-200"
  >
  Refresh status
  </button>

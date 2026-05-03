@@ -45,9 +45,9 @@ export function HistoryStrip({ items, onSelect }: HistoryStripProps) {
  key={item._id}
  type="button"
  onClick={() => onSelect(item._id)}
- className="flex w-24 shrink-0 flex-col gap-1 rounded-lg border border-border bg-card p-2 text-left shadow-sm transition-colors hover:border-muted-foreground/35"
+ className="flex w-24 shrink-0 flex-col gap-1 rounded-lg border border-border/80 bg-card/95 p-2 text-left shadow-sm ring-1 ring-black/[0.04] transition-colors hover:border-primary/25 dark:ring-white/[0.06]"
  >
- <div className="relative size-20 overflow-hidden rounded-md bg-foreground/10">
+ <div className="relative size-20 overflow-hidden rounded-md border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  {thumb ? (
  <Image
  src={thumb}

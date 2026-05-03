@@ -101,10 +101,10 @@ export function ShapeSelector({ value, onChange }: ShapeSelectorProps) {
  type="button"
  onClick={() => onChange(shape)}
  className={
- "flex flex-col items-center rounded-xl border bg-card p-3 text-center shadow-sm transition-colors " +
+ "flex flex-col items-center rounded-xl border bg-card p-3 text-center shadow-sm ring-1 transition-colors " +
  (active
- ? "border-primary ring-2 ring-primary/25"
- : "border-border hover:border-muted-foreground/35")
+ ? "border-primary ring-2 ring-primary/25 dark:bg-card dark:ring-primary/30"
+ : "border-border ring-black/[0.04] hover:border-muted-foreground/35 dark:ring-white/[0.06]")
  }
  >
  <ShapeIcon shape={shape} />

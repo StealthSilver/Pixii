@@ -37,7 +37,7 @@ export function FixList({ weaknesses }: FixListProps) {
  {weaknesses.map((w, i) => (
  <li
  key={i}
- className="flex gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
+ className="flex gap-3 rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]"
  >
  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-heading text-sm font-bold text-primary">
  {i + 1}

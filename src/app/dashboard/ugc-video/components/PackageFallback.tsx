@@ -24,7 +24,7 @@ export function PackageFallback({
  const [progress, setProgress] = useState(0);
 
  return (
- <div className="rounded-xl border border-violet-200 bg-violet-50/40 p-5 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:border-border dark:bg-card/90 dark:ring-white/[0.06]">
  <h3 className="font-heading text-lg font-semibold text-foreground">
  Your UGC Package is Ready
  </h3>
@@ -34,7 +34,7 @@ export function PackageFallback({
  </p>
 
  <div className="mt-6 grid gap-4 sm:grid-cols-2">
- <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-lg border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <p className="text-sm font-semibold text-foreground"> Voiceover Audio</p>
  <audio
  ref={audioRef}
@@ -49,22 +49,22 @@ export function PackageFallback({
  setProgress((a.currentTime / a.duration) * 100);
  }}
  />
- <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-foreground/10">
+ <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted">
  <div
- className="h-full rounded-full bg-violet-500 transition-[width]"
+ className="h-full rounded-full bg-primary transition-[width]"
  style={{ width: `${progress}%` }}
  />
  </div>
  <button
  type="button"
  onClick={onDownloadVoice}
- className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Download MP3
  </button>
  </div>
 
- <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-lg border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <p className="text-sm font-semibold text-foreground"> Video Frames (4)</p>
  <div className="mt-3 grid grid-cols-2 gap-2">
  {frameUrls.slice(0, 4).map((u, i) => (
@@ -82,25 +82,25 @@ export function PackageFallback({
  <button
  type="button"
  onClick={onDownloadFramesZip}
- className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Download All Frames
  </button>
  </div>
 
- <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-lg border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <p className="text-sm font-semibold text-foreground"> Script</p>
  <p className="mt-2 line-clamp-2 text-sm text-foreground/90">{scriptPreview}</p>
  <button
  type="button"
  onClick={onCopyScript}
- className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted dark:ring-white/[0.06]"
  >
  Copy Script
  </button>
  </div>
 
- <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-lg border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <p className="text-sm font-semibold text-foreground"> CapCut Guide</p>
  <ol className="mt-2 list-decimal space-y-1 pl-4 text-xs text-foreground/90">
  <li>Open CapCut → New Project</li>

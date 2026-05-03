@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
-import { FeaturePage } from "@/components/FeaturePage";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import type { PersonaConfig } from "@/lib/ugcVideo/types";
 import { HistoryStrip, type HistoryStripItem } from "./components/HistoryStrip";
@@ -95,6 +95,30 @@ function safeFilename(name: string) {
  return name.replace(/[^\w\-]+/g, "-").slice(0, 40) || "product";
 }
 
+const secondaryBtn =
+  "rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+
+const primaryBtn =
+  "w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 dark:ring-white/15";
+
+function segmentTabClass(active: boolean): string {
+  return (
+    "rounded-lg px-4 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    (active
+      ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+      : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+  );
+}
+
+function resultTabClass(active: boolean): string {
+  return (
+    "rounded-lg px-3 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    (active
+      ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+      : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+  );
+}
+
 export default function UgcVideoPage() {
  const [view, setView] = useState<View>("upload");
  const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -115,6 +139,7 @@ export default function UgcVideoPage() {
  message: string;
  variant: "success" | "error" | "info";
  } | null>(null);
+ const [mainTab, setMainTab] = useState<"create" | "history">("create");
 
  const { data: historyData, mutate: mutateHistory } = useSWR<{
  items: HistoryStripItem[];
@@ -398,6 +423,7 @@ export default function UgcVideoPage() {
  setScriptStyle(data.scriptStyle);
  setPlatform(data.platform);
  setView("result");
+ setMainTab("create");
  } catch (e) {
  setToast({
  message: e instanceof Error ? e.message : "Could not load job.",
@@ -449,13 +475,108 @@ export default function UgcVideoPage() {
  }
  }, [jobId]);
 
+ useEffect(() => {
+ if (!toast) {
+ return;
+ }
+ const t = window.setTimeout(() => setToast(null), 3800);
+ return () => window.clearTimeout(t);
+ }, [toast]);
+
+ const processingLocked = view === "processing";
+
  return (
  <>
- <FeaturePage
- title="UGC Video Generator"
- description="Turn any product photo into a 30-second authentic UGC video."
+ <div className="relative min-h-full overflow-x-hidden">
+ <GridBackdrop />
+ <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <header className="border-b border-border/70 pb-6">
+ <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+ Content
+ </p>
+ <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ UGC video
+ </h1>
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ Turn a product photo into a ~30s UGC-style video with voiceover, frames,
+ and captions—styled for short-form platforms.
+ </p>
+ </header>
+
+ <div
+ className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ role="tablist"
+ aria-label="UGC sections"
  >
- <div className="mt-6 max-w-6xl">
+ <button
+ type="button"
+ role="tab"
+ aria-selected={mainTab === "create"}
+ className={segmentTabClass(mainTab === "create")}
+ onClick={() => setMainTab("create")}
+ >
+ Create
+ </button>
+ <button
+ type="button"
+ role="tab"
+ aria-selected={mainTab === "history"}
+ disabled={processingLocked}
+ className={
+ segmentTabClass(mainTab === "history") +
+ (processingLocked ? " cursor-not-allowed opacity-50" : "")
+ }
+ onClick={() => {
+ if (!processingLocked) {
+ setMainTab("history");
+ }
+ }}
+ >
+ History
+ </button>
+ </div>
+
+ <div className="mt-8 max-w-6xl space-y-6">
+ {mainTab === "history" ? (
+ <>
+ {(historyData?.items ?? []).length === 0 ? (
+ <p className="text-sm text-muted-foreground">
+ No videos yet. Create one from the Create tab.
+ </p>
+ ) : (
+ <>
+ <p className="text-sm text-muted-foreground">
+ Open a past video for downloads and script.
+ </p>
+ <ul className="space-y-2">
+ {(historyData?.items ?? []).map((h) => (
+ <li key={h._id}>
+ <button
+ type="button"
+ onClick={() => void loadHistoryJob(h._id)}
+ className="flex w-full items-center gap-3 rounded-xl border border-border/80 bg-card/95 px-4 py-3 text-left shadow-sm ring-1 ring-black/[0.03] transition-colors hover:border-primary/25 dark:ring-white/[0.05]"
+ >
+ <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+ <Image
+ src={h.cloudinaryFrameUrls?.[0] ?? h.productImageUrl}
+ alt=""
+ fill
+ className="object-cover"
+ unoptimized
+ />
+ </div>
+ <span className="min-w-0 flex-1 truncate text-sm font-semibold text-foreground">
+ {h.productName || "Product"}
+ </span>
+ </button>
+ </li>
+ ))}
+ </ul>
+ </>
+ )}
+ </>
+ ) : (
+ <>
  {view === "upload" && (
  <>
  <UploadView
@@ -469,9 +590,9 @@ export default function UgcVideoPage() {
  type="button"
  disabled={uploading || !selectedFile}
  onClick={() => void analyzeProduct()}
- className="mt-6 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+ className={primaryBtn + " mt-6"}
  >
- {uploading ? "Uploading…" : "Analyze Product →"}
+ {uploading ? "Uploading…" : "Analyze product →"}
  </button>
  </>
  )}
@@ -484,13 +605,13 @@ export default function UgcVideoPage() {
  setView("upload");
  setImageUrl(null);
  }}
- className="text-sm font-semibold text-primary hover:underline"
+ className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
  >
  ← Back
  </button>
 
- <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2 shadow-sm">
- <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border bg-foreground/10">
+ <div className="flex items-center gap-3 rounded-xl border border-border/80 bg-card/95 px-3 py-2 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
+ <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
  {imageUrl ? (
  <Image
  src={imageUrl}
@@ -519,9 +640,9 @@ export default function UgcVideoPage() {
  <button
  type="button"
  onClick={() => void generateVideo()}
- className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90"
+ className={primaryBtn}
  >
- Generate UGC Video →
+ Generate UGC video →
  </button>
  </div>
  )}
@@ -550,7 +671,7 @@ export default function UgcVideoPage() {
  <div className="space-y-6">
  <div className="flex flex-wrap items-center justify-between gap-3">
  <div className="flex items-center gap-2">
- <div className="relative size-10 overflow-hidden rounded-md border border-border bg-foreground/10">
+ <div className="relative size-10 overflow-hidden rounded-md border border-border bg-muted">
  {job.productImageUrl ? (
  <Image
  src={job.productImageUrl}
@@ -576,37 +697,28 @@ export default function UgcVideoPage() {
  setLocalPreview(null);
  setSelectedFile(null);
  setResultTab("video");
+ setMainTab("create");
  }}
- className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className={secondaryBtn + " shrink-0 px-4 py-2 text-sm"}
  >
- Create Another
+ Create another
  </button>
  </div>
 
- <div className="flex gap-2 border-b border-border pb-2">
+ <div className="inline-flex flex-wrap gap-1 rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25">
  <button
  type="button"
  onClick={() => setResultTab("video")}
- className={
- "rounded-lg px-3 py-2 text-sm font-semibold " +
- (resultTab === "video"
- ? "bg-primary text-white"
- : "text-foreground/90 hover:bg-foreground/10")
- }
+ className={resultTabClass(resultTab === "video")}
  >
- Video & Frames
+ Video & frames
  </button>
  <button
  type="button"
  onClick={() => setResultTab("script")}
- className={
- "rounded-lg px-3 py-2 text-sm font-semibold " +
- (resultTab === "script"
- ? "bg-primary text-white"
- : "text-foreground/90 hover:bg-foreground/10")
- }
+ className={resultTabClass(resultTab === "script")}
  >
- Script & Captions
+ Script & captions
  </button>
  </div>
 
@@ -661,8 +773,11 @@ export default function UgcVideoPage() {
  />
  </div>
  )}
+ </>
+ )}
  </div>
- </FeaturePage>
+ </div>
+ </div>
 
  {toast ? (
  <Toast

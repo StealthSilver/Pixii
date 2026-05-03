@@ -23,7 +23,7 @@ type ProductListProps = {
 };
 
 const inputClass =
- "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
 export function ProductList({
  products,
@@ -41,7 +41,7 @@ export function ProductList({
  : products;
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <h2 className="font-heading text-lg font-semibold text-foreground">Select a Product</h2>
  <label className="mt-4 block text-sm font-medium text-foreground/90">
  <span className="sr-only">Search products</span>
@@ -55,12 +55,12 @@ export function ProductList({
  </label>
 
  {error ? (
- <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+ <div className="mt-4 rounded-lg border border-red-200/90 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-500/35 dark:bg-red-950/40 dark:text-red-200">
  <p>{error}</p>
  <button
  type="button"
  onClick={() => void onRetry()}
- className="mt-2 text-sm font-semibold text-red-900 underline"
+ className="mt-2 text-sm font-semibold text-red-900 underline dark:text-red-300"
  >
  Retry
  </button>
@@ -71,7 +71,7 @@ export function ProductList({
  {loading ? (
  <>
  {[0, 1, 2].map((i) => (
- <div key={i} className="h-16 animate-pulse rounded-lg bg-foreground/10" />
+ <div key={i} className="h-16 animate-pulse rounded-lg bg-muted dark:bg-muted/60" />
  ))}
  </>
  ) : !filtered.length ? (
@@ -91,13 +91,13 @@ export function ProductList({
  type="button"
  onClick={() => onSelect(p)}
  className={
- "flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-colors " +
+ "flex w-full items-center gap-3 rounded-lg border p-3 text-left ring-1 transition-colors " +
  (selected
- ? "border-primary/50 bg-primary/5 shadow-sm"
- : "border-border bg-card hover:border-muted-foreground/35 hover:bg-muted/80")
+ ? "border-primary/50 bg-primary/5 shadow-sm ring-primary/15 dark:bg-primary/10"
+ : "border-border bg-card ring-black/[0.04] hover:border-muted-foreground/35 hover:bg-muted/80 dark:ring-white/[0.06]")
  }
  >
- <div className="relative size-10 shrink-0 overflow-hidden rounded-md bg-foreground/10">
+ <div className="relative size-10 shrink-0 overflow-hidden rounded-md border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  {src ? (
  <Image src={src} alt="" fill sizes="40px" className="object-cover" />
  ) : (

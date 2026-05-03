@@ -7,7 +7,7 @@ import {
  FaRobot,
  FaVideo,
 } from "react-icons/fa";
-import { FeaturePage } from "@/components/FeaturePage";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { Toast } from "@/app/dashboard/hooks/components/Toast";
 import { extractAsin } from "@/lib/aiCreator/extractAsin";
 import { PERSONA_ROAST_ICONS } from "@/components/icons/PersonaRoastIcons";
@@ -51,6 +51,30 @@ type JobPayload = {
 
 const PERSONA_STORAGE = "pixii-ai-creator-persona";
 
+const secondaryBtn =
+  "rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
+
+const primaryBtn =
+  "inline-flex h-[52px] w-full items-center justify-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40 dark:ring-white/15";
+
+function segmentTabClass(active: boolean): string {
+  return (
+    "rounded-lg px-4 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    (active
+      ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+      : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+  );
+}
+
+function resultTabClass(active: boolean): string {
+  return (
+    "rounded-lg px-3 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
+    (active
+      ? "bg-card text-foreground shadow-sm ring-1 ring-border/90 dark:bg-card dark:ring-border"
+      : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground")
+  );
+}
+
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
  const res = await fetch(url, init);
  let body: unknown = {};
@@ -70,15 +94,6 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
  throw new Error(msg);
  }
  return body as T;
-}
-
-function tabBtn(active: boolean): string {
- return (
- "rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 " +
- (active
- ? "bg-primary/10 text-primary"
- : "text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground")
- );
 }
 
 export default function AiCreatorPage() {
@@ -270,51 +285,92 @@ export default function AiCreatorPage() {
  (job?.influencerPersona as InfluencerPersonaId) ?? persona;
  const PersonaResultIcon = PERSONA_ROAST_ICONS[personaId];
 
- return (
- <FeaturePage
- title="AI Creator"
- description="Drop in your Amazon listing URL and get a brutal influencer critique video in minutes."
- >
- <div className="mt-6 flex flex-wrap gap-2">
- <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-900">
- <FaVideo className="size-3.5 shrink-0" aria-hidden />
- 60-sec critique video
- </span>
- <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-900">
- <FaRobot className="size-3.5 shrink-0" aria-hidden />
- 6 AI personas
- </span>
- <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-900">
- <FaChartBar className="size-3.5 shrink-0" aria-hidden />
- Listing score included
- </span>
- </div>
+ const roastTabActive = view !== "history";
+ const processingLocked = view === "processing";
 
- <div className="mt-6 flex flex-wrap gap-2 border-b border-border/55 pb-4">
+ useEffect(() => {
+ if (!toast) {
+ return;
+ }
+ const t = window.setTimeout(() => setToast(null), 3800);
+ return () => window.clearTimeout(t);
+ }, [toast]);
+
+ return (
+ <>
+ <div className="relative min-h-full overflow-x-hidden">
+ <GridBackdrop />
+ <div className="relative z-10 px-5 py-7 md:px-8 md:py-9">
+ <header className="border-b border-border/70 pb-6">
+ <p className="font-heading text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+ Content
+ </p>
+ <h1 className="mt-2 font-heading text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+ Creator
+ </h1>
+ <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+ Drop in your Amazon listing URL and get a sharp influencer-style critique
+ video—scorecard, script, and fix list in one flow.
+ </p>
+ </header>
+
+ <div
+ className="mt-8 inline-flex rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25"
+ role="tablist"
+ aria-label="Creator sections"
+ >
  <button
  type="button"
- className={tabBtn(view === "input")}
+ role="tab"
+ aria-selected={roastTabActive}
+ className={segmentTabClass(roastTabActive)}
  onClick={() => setView("input")}
  >
  New roast
  </button>
  <button
  type="button"
- className={tabBtn(view === "history")}
- onClick={() => setView("history")}
+ role="tab"
+ aria-selected={view === "history"}
+ disabled={processingLocked}
+ className={
+ segmentTabClass(view === "history") +
+ (processingLocked ? " cursor-not-allowed opacity-50" : "")
+ }
+ onClick={() => {
+ if (!processingLocked) {
+ setView("history");
+ }
+ }}
  >
  History
  </button>
  </div>
 
+ <div className="mt-8 max-w-6xl space-y-6">
  {view === "input" ? (
- <div className="mt-8 max-w-3xl space-y-8">
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <>
+ <div className="flex flex-wrap gap-2">
+ <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200/90 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-950 dark:border-sky-500/35 dark:bg-sky-950/40 dark:text-sky-100">
+ <FaVideo className="size-3.5 shrink-0" aria-hidden />
+ ~60s critique video
+ </span>
+ <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-200/90 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-950 dark:border-violet-500/35 dark:bg-violet-950/40 dark:text-violet-100">
+ <FaRobot className="size-3.5 shrink-0" aria-hidden />
+ 6 AI personas
+ </span>
+ <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200/90 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/40 dark:text-amber-100">
+ <FaChartBar className="size-3.5 shrink-0" aria-hidden />
+ Listing score included
+ </span>
+ </div>
+
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <URLInput value={url} onChange={setUrl} />
  </section>
 
  <section>
- <h2 className="font-heading text-lg font-semibold text-foreground">
+ <h2 className="font-heading text-lg font-semibold tracking-tight text-foreground">
  Choose your roaster
  </h2>
  <p className="mt-1 text-sm text-muted-foreground">
@@ -325,7 +381,7 @@ export default function AiCreatorPage() {
  </div>
  </section>
 
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <h3 className="font-heading text-base font-semibold text-foreground">
  What you&apos;ll get
  </h3>
@@ -343,7 +399,7 @@ export default function AiCreatorPage() {
  Critique video
  </p>
  <p className="mt-1 text-xs text-muted-foreground">
- ~60-second roast from your chosen influencer persona
+ ~60-second roast from your chosen persona
  </p>
  </div>
  <div>
@@ -356,37 +412,37 @@ export default function AiCreatorPage() {
  </div>
  </div>
  <p className="mt-6 text-xs text-muted-foreground">
- ~4–6 minutes · ~60-sec video · ~$0.12 per roast (estimate)
+ ~4–6 minutes · ~60s video · Estimated ~$0.12 per roast
  </p>
  <button
  type="button"
  disabled={!canSubmit}
  onClick={() => void onSubmit()}
- className="mt-6 flex h-[52px] w-full items-center justify-center rounded-lg bg-primary text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+ className={primaryBtn + " mt-6"}
  >
  Generate roast video →
  </button>
  </section>
- </div>
+ </>
  ) : null}
 
  {view === "history" ? (
- <div className="mt-8 max-w-4xl">
+ <div className="space-y-4">
  <p className="text-sm text-muted-foreground">
  Select a past roast to open results.
  </p>
- <ul className="mt-4 space-y-2">
+ <ul className="space-y-2">
  {(historyData?.items ?? []).map((h) => (
  <li key={h._id}>
  <button
  type="button"
  onClick={() => void loadJobForResult(h._id)}
- className="flex w-full items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-left shadow-sm hover:border-primary/25"
+ className="flex w-full items-center justify-between rounded-xl border border-border/80 bg-card/95 px-4 py-3 text-left shadow-sm ring-1 ring-black/[0.03] transition-colors hover:border-primary/25 dark:ring-white/[0.05]"
  >
  <span className="line-clamp-1 text-sm font-semibold text-foreground">
  {h.title || "Listing"}
  </span>
- <span className="ml-3 shrink-0 rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-bold">
+ <span className="ml-3 shrink-0 rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-bold text-foreground">
  {h.overallScore}/100
  </span>
  </button>
@@ -394,13 +450,13 @@ export default function AiCreatorPage() {
  ))}
  </ul>
  {(historyData?.items ?? []).length === 0 ? (
- <p className="mt-4 text-sm text-muted-foreground">No roasts yet.</p>
+ <p className="text-sm text-muted-foreground">No roasts yet.</p>
  ) : null}
  </div>
  ) : null}
 
  {view === "processing" && jobId ? (
- <div className="mt-8 max-w-lg">
+ <div className="max-w-lg">
  <ProcessingView
  asin={job?.asin ?? extractAsin(url) ?? ""}
  personaId={persona}
@@ -414,15 +470,15 @@ export default function AiCreatorPage() {
  ) : null}
 
  {view === "result" && job && job.status === "complete" ? (
- <div className="mt-8 max-w-3xl space-y-8">
+ <>
  <div className="flex flex-wrap items-center gap-2 border-b border-border/55 pb-4">
- <p className="font-heading text-lg font-semibold text-foreground">
+ <p className="min-w-0 flex-1 font-heading text-lg font-semibold tracking-tight text-foreground">
  {job.listingData?.title ?? "Your listing"}
  </p>
- <span className="rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-semibold text-foreground/90">
+ <span className="shrink-0 rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-semibold text-foreground">
  {job.asin}
  </span>
- <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-2 py-0.5 text-xs font-medium text-foreground/90">
+ <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-2 py-0.5 text-xs font-medium text-foreground shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <PersonaResultIcon className="size-3.5 shrink-0 text-primary" aria-hidden />
  {PERSONAS[personaId].name}{" "}
  <span className="text-muted-foreground">
@@ -431,24 +487,24 @@ export default function AiCreatorPage() {
  </span>
  </div>
 
- <div className="flex flex-wrap gap-2">
+ <div className="inline-flex flex-wrap gap-1 rounded-xl border border-border/60 bg-muted/35 p-1 dark:bg-muted/25">
  <button
  type="button"
- className={tabBtn(resultTab === "video")}
+ className={resultTabClass(resultTab === "video")}
  onClick={() => setResultTab("video")}
  >
  Roast video
  </button>
  <button
  type="button"
- className={tabBtn(resultTab === "score")}
+ className={resultTabClass(resultTab === "score")}
  onClick={() => setResultTab("score")}
  >
  Listing score
  </button>
  <button
  type="button"
- className={tabBtn(resultTab === "script")}
+ className={resultTabClass(resultTab === "script")}
  onClick={() => setResultTab("script")}
  >
  Script & fix list
@@ -490,15 +546,14 @@ export default function AiCreatorPage() {
  onSelect={(id) => void loadJobForResult(id)}
  />
 
- <button
- type="button"
- onClick={resetInput}
- className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
- >
+ <button type="button" onClick={resetInput} className={secondaryBtn + " w-full"}>
  Start another roast
  </button>
- </div>
+ </>
  ) : null}
+ </div>
+ </div>
+ </div>
 
  {toast ? (
  <Toast
@@ -507,6 +562,6 @@ export default function AiCreatorPage() {
  onDismiss={() => setToast(null)}
  />
  ) : null}
- </FeaturePage>
+ </>
  );
 }

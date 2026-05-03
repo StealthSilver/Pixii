@@ -109,7 +109,7 @@ export function ScriptTab({
  await navigator.clipboard.writeText(script.fullScript);
  onToast("Script copied.", "success");
  }}
- className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted disabled:opacity-50"
+ className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted disabled:opacity-50 dark:ring-white/[0.06]"
  >
  Copy Full Script
  </button>
@@ -117,7 +117,7 @@ export function ScriptTab({
  type="button"
  disabled={loading}
  onClick={() => void postRegenerate({})}
- className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted disabled:opacity-50"
+ className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted disabled:opacity-50 dark:ring-white/[0.06]"
  >
  Regenerate Script
  </button>
@@ -125,7 +125,7 @@ export function ScriptTab({
  type="button"
  disabled={loading}
  onClick={() => setShowFeedback((s) => !s)}
- className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm hover:bg-muted disabled:opacity-50"
+ className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] hover:bg-muted disabled:opacity-50 dark:ring-white/[0.06]"
  >
  Regenerate with Feedback
  </button>
@@ -139,7 +139,7 @@ export function ScriptTab({
  type="text"
  value={feedback}
  onChange={(e) => setFeedback(e.target.value)}
- className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm"
+ className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
  placeholder="e.g. More energy in the hook"
  />
  </label>
@@ -147,7 +147,7 @@ export function ScriptTab({
  type="button"
  disabled={loading || !feedback.trim()}
  onClick={() => void postRegenerate({ feedback })}
- className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 disabled:opacity-50"
+ className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 disabled:opacity-50 dark:ring-white/15"
  >
  Submit
  </button>

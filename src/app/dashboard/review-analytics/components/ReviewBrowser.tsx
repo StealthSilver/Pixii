@@ -91,14 +91,14 @@ export function ReviewBrowser({ jobId, listings }: Props) {
  };
 
  return (
- <div className="space-y-4 rounded-lg border border-border bg-card p-4">
+ <div className="space-y-4 rounded-lg border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <div className="flex flex-wrap items-end gap-3">
  <label className="text-xs font-semibold text-foreground/90">
  ASIN
  <select
  value={asin}
  onChange={(e) => setAsin(e.target.value)}
- className="mt-1 block rounded-lg border border-border bg-card px-2 py-1.5 text-sm"
+ className="mt-1 block rounded-lg border border-border bg-card px-2 py-1.5 text-sm shadow-sm ring-1 ring-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
  >
  <option value="">All listings</option>
  {listings.map((l) => (
@@ -129,13 +129,13 @@ export function ReviewBrowser({ jobId, listings }: Props) {
  <button
  type="button"
  onClick={() => void load()}
- className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary/90"
+ className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 dark:ring-white/15"
  >
  Apply
  </button>
  </div>
 
- {err ? <p className="text-sm text-red-700">{err}</p> : null}
+ {err ? <p className="text-sm text-red-700 dark:text-red-300">{err}</p> : null}
  {loading ? <p className="text-sm text-muted-foreground">Loading…</p> : null}
 
  <ul className="space-y-3">
@@ -148,7 +148,7 @@ export function ReviewBrowser({ jobId, listings }: Props) {
  <button
  type="button"
  onClick={() => setVisible((v) => v + 20)}
- className="w-full rounded-lg border border-border py-2 text-sm font-semibold text-foreground hover:bg-muted"
+ className="w-full rounded-lg border border-border bg-card py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted dark:ring-white/[0.06]"
  >
  Load more
  </button>
@@ -162,14 +162,14 @@ function ReviewCard({ r }: { r: ReviewRow }) {
  const body = r.body ?? "";
  const short = body.length > 220 ? `${body.slice(0, 220)}…` : body;
  return (
- <li className="rounded-lg border border-border/55 bg-muted/80 p-3 text-sm">
+ <li className="rounded-lg border border-border/55 bg-muted/70 p-3 text-sm ring-1 ring-black/[0.02] dark:bg-muted/50 dark:ring-white/[0.04]">
  <div className="flex flex-wrap items-center gap-2">
  <span className="inline-flex items-center gap-1 font-semibold text-amber-600">
  {r.rating}
  <FaStar className="size-3" aria-hidden />
  </span>
  {r.verifiedPurchase ? (
- <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-900">
+ <span className="rounded border border-emerald-200/90 bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/40 dark:text-emerald-100">
  Verified
  </span>
  ) : null}

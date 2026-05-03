@@ -75,9 +75,9 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
  {strengths.map((s) => (
  <li
  key={s}
- className="flex gap-2 rounded-lg border border-emerald-200/70 bg-emerald-50/60 px-3 py-2.5 text-sm text-foreground"
+ className="flex gap-2 rounded-lg border border-emerald-200/70 bg-emerald-50/60 px-3 py-2.5 text-sm text-foreground dark:border-emerald-500/25 dark:bg-emerald-950/30"
  >
- <FaCheck className="mt-0.5 size-4 shrink-0 text-emerald-700" aria-hidden />
+ <FaCheck className="mt-0.5 size-4 shrink-0 text-emerald-700 dark:text-emerald-400" aria-hidden />
  {s}
  </li>
  ))}
@@ -94,10 +94,10 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
  {weaknesses.map((s) => (
  <li
  key={s}
- className="flex gap-2 rounded-lg border border-amber-200/80 bg-amber-50/50 px-3 py-2.5 text-sm text-foreground"
+ className="flex gap-2 rounded-lg border border-amber-200/80 bg-amber-50/50 px-3 py-2.5 text-sm text-foreground dark:border-amber-500/25 dark:bg-amber-950/25"
  >
  <FaExclamationTriangle
- className="mt-0.5 size-4 shrink-0 text-amber-700"
+ className="mt-0.5 size-4 shrink-0 text-amber-700 dark:text-amber-300"
  aria-hidden
  />
  {s}
@@ -122,10 +122,10 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
  return (
  <li
  key={text}
- className="flex gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
+ className="flex gap-3 rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]"
  >
  <span
- className={`flex size-10 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white ${color}`}
+ className={`flex size-10 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white shadow-sm ring-1 ring-black/10 dark:ring-white/10 ${color}`}
  >
  {n}
  </span>
@@ -144,7 +144,7 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
  <button
  type="button"
  onClick={onExport}
- className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm hover:bg-muted"
+ className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]"
  >
  Export Action Plan
  </button>

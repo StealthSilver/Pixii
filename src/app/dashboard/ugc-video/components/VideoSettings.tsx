@@ -83,7 +83,7 @@ export function VideoSettings({
  const [previewOpen, setPreviewOpen] = useState(false);
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <h2 className="font-heading text-lg font-semibold text-foreground">
  Video Settings
  </h2>
@@ -100,9 +100,9 @@ export function VideoSettings({
  type="button"
  onClick={() => onScriptStyleChange(o.id)}
  className={
- "flex gap-3 rounded-lg border p-3 text-left transition-colors " +
+ "flex gap-3 rounded-lg border p-3 text-left transition-colors shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05] " +
  (scriptStyle === o.id
- ? "border-primary bg-primary/5 ring-1 ring-primary/25"
+ ? "border-primary bg-primary/10 ring-primary/25 dark:bg-primary/15"
  : "border-border bg-card hover:border-muted-foreground/35")
  }
  >
@@ -130,8 +130,8 @@ export function VideoSettings({
  pill +
  " " +
  (platform === "tiktok"
- ? "border-foreground bg-foreground text-background"
- : "border-border bg-card text-foreground hover:border-muted-foreground/35")
+ ? "border-foreground bg-foreground text-background shadow-sm ring-1 ring-black/15 dark:ring-white/20"
+ : "border-border bg-card text-foreground shadow-sm ring-1 ring-black/[0.04] hover:border-muted-foreground/35 dark:ring-white/[0.06]")
  }
  onClick={() => onPlatformChange("tiktok")}
  >
@@ -143,8 +143,8 @@ export function VideoSettings({
  pill +
  " " +
  (platform === "instagram_reels"
- ? "border-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white"
- : "border-border bg-card text-foreground hover:border-muted-foreground/35")
+ ? "border-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white shadow-sm ring-1 ring-black/15 dark:ring-white/15"
+ : "border-border bg-card text-foreground shadow-sm ring-1 ring-black/[0.04] hover:border-muted-foreground/35 dark:ring-white/[0.06]")
  }
  onClick={() => onPlatformChange("instagram_reels")}
  >
@@ -156,8 +156,8 @@ export function VideoSettings({
  pill +
  " " +
  (platform === "youtube_shorts"
- ? "border-red-600 bg-red-600 text-white"
- : "border-border bg-card text-foreground hover:border-muted-foreground/35")
+ ? "border-red-600 bg-red-600 text-white shadow-sm ring-1 ring-black/15 dark:ring-white/15"
+ : "border-border bg-card text-foreground shadow-sm ring-1 ring-black/[0.04] hover:border-muted-foreground/35 dark:ring-white/[0.06]")
  }
  onClick={() => onPlatformChange("youtube_shorts")}
  >
@@ -166,7 +166,7 @@ export function VideoSettings({
  </div>
  </div>
 
- <div className="rounded-lg border border-border/55 bg-muted p-4">
+ <div className="rounded-lg border border-border/55 bg-muted/60 p-4 dark:bg-muted/40">
  <button
  type="button"
  onClick={() => setPreviewOpen((v) => !v)}

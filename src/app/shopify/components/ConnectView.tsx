@@ -28,14 +28,14 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
  }, [trimmed, onShopRemember]);
 
  const inputClass =
- "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35";
+ "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-sm ring-1 ring-black/[0.04] placeholder:text-muted-foreground/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/[0.06]";
 
  return (
  <div className="max-w-[480px]">
- <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+ <div className="rounded-xl border border-border/80 bg-card/95 p-6 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <div className="flex flex-col items-start text-left">
  <span
- className="rounded-lg px-3 py-1 text-xs font-bold tracking-wide text-white"
+ className="rounded-lg px-3 py-1 text-xs font-bold tracking-wide text-white ring-1 ring-black/15 dark:ring-white/15"
  style={{ backgroundColor: SHOPIFY_GREEN }}
  >
  Shopify
@@ -58,7 +58,10 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
  onBlur={() => setTouched(true)}
  placeholder="mystore.myshopify.com"
  className={
- inputClass + (invalid ? " border-red-300 focus-visible:outline-red-300/50" : "")
+ inputClass +
+ (invalid
+ ? " border-red-300 focus-visible:outline-red-300/50 dark:border-red-500/50 dark:focus-visible:outline-red-500/40"
+ : "")
  }
  />
  </label>
@@ -66,7 +69,7 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
  Enter just your store subdomain, e.g. mystore.myshopify.com
  </p>
  {invalid ? (
- <p className="mt-2 text-xs font-medium text-red-700">
+ <p className="mt-2 text-xs font-medium text-red-700 dark:text-red-300">
  Store URL must end with .myshopify.com
  </p>
  ) : null}
@@ -75,7 +78,7 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
  type="button"
  disabled={busy}
  onClick={() => void connect()}
- className="mt-6 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35"
+ className="mt-6 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/35 dark:ring-white/15"
  >
  Connect to Shopify →
  </button>
@@ -94,7 +97,7 @@ export function ConnectView({ initialShop = "", onShopRemember }: ConnectViewPro
  ].map((t) => (
  <span
  key={t}
- className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground/90 shadow-sm"
+ className="rounded-full border border-border/80 bg-muted/50 px-3 py-1.5 text-xs font-medium text-foreground/90 ring-1 ring-black/[0.03] dark:bg-muted/40 dark:ring-white/[0.06]"
  >
  {t}
  </span>

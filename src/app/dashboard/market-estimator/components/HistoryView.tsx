@@ -14,15 +14,15 @@ type HistoryViewProps = {
 function competitionPill(level: string): string {
  switch (level) {
  case "low":
- return "bg-emerald-100 text-emerald-900";
+ return "border border-emerald-200/90 bg-emerald-50 text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/45 dark:text-emerald-100";
  case "medium":
- return "bg-amber-100 text-amber-900";
+ return "border border-amber-200/90 bg-amber-50 text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/45 dark:text-amber-100";
  case "high":
- return "bg-orange-100 text-orange-900";
+ return "border border-orange-200/90 bg-orange-50 text-orange-950 dark:border-orange-500/35 dark:bg-orange-950/45 dark:text-orange-100";
  case "very_high":
- return "bg-red-100 text-red-900";
+ return "border border-red-200/90 bg-red-50 text-red-950 dark:border-red-500/35 dark:bg-red-950/45 dark:text-red-100";
  default:
- return "bg-foreground/10 text-foreground";
+ return "border border-border bg-muted/80 text-foreground";
  }
 }
 
@@ -34,7 +34,7 @@ export function HistoryView({
 }: HistoryViewProps) {
  if (!items.length) {
  return (
- <section className="rounded-xl border border-border bg-card p-8 text-center shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-8 text-center shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
  <p className="text-sm text-muted-foreground">
  No analyses yet. Paste a Best Sellers URL to get started.
  </p>
@@ -43,8 +43,8 @@ export function HistoryView({
  }
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
- <h2 className="font-heading text-lg font-semibold text-foreground">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]">
+ <h2 className="font-heading text-lg font-semibold tracking-tight text-foreground">
  Analysis history
  </h2>
  <ul className="mt-4 divide-y divide-border/50">
@@ -59,7 +59,7 @@ export function HistoryView({
  {h.amazonUrl}
  </p>
  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
- <span className="font-semibold text-emerald-700">
+ <span className="font-semibold text-emerald-700 dark:text-emerald-400">
  {formatRevenue(h.marketAnalysis.totalMarketSizeMonthly)} / mo
  </span>
  <span className="text-muted-foreground">
@@ -80,7 +80,7 @@ export function HistoryView({
  type="button"
  disabled={busyId === h._id}
  onClick={() => onView(h._id)}
- className="rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-primary/90 disabled:opacity-60"
+ className="rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 hover:bg-primary/90 disabled:opacity-60 dark:ring-white/15"
  >
  View Results
  </button>
@@ -95,7 +95,7 @@ export function HistoryView({
  onDelete(h._id);
  }
  }}
- className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50 disabled:opacity-60"
+ className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-red-700 shadow-sm ring-1 ring-black/[0.04] hover:bg-red-50 disabled:opacity-60 dark:text-red-400 dark:ring-white/[0.06] dark:hover:bg-red-950/40"
  >
  Delete
  </button>

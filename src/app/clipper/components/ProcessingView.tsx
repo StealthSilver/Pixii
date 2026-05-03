@@ -54,7 +54,7 @@ export function ProcessingView({
 
  if (status === "failed") {
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <h2 className="font-heading text-lg font-semibold text-foreground">
  Something went wrong
  </h2>
@@ -64,7 +64,7 @@ export function ProcessingView({
  <button
  type="button"
  onClick={onTryAgain}
- className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90"
+ className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-1 ring-black/10 transition-colors hover:bg-primary/90 dark:ring-white/15"
  >
  Try Another Video
  </button>
@@ -73,9 +73,9 @@ export function ProcessingView({
  }
 
  return (
- <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06]">
  <div className="flex gap-4">
- <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-border bg-foreground/10">
+ <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-border bg-muted/40 ring-1 ring-black/[0.04] dark:bg-muted/30 dark:ring-white/[0.06]">
  {thumbnailUrl ? (
  <Image src={thumbnailUrl} alt="" fill className="object-cover" unoptimized />
  ) : null}
@@ -95,9 +95,9 @@ export function ProcessingView({
  </div>
  </div>
 
- <div className="mt-6 h-2 overflow-hidden rounded-full bg-foreground/10">
+ <div className="mt-6 h-2 overflow-hidden rounded-full bg-muted">
  <div
- className="h-full rounded-full bg-emerald-500 transition-[width] duration-500 ease-out"
+ className="h-full rounded-full bg-primary transition-[width] duration-500 ease-out"
  style={{ width: `${progressPct}%` }}
  />
  </div>
@@ -124,11 +124,11 @@ export function ProcessingView({
  className={
  "z-[1] flex size-10 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold " +
  (done && status === "complete"
- ? "border-emerald-500 bg-emerald-500 text-white"
+ ? "border-emerald-500 bg-emerald-500 text-white dark:border-emerald-600 dark:bg-emerald-600"
  : done
- ? "border-emerald-500 bg-emerald-500 text-white"
+ ? "border-emerald-500 bg-emerald-500 text-white dark:border-emerald-600 dark:bg-emerald-600"
  : active
- ? "border-primary bg-card text-primary"
+ ? "border-primary bg-card text-primary ring-1 ring-primary/20 dark:bg-card"
  : "border-border bg-card text-muted-foreground/75")
  }
  >
@@ -145,7 +145,7 @@ export function ProcessingView({
  className={
  "absolute left-1/2 top-10 z-0 h-[calc(100%-0.25rem)] w-0.5 -translate-x-1/2 " +
  (effStep > stepNum || status === "complete"
- ? "bg-emerald-400"
+ ? "bg-emerald-500/60 dark:bg-emerald-600/70"
  : "bg-border")
  }
  aria-hidden
@@ -179,12 +179,12 @@ export function ProcessingView({
  </ol>
 
  {pollWarn ? (
- <div className="mt-4 rounded-lg border border-sky-200 bg-sky-50/80 px-4 py-3 text-sm text-sky-950">
+ <div className="mt-4 rounded-lg border border-sky-200/90 bg-sky-50/90 px-4 py-3 text-sm text-sky-950 dark:border-sky-500/30 dark:bg-sky-950/40 dark:text-sky-100">
  Transcription takes 2-5 minutes for longer videos. We&apos;ll process everything in
  the background — you can leave this page and come back.
  </div>
  ) : (
- <div className="mt-4 rounded-lg border border-border bg-muted px-4 py-3 text-sm text-foreground/90">
+ <div className="mt-4 rounded-lg border border-border bg-muted/80 px-4 py-3 text-sm text-foreground/90 ring-1 ring-black/[0.04] dark:bg-muted/50 dark:ring-white/[0.06]">
  Transcription takes 2-5 minutes for longer videos. We&apos;ll process everything in
  the background — you can leave this page and come back.
  </div>

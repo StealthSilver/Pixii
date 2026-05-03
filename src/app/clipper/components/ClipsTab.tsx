@@ -54,11 +54,11 @@ export function ClipsTab({ clips, videoId, videoDuration, onToast }: ClipsTabPro
  ))}
  </div>
 
- <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 px-4 py-4 text-sm text-emerald-950">
- <p className="font-semibold">
+ <div className="rounded-xl border border-border/80 bg-card/95 px-4 py-4 text-sm shadow-sm ring-1 ring-black/[0.04] dark:border-emerald-500/20 dark:bg-emerald-950/25 dark:text-emerald-50 dark:ring-emerald-500/15">
+ <p className="font-semibold text-foreground">
  {clips.length} clips identified from {formatSeconds(videoDuration)} video
  </p>
- <p className="mt-1">
+ <p className="mt-1 text-foreground/90">
  Best platform: {modePlatform(clips)} · Estimated reach: {reach.toLocaleString()}+
  potential views
  </p>

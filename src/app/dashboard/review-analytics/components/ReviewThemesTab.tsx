@@ -33,15 +33,15 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  const trend = (intel.reviewVelocityTrend ?? "stable").toLowerCase();
  const trendBadge =
  trend === "growing" ? (
- <span className="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-900">
+ <span className="inline-flex rounded-full border border-emerald-200/90 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-950 dark:border-emerald-500/35 dark:bg-emerald-950/40 dark:text-emerald-100">
  Growing market — increasing review volume
  </span>
  ) : trend === "declining" ? (
- <span className="inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
+ <span className="inline-flex rounded-full border border-amber-200/90 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/40 dark:text-amber-100">
  Slowing market — decreasing review volume
  </span>
  ) : (
- <span className="inline-flex rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-900">
+ <span className="inline-flex rounded-full border border-sky-200/90 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-950 dark:border-sky-500/35 dark:bg-sky-950/40 dark:text-sky-100">
  Stable market — consistent review volume
  </span>
  );
@@ -70,7 +70,7 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  {features.map((f) => (
  <li
  key={f}
- className="flex gap-2 rounded-lg border border-emerald-200/80 border-l-4 border-l-emerald-500 bg-card px-3 py-2.5 text-sm text-foreground shadow-sm"
+ className="flex gap-2 rounded-lg border border-emerald-200/80 border-l-4 border-l-emerald-500 bg-card/95 px-3 py-2.5 text-sm text-foreground shadow-sm ring-1 ring-black/[0.03] dark:border-emerald-500/30 dark:bg-card dark:ring-white/[0.05]"
  >
  <FaCheck className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
  <span>{f}</span>
@@ -86,7 +86,7 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  {complaints.map((f) => (
  <li
  key={f}
- className="flex gap-2 rounded-lg border border-red-200/80 border-l-4 border-l-red-500 bg-card px-3 py-2.5 text-sm text-foreground shadow-sm"
+ className="flex gap-2 rounded-lg border border-red-200/80 border-l-4 border-l-red-500 bg-card/95 px-3 py-2.5 text-sm text-foreground shadow-sm ring-1 ring-black/[0.03] dark:border-red-500/30 dark:bg-card dark:ring-white/[0.05]"
  >
  <FaTimes className="mt-0.5 size-4 shrink-0 text-red-600" aria-hidden />
  <span>{f}</span>
@@ -96,15 +96,15 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  </div>
  </div>
 
- <section className="rounded-xl border border-amber-200/80 bg-amber-50/50 p-4 shadow-sm">
- <h3 className="font-heading text-sm font-semibold text-amber-950">
- Unmet Needs — What Customers Wish Existed
+ <section className="rounded-xl border border-amber-200/80 bg-amber-50/50 p-4 shadow-sm ring-1 ring-black/[0.03] dark:border-amber-500/25 dark:bg-amber-950/25 dark:ring-white/[0.05]">
+ <h3 className="font-heading text-sm font-semibold text-amber-950 dark:text-amber-100">
+ Unmet needs — what customers wish existed
  </h3>
  <div className="mt-3 flex flex-wrap gap-2">
  {needs.map((n) => (
  <span
  key={n}
- className="rounded-full border border-amber-300/80 bg-card px-3 py-1 text-xs font-medium text-amber-950 shadow-sm"
+ className="rounded-full border border-amber-300/80 bg-card px-3 py-1 text-xs font-medium text-amber-950 shadow-sm dark:border-amber-500/30 dark:bg-card/80 dark:text-amber-100"
  >
  {n}
  </span>
@@ -112,7 +112,7 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  </div>
  </section>
 
- <section className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <section className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
  <p className="text-sm font-semibold text-foreground">
  Overall Market Sentiment: {Math.round(score)}/100
  </p>
@@ -129,7 +129,7 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  </div>
  </section>
 
- <section className="rounded-xl border border-border bg-muted/80 p-4">
+ <section className="rounded-xl border border-border/80 bg-muted/60 p-4 ring-1 ring-black/[0.02] dark:bg-muted/40 dark:ring-white/[0.04]">
  <button
  type="button"
  onClick={toggle}
