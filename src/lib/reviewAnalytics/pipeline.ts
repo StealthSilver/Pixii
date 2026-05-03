@@ -6,7 +6,11 @@ import {
   type ScrapedListing,
 } from "@/lib/reviewAnalytics/listingScraper";
 import { scrapeAllReviews } from "@/lib/reviewAnalytics/reviewScraper";
-import type { ListingWithRevenue } from "@/lib/reviewAnalytics/revenueEstimator";
+import {
+  estimateRevenueForListings,
+  type ListingWithRevenue,
+} from "@/lib/reviewAnalytics/revenueEstimator";
+import { analyzeReviews } from "@/lib/reviewAnalytics/reviewAnalyzer";
 
 function toJobListing(
   l: ScrapedListing & { estimatedMonthlySales?: number; estimatedMonthlyRevenue?: number },

@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import type { IconType } from "react-icons";
 import {
   FaAmazon,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
   FaBrain,
   FaChartLine,
   FaCube,
@@ -152,6 +154,7 @@ function SectionIcon({ sectionId }: { sectionId: string }) {
 
 type SidebarProps = {
   collapsed: boolean;
+  onToggleCollapse: () => void;
 };
 
 function isNavItemActive(
@@ -184,7 +187,7 @@ function navItemClassNames(
   return base + active;
 }
 
-export function Sidebar({ collapsed }: SidebarProps) {
+export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -195,29 +198,53 @@ export function Sidebar({ collapsed }: SidebarProps) {
         (collapsed ? "w-[72px]" : "w-60")
       }
     >
-      <div className="flex h-14 shrink-0 items-center border-b border-neutral-200/80 px-3">
-        <Link
-          href="/"
-          className={
-            "flex min-w-0 flex-1 items-center outline-none " +
-            (collapsed ? "justify-center px-0.5" : "")
-          }
-          aria-current={isHome ? "page" : undefined}
-        >
-          <Image
-            src={collapsed ? "/small.ico" : "/logo.svg"}
-            alt="Pixii"
-            width={collapsed ? 32 : 824}
-            height={collapsed ? 32 : 219}
-            unoptimized
-            priority
-            className={
-              collapsed
-                ? "size-6 object-contain"
-                : "h-6 w-auto max-w-full object-contain"
-            }
-          />
-        </Link>
+      <div className="flex h-14 shrink-0 items-center gap-1 border-b border-neutral-200/80 pl-3 pr-1.5">
+        {!collapsed ? (
+          <>
+            <Link
+              href="/"
+              className="flex min-w-0 flex-1 items-center outline-none"
+              aria-current={isHome ? "page" : undefined}
+            >
+              <Image
+                src="/logo.svg"
+                alt="Pixii"
+                width={824}
+                height={219}
+                unoptimized
+                priority
+                className="h-6 w-auto max-w-full object-contain"
+              />
+            </Link>
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="group inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              aria-label="Collapse sidebar"
+              aria-expanded={true}
+            >
+              <FaAngleDoubleLeft
+                className="size-4 text-neutral-500 transition-colors group-hover:text-primary"
+                aria-hidden
+              />
+            </button>
+          </>
+        ) : (
+          <div className="flex w-full justify-center">
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="group inline-flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              aria-label="Expand sidebar"
+              aria-expanded={false}
+            >
+              <FaAngleDoubleRight
+                className="size-4 text-neutral-500 transition-colors group-hover:text-primary"
+                aria-hidden
+              />
+            </button>
+          </div>
+        )}
       </div>
 
       <nav

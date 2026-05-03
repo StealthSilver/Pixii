@@ -20,12 +20,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Sidebar collapsed={sidebarCollapsed} />
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed((c) => !c)}
+      />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background">
-        <Navbar
-          sidebarCollapsed={sidebarCollapsed}
-          onToggleSidebar={() => setSidebarCollapsed((c) => !c)}
-        />
+        <Navbar />
         <main className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
           {children}
         </main>
