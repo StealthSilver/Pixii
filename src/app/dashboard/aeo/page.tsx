@@ -366,7 +366,8 @@ export default function AeoDashboardPage() {
                   <div className="mt-8 space-y-6">
                     {result.meta?.usedGeminiForOpenAiSlots &&
                     (result.meta.usedGeminiForOpenAiSlots.gpt ||
-                      result.meta.usedGeminiForOpenAiSlots.mini) ? (
+                      result.meta.usedGeminiForOpenAiSlots.mini) &&
+                    !result.meta?.skipOpenAi ? (
                       <p className="rounded-lg border border-amber-200/90 bg-amber-50 px-3 py-2 text-sm text-amber-950 dark:border-amber-500/35 dark:bg-amber-950/35 dark:text-amber-100">
                         Demo note: OpenAI hit quota or was skipped, so the{" "}
                         <strong>GPT-4o</strong> and/or{" "}
