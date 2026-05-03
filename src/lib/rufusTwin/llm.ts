@@ -1,6 +1,6 @@
 import { callClaude } from "@/lib/rufusTwin/claude";
 
-/** Rufus Twin (and Roaster) LLM entry: Anthropic Messages API only. */
+/** Rufus Twin LLM entry: Anthropic Messages API only. */
 export async function callRufusLlm(
   params: Parameters<typeof callClaude>[0],
 ): Promise<string> {

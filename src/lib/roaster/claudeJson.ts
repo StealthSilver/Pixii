@@ -1,4 +1,16 @@
-import { callRufusLlm } from "@/lib/rufusTwin/llm";
+import {
+  callAnthropicMessages,
+  defaultAnthropicModel,
+} from "@/lib/anthropic/callAnthropic";
+
+/** Roaster-only model override (then Rufus, then app default). */
+export function resolveRoasterAnthropicModel(): string {
+  return (
+    process.env.ROASTER_ANTHROPIC_MODEL?.trim() ||
+    process.env.RUFUS_ANTHROPIC_MODEL?.trim() ||
+    defaultAnthropicModel()
+  );
+}
 
 export function parseJsonFromClaudeText<T = Record<string, unknown>>(
   text: string,
@@ -23,10 +35,16 @@ export async function callClaudeJson(params: {
   maxTokens?: number;
   timeoutMs?: number;
 }): Promise<string> {
-  return callRufusLlm({
+  if (!process.env.ANTHROPIC_API_KEY?.trim()) {
+    throw new Error(
+      "Roaster needs ANTHROPIC_API_KEY in your environment.",
+    );
+  }
+  return callAnthropicMessages({
     system: params.system,
     messages: [{ role: "user", content: params.user }],
     maxTokens: params.maxTokens ?? 8192,
+    model: resolveRoasterAnthropicModel(),
     timeoutMs: params.timeoutMs ?? 120_000,
   });
 }

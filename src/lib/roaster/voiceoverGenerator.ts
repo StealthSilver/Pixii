@@ -2,6 +2,13 @@ import { uploadRawFromBuffer } from "@/lib/cloudinary";
 
 const VOICE_ID = "nPczCjzI2devNBz1zQrb";
 
+/** Prefer Flash (recommended); override with ELEVENLABS_TTS_MODEL_ID if needed. */
+function roasterTtsModelId(): string {
+  return (
+    process.env.ELEVENLABS_TTS_MODEL_ID?.trim() || "eleven_flash_v2"
+  );
+}
+
 export async function generateRoasterVoiceover(
   script: string,
   jobId: string,
@@ -22,7 +29,7 @@ export async function generateRoasterVoiceover(
       },
       body: JSON.stringify({
         text: script,
-        model_id: "eleven_turbo_v2",
+        model_id: roasterTtsModelId(),
         voice_settings: {
           stability: 0.55,
           similarity_boost: 0.8,
@@ -36,7 +43,9 @@ export async function generateRoasterVoiceover(
   if (!response.ok) {
     const t = await response.text();
     console.warn("[roaster/voiceover] ElevenLabs error", response.status, t.slice(0, 200));
-    throw new Error("Voiceover generation failed");
+    throw new Error(
+      `Voiceover failed (${response.status}): ${t.slice(0, 280) || "unknown error"}`,
+    );
   }
 
   const audioBuffer = await response.arrayBuffer();

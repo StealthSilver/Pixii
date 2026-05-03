@@ -61,8 +61,10 @@ export async function callAnthropicMessages(params: {
 
     const content = (data as { content?: { type?: string; text?: string }[] })
       .content;
-    const block = content?.find((c) => c.type === "text" && c.text);
-    const text = block?.text?.trim();
+    const textParts =
+      content?.filter((c) => c.type === "text" && c.text).map((c) => c.text!) ??
+      [];
+    const text = textParts.join("\n").trim();
     if (!text) {
       throw new Error("Empty response from the AI service.");
     }

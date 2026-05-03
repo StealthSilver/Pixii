@@ -98,8 +98,9 @@ export async function processRoasterJob(jobId: string): Promise<void> {
         critiqueScript.fullScript,
         jobId,
       );
-    } catch {
-      await markFailed(jobId, "Voiceover generation failed");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      await markFailed(jobId, msg || "Voiceover generation failed.");
       return;
     }
 

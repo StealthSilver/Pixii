@@ -236,16 +236,23 @@ Rules:
 - Exactly 5 entries in "relatedQuestions".
 - 4-8 responseFactors.`;
 
-  let text = await callRufusLlm({
+  // Large schema (factors, competitors, optional listing score, questions);
+  // Low max_tokens truncates mid-JSON and breaks parsing.
+  const structuredLlmParams = {
     system: EXPERT_SYSTEM,
+    maxTokens: 8192,
+    timeoutMs: 90_000,
+  } as const;
+
+  let text = await callRufusLlm({
+    ...structuredLlmParams,
     messages: [{ role: "user", content: userPrompt }],
-    maxTokens: 1000,
   });
 
   let parsed = safeParseJsonObject(text);
   if (!parsed) {
     text = await callRufusLlm({
-      system: EXPERT_SYSTEM,
+      ...structuredLlmParams,
       messages: [
         {
           role: "user",
@@ -254,7 +261,6 @@ Rules:
             "\n\nIMPORTANT: Output ONLY compact JSON. No markdown fences, no commentary.",
         },
       ],
-      maxTokens: 1000,
     });
     parsed = safeParseJsonObject(text);
   }

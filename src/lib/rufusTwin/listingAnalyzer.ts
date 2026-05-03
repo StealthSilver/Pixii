@@ -62,16 +62,21 @@ Return ONLY JSON (valid JSON, double-quoted keys and strings):
 
 overallScore must be a weighted average: title 30%, bullets 40%, description 20%, reviews 10%.`;
 
-  let text = await callRufusLlm({
+  const llmParams = {
     system: EXPERT,
+    maxTokens: 4096,
+    timeoutMs: 60_000,
+  } as const;
+
+  let text = await callRufusLlm({
+    ...llmParams,
     messages: [{ role: "user", content: userPrompt }],
-    maxTokens: 1000,
   });
 
   let parsed = safeParse(text);
   if (!parsed) {
     text = await callRufusLlm({
-      system: EXPERT,
+      ...llmParams,
       messages: [
         {
           role: "user",
@@ -80,7 +85,6 @@ overallScore must be a weighted average: title 30%, bullets 40%, description 20%
             "\n\nIMPORTANT: Output ONLY compact JSON. No markdown fences, no commentary.",
         },
       ],
-      maxTokens: 1000,
     });
     parsed = safeParse(text);
   }
