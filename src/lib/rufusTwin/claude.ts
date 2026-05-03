@@ -10,14 +10,17 @@ export async function callClaude(params: {
   system: string;
   messages: ClaudeMessage[];
   maxTokens: number;
+  /** Defaults to 30s. */
+  timeoutMs?: number;
 }): Promise<string> {
   const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
   if (!apiKey) {
     throw new Error("ANTHROPIC_API_KEY is not configured.");
   }
 
+  const timeoutMs = params.timeoutMs ?? CLAUDE_TIMEOUT_MS;
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), CLAUDE_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const res = await fetch(ANTHROPIC_URL, {

@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         hostname: "replicate.delivery",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        pathname: "/**",
+      },
     ],
   },
 };
