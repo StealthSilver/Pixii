@@ -45,7 +45,11 @@ type ProcessingViewProps = {
  errorMessage: string | null;
  elapsedSec: number;
  onTryAgain: () => void;
+ /** When true, show a short fake progress animation (e.g. loading stored results) instead of "already complete" UI. */
+ dummyReplay?: boolean;
 };
+
+const DUMMY_REPLAY_SEC = 2.8;
 
 export function ProcessingView({
  userAsin,
@@ -56,6 +60,7 @@ export function ProcessingView({
  errorMessage,
  elapsedSec,
  onTryAgain,
+ dummyReplay = false,
 }: ProcessingViewProps) {
  const [msgIdx, setMsgIdx] = useState(0);
 
@@ -66,9 +71,18 @@ export function ProcessingView({
  return () => window.clearInterval(id);
  }, []);
 
- const progressPct =
- status === "complete"
+ const fakeStepForDummy = dummyReplay
+ ? Math.max(1, Math.min(5, Math.ceil((elapsedSec / DUMMY_REPLAY_SEC) * 5)))
+ : null;
+ const effectiveStep = dummyReplay
+ ? (fakeStepForDummy ?? 1)
+ : Math.max(1, Math.min(currentStep || 1, 5));
+ const displayComplete = !dummyReplay && status === "complete";
+
+ const progressPct = displayComplete
  ? 100
+ : dummyReplay
+ ? Math.min(97, (Math.max(1, effectiveStep) / 5) * 100)
  : Math.min(100, (Math.max(1, Math.min(currentStep || 1, 5)) / 5) * 100);
 
  const mm = Math.floor(elapsedSec / 60);
@@ -103,7 +117,14 @@ export function ProcessingView({
  </p>
  ) : null}
 
- <p className="text-sm text-muted-foreground">Analyzing for {timeStr}…</p>
+ <p className="text-sm text-muted-foreground">
+ {dummyReplay ? "Preparing your report" : "Analyzing"} for {timeStr}…
+ </p>
+ {dummyReplay ? (
+ <p className="mt-1 text-xs font-medium text-primary/90">
+ Retrieving your saved analysis — no need to wait minutes again.
+ </p>
+ ) : null}
  <p className="mt-1 text-xs italic text-muted-foreground">{ROTATING[msgIdx]}</p>
 
  <div className="mt-5 h-2 overflow-hidden rounded-full bg-foreground/10">
@@ -116,9 +137,10 @@ export function ProcessingView({
  <ol className="mt-6 space-y-3">
  {STEPS.map((step, i) => {
  const stepNum = i + 1;
- const done = status === "complete" || (currentStep ?? 1) > stepNum;
- const active =
- status !== "complete" &&
+ const done = displayComplete || (dummyReplay ? effectiveStep > stepNum : (currentStep ?? 1) > stepNum);
+ const active = dummyReplay
+ ? effectiveStep === stepNum
+ : !displayComplete &&
  status !== "failed" &&
  ((currentStep ?? 1) === stepNum ||
  (status === "queued" && stepNum === 1));

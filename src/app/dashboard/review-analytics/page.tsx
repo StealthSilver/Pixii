@@ -49,6 +49,9 @@ function resultTabClass(active: boolean): string {
 type View = "input" | "processing" | "result" | "history";
 
 const STORAGE_KEY = "pixii-review-analytics-last-job";
+/** Completed jobs keyed by ASIN for instant repeat lookups (see onAnalyze cache replay). */
+const ASIN_RESULT_CACHE_KEY = "pixii-review-analytics-jobs-by-asin";
+const DUMMY_REPLAY_MS = 2800;
 const REVIEW_RUFUS_TUTORIAL_SEEN_KEY = "pixii_review_analytics_rufus_tutorial_seen";
 /** https://youtu.be/aU_On8gek4A */
 const REVIEW_RUFUS_TUTORIAL_VIDEO_ID = "aU_On8gek4A";
@@ -75,6 +78,71 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
  throw new Error(msg);
  }
  return body as T;
+}
+
+type AsinJobCache = Record<string, ReviewJob>;
+
+function readAsinJobCache(): AsinJobCache {
+ if (typeof window === "undefined") {
+ return {};
+ }
+ try {
+ const raw = window.localStorage.getItem(ASIN_RESULT_CACHE_KEY);
+ if (!raw) {
+ return {};
+ }
+ const p = JSON.parse(raw) as unknown;
+ if (typeof p !== "object" || p === null) {
+ return {};
+ }
+ return p as AsinJobCache;
+ } catch {
+ return {};
+ }
+}
+
+function writeAsinJobCache(cache: AsinJobCache) {
+ try {
+ window.localStorage.setItem(ASIN_RESULT_CACHE_KEY, JSON.stringify(cache));
+ } catch {
+ /* quota / private mode */
+ }
+}
+
+function getCachedCompleteJobByAsin(asin: string | null): ReviewJob | null {
+ if (!asin) {
+ return null;
+ }
+ const key = asin.toUpperCase();
+ const j = readAsinJobCache()[key];
+ if (j && j.status === "complete" && j._id) {
+ return j;
+ }
+ return null;
+}
+
+function putCachedCompleteJob(job: ReviewJob) {
+ const asin = job.userAsin?.trim().toUpperCase();
+ if (!asin || job.status !== "complete") {
+ return;
+ }
+ const c = readAsinJobCache();
+ c[asin] = job;
+ writeAsinJobCache(c);
+}
+
+function evictCachedJobById(jobId: string) {
+ const c = readAsinJobCache();
+ let changed = false;
+ for (const k of Object.keys(c)) {
+ if (c[k]?._id === jobId) {
+ delete c[k];
+ changed = true;
+ }
+ }
+ if (changed) {
+ writeAsinJobCache(c);
+ }
 }
 
 function parseListingRow(p: unknown): ReviewListingRow {
@@ -192,9 +260,12 @@ export default function ReviewAnalyticsPage() {
  const [tutorialOpen, setTutorialOpen] = useState(false);
  const [tutorialIframeKey, setTutorialIframeKey] = useState(0);
  const [showPlayTutorialButton, setShowPlayTutorialButton] = useState(false);
+ /** True while showing the short dummy processing animation before revealing cached results. */
+ const [replayFromCache, setReplayFromCache] = useState(false);
 
  const pollTimerRef = useRef<number | null>(null);
  const elapsedTimerRef = useRef<number | null>(null);
+ const replayTimerRef = useRef<number | null>(null);
  const urlValid = useDebouncedAmazonProductUrlValid(urlInput);
 
  const { data: historyData, mutate: mutateHistory } = useSWR<{ items: HistoryStripItem[] }>(
@@ -209,6 +280,7 @@ export default function ReviewAnalyticsPage() {
  setJob(null);
  setElapsedSec(0);
  setTab("criteria");
+ setReplayFromCache(false);
  }, []);
 
  const loadJob = useCallback(async (id: string) => {
@@ -294,6 +366,13 @@ export default function ReviewAnalyticsPage() {
  }, [view, jobId]);
 
  useEffect(() => {
+ if (replayFromCache) {
+ if (pollTimerRef.current) {
+ window.clearInterval(pollTimerRef.current);
+ pollTimerRef.current = null;
+ }
+ return;
+ }
  if (view !== "processing" || !jobId) {
  if (pollTimerRef.current) {
  window.clearInterval(pollTimerRef.current);
@@ -339,7 +418,37 @@ export default function ReviewAnalyticsPage() {
  pollTimerRef.current = null;
  }
  };
- }, [view, jobId, mutateHistory]);
+ }, [view, jobId, mutateHistory, replayFromCache]);
+
+ useEffect(() => {
+ if (job?.status === "complete" && job.userAsin) {
+ putCachedCompleteJob(job);
+ }
+ }, [job]);
+
+ useEffect(() => {
+ if (!replayFromCache || view !== "processing") {
+ if (replayTimerRef.current) {
+ window.clearTimeout(replayTimerRef.current);
+ replayTimerRef.current = null;
+ }
+ return;
+ }
+ if (job?.status !== "complete") {
+ return;
+ }
+ replayTimerRef.current = window.setTimeout(() => {
+ replayTimerRef.current = null;
+ setView("result");
+ setReplayFromCache(false);
+ }, DUMMY_REPLAY_MS);
+ return () => {
+ if (replayTimerRef.current) {
+ window.clearTimeout(replayTimerRef.current);
+ replayTimerRef.current = null;
+ }
+ };
+ }, [replayFromCache, view, job?.status, job?._id]);
 
  const onAnalyze = useCallback(async () => {
  const url = urlInput.trim();
@@ -347,12 +456,51 @@ export default function ReviewAnalyticsPage() {
  return;
  }
  setToast(null);
+
+ const asin = extractAsin(url);
+
+ if (asin) {
+ const cached = getCachedCompleteJobByAsin(asin);
+ if (cached) {
+ setJobId(cached._id);
+ setJob(cached);
+ setReplayFromCache(true);
+ setView("processing");
+ return;
+ }
+ }
+
+ if (asin && historyData?.items?.length) {
+ const match = historyData.items.find(
+ (h) => h.userAsin?.toUpperCase() === asin,
+ );
+ if (match) {
+ try {
+ const raw = await fetchJson<Record<string, unknown>>(
+ `/api/review-analytics/status/${match._id}`,
+ );
+ const j = normalizeJob(raw);
+ if (j.status === "complete") {
+ putCachedCompleteJob(j);
+ setJobId(j._id);
+ setJob(j);
+ setReplayFromCache(true);
+ setView("processing");
+ return;
+ }
+ } catch {
+ /* fall through to a fresh run */
+ }
+ }
+ }
+
  try {
  const res = await fetchJson<{ jobId: string }>("/api/review-analytics/submit", {
  method: "POST",
  headers: { "Content-Type": "application/json" },
  body: JSON.stringify({ amazonUrl: url }),
  });
+ setReplayFromCache(false);
  setJobId(res.jobId);
  setJob(null);
  setView("processing");
@@ -362,11 +510,12 @@ export default function ReviewAnalyticsPage() {
  variant: "error",
  });
  }
- }, [urlInput, urlValid]);
+ }, [urlInput, urlValid, historyData?.items]);
 
  const onOpenHistoryItem = useCallback(
  async (id: string) => {
  setBusyHistoryId(id);
+ setReplayFromCache(false);
  try {
  await loadJob(id);
  setJobId(id);
@@ -388,6 +537,7 @@ export default function ReviewAnalyticsPage() {
  async (id: string) => {
  try {
  await fetchJson(`/api/review-analytics/history/${id}`, { method: "DELETE" });
+ evictCachedJobById(id);
  await mutateHistory();
  if (jobId === id) {
  resetToInput();
@@ -602,6 +752,7 @@ export default function ReviewAnalyticsPage() {
  errorMessage={job?.errorMessage ?? null}
  elapsedSec={elapsedSec}
  onTryAgain={resetToInput}
+ dummyReplay={replayFromCache}
  />
  )}
 
