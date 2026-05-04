@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { ListingImage } from "@/components/ListingImage";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
 import type { HistoryStripItem } from "./types";
 
@@ -41,34 +41,23 @@ export function HistoryView({ items, onView, onDelete, busyId }: Props) {
  const l = h.listings?.[0];
  const score = h.marketIntelligence?.marketSentimentScore ?? 0;
  return (
- <tr key={h._id} className="border-b border-border/55">
- <td className="px-3 py-2">
- <div className="flex max-w-[240px] items-center gap-2">
- <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-border/55 bg-muted">
- {l?.imageUrl ? (
- <Image
- src={l.imageUrl}
- alt=""
- fill
- className="object-cover"
- unoptimized
- sizes="40px"
- />
- ) : null}
- </div>
- <span className="line-clamp-2 text-xs font-medium text-foreground">
+ <tr key={h._id} className="border-b border-border/55 align-top">
+ <td className="max-w-[280px] px-3 py-3 align-top">
+ <div className="flex items-start gap-3">
+ <ListingImage src={l?.imageUrl} alt="" squareSize={44} />
+ <span className="min-w-0 flex-1 line-clamp-2 text-xs font-medium leading-relaxed break-words text-foreground">
  {l?.title ?? h.category}
  </span>
  </div>
  </td>
- <td className="px-3 py-2 font-mono text-xs">{h.userAsin}</td>
- <td className="px-3 py-2 text-xs">{h.totalReviewsScraped}</td>
- <td className="px-3 py-2 text-xs">{h.totalListingsScraped}</td>
- <td className="px-3 py-2 text-xs font-semibold">{Math.round(score)}</td>
- <td className="px-3 py-2 text-xs text-muted-foreground">
+ <td className="whitespace-nowrap px-3 py-3 align-top font-mono text-xs">{h.userAsin}</td>
+ <td className="whitespace-nowrap px-3 py-3 align-top text-xs">{h.totalReviewsScraped}</td>
+ <td className="whitespace-nowrap px-3 py-3 align-top text-xs">{h.totalListingsScraped}</td>
+ <td className="whitespace-nowrap px-3 py-3 align-top text-xs font-semibold">{Math.round(score)}</td>
+ <td className="whitespace-nowrap px-3 py-3 align-top text-xs text-muted-foreground">
  {h.createdAt ? formatRelativeTime(h.createdAt as string) : ""}
  </td>
- <td className="px-3 py-2">
+ <td className="px-3 py-3 align-top">
  <div className="flex flex-wrap gap-2">
  <button
  type="button"

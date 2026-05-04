@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import { FaStar } from "react-icons/fa";
+import { ListingImage } from "@/components/ListingImage";
 import { formatRevenue } from "@/lib/marketEstimator/formatRevenue";
 import type { MarketJob } from "./types";
 
@@ -76,11 +76,11 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  </div>
 
  <div className="overflow-x-auto rounded-xl border border-border/80 bg-card/95 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]">
- <table className="min-w-[720px] w-full text-left text-sm">
+ <table className="min-w-[800px] w-full border-collapse text-left text-sm">
  <thead className="border-b border-border bg-muted text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:bg-muted/50">
  <tr>
  <th className="px-2 py-2 md:px-3 md:py-2">Rank</th>
- <th className="px-2 py-2 md:px-3 md:py-2">Product</th>
+ <th className="min-w-[280px] px-2 py-2 md:px-3 md:py-2">Product</th>
  <th className="px-2 py-2 md:px-3 md:py-2">Price</th>
  <th className="px-2 py-2 md:px-3 md:py-2">Rating</th>
  <th className="hidden px-2 py-2 md:table-cell md:px-3 md:py-2">Reviews</th>
@@ -93,57 +93,46 @@ export function ProductTableTab({ job }: ProductTableTabProps) {
  {rows.map((p) => {
  const share = (p.estimatedMonthlyRevenue / totalRev) * 100;
  return (
- <tr key={p.asin + p.rank} className="align-middle">
- <td className="px-2 py-2 md:px-3 md:py-2">
+ <tr key={p.asin + p.rank} className="align-top border-b border-border/50">
+ <td className="whitespace-nowrap px-2 py-3 align-top md:px-3">
  <span
  className={`inline-flex size-7 items-center justify-center rounded-full text-xs font-bold ${rankBadgeClass(p.rank)}`}
  >
  {p.rank}
  </span>
  </td>
- <td className="max-w-[220px] px-2 py-2 md:px-3 md:py-2">
- <div className="flex gap-2">
- <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-border/55 bg-muted">
- {p.imageUrl ? (
- <Image
- src={p.imageUrl}
- alt=""
- fill
- className="object-cover"
- unoptimized
- sizes="40px"
- />
- ) : null}
- </div>
- <div className="min-w-0">
- <p className="line-clamp-2 text-xs font-semibold text-foreground">
+ <td className="min-w-[280px] max-w-[400px] px-2 py-3 align-top md:px-3">
+ <div className="flex items-start gap-3">
+ <ListingImage src={p.imageUrl} alt="" squareSize={44} />
+ <div className="min-w-0 flex-1">
+ <p className="line-clamp-2 text-xs font-semibold leading-snug break-words text-foreground">
  {p.title}
  </p>
- <p className="line-clamp-1 text-[11px] text-muted-foreground">
- {p.brand || "—"}
+ <p className="mt-1 line-clamp-2 text-xs font-medium leading-snug break-words text-foreground/90">
+ {p.brand?.trim() ? p.brand : "—"}
  </p>
  </div>
  </div>
  </td>
- <td className="whitespace-nowrap px-2 py-2 text-xs font-medium md:px-3 md:py-2">
+ <td className="whitespace-nowrap px-2 py-3 align-top text-xs font-medium md:px-3">
  ${p.price.toFixed(2)}
  </td>
- <td className="whitespace-nowrap px-2 py-2 text-xs md:px-3 md:py-2">
+ <td className="whitespace-nowrap px-2 py-3 align-top text-xs md:px-3">
  <span className="inline-flex items-center gap-1 tabular-nums">
  {p.rating.toFixed(1)}
  <FaStar className="size-3 shrink-0 text-amber-500" aria-hidden />
  </span>
  </td>
- <td className="hidden whitespace-nowrap px-2 py-2 text-xs md:table-cell md:px-3 md:py-2">
+ <td className="hidden whitespace-nowrap px-2 py-3 align-top text-xs md:table-cell md:px-3">
  {p.reviewCount.toLocaleString()}
  </td>
- <td className="hidden whitespace-nowrap px-2 py-2 text-xs md:table-cell md:px-3 md:py-2">
+ <td className="hidden whitespace-nowrap px-2 py-3 align-top text-xs md:table-cell md:px-3">
  {p.estimatedMonthlySales.toLocaleString()}
  </td>
- <td className="whitespace-nowrap px-2 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400 md:px-3 md:py-2">
+ <td className="whitespace-nowrap px-2 py-3 align-top text-xs font-semibold text-emerald-700 dark:text-emerald-400 md:px-3">
  {formatRevenue(p.estimatedMonthlyRevenue)}
  </td>
- <td className="hidden px-2 py-2 md:px-3 md:py-2 lg:table-cell">
+ <td className="hidden px-2 py-3 align-top md:px-3 lg:table-cell">
  <div className="flex items-center gap-2">
  <div className="h-1.5 w-16 overflow-hidden rounded-full bg-foreground/10">
  <div

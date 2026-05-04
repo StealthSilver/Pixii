@@ -30,6 +30,20 @@ function absolutize(href: string | undefined): string {
   return `${AMAZON_BASE}${href.startsWith("/") ? "" : "/"}${href}`.split("?")[0] ?? "";
 }
 
+function absolutizeImageSrc(src: string | undefined): string {
+  if (!src) {
+    return "";
+  }
+  const t = src.trim();
+  if (t.startsWith("//")) {
+    return `https:${t}`.split("?")[0] ?? `https:${t}`;
+  }
+  if (t.startsWith("http")) {
+    return t.split("?")[0] ?? t;
+  }
+  return absolutize(t);
+}
+
 function parsePrice(text: string | undefined): number {
   if (!text) {
     return 0;
@@ -149,7 +163,7 @@ function parseHtmlToProducts(html: string): ScrapedProduct[] {
         price: price > 0 ? price : 19.99,
         rating: rating > 0 ? rating : 4.2,
         reviewCount: reviewCount > 0 ? reviewCount : 500,
-        imageUrl: img,
+        imageUrl: absolutizeImageSrc(img),
         url,
       });
     });

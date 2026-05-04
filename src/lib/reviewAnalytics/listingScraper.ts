@@ -1,4 +1,5 @@
 import * as cheerio from "cheerio";
+import { normalizeAmazonImageUrl } from "@/lib/amazon/normalizeAmazonImageUrl";
 import { extractAsin as extractAsinFromUrl } from "@/lib/aiCreator/extractAsin";
 import { callReviewAnalyticsLlm } from "@/lib/reviewAnalytics/anthropic";
 import { parseJsonFromClaude } from "@/lib/aiCreator/jsonUtils";
@@ -175,11 +176,12 @@ export function parseListingFromHtml(
     .get()
     .filter(Boolean);
 
-  const imageUrl =
+  const imageUrl = normalizeAmazonImageUrl(
     $("#landingImage").attr("src") ??
-    $("#imgBlkFront").attr("src") ??
-    $("#main-image-container img").first().attr("src") ??
-    "";
+      $("#imgBlkFront").attr("src") ??
+      $("#main-image-container img").first().attr("src") ??
+      "",
+  );
 
   const bsr = extractBsrFromHtml(html);
   const category = extractCategoryFromHtml(html);

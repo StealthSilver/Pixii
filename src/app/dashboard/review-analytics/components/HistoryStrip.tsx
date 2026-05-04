@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { ListingImage } from "@/components/ListingImage";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
 import type { HistoryStripItem } from "./types";
 
@@ -44,17 +44,8 @@ export function HistoryStrip({ items, onSelect, busyId }: HistoryStripProps) {
  onClick={() => onSelect(h._id)}
  className="group flex w-[200px] shrink-0 flex-col rounded-xl border border-border/80 bg-card/95 p-3 text-left shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] transition hover:border-muted-foreground/35 disabled:opacity-60 dark:ring-white/[0.05]"
  >
- <div className="relative mb-2 h-14 w-full overflow-hidden rounded-lg border border-border/55 bg-muted">
- {thumb ? (
- <Image
- src={thumb}
- alt=""
- fill
- className="object-cover object-center"
- unoptimized
- sizes="200px"
- />
- ) : null}
+ <div className="mb-2">
+ <ListingImage src={thumb} alt="" mode="banner" />
  </div>
  <p className="line-clamp-2 text-xs font-semibold text-foreground">{title}</p>
  <p className="mt-1 text-[11px] text-muted-foreground">
