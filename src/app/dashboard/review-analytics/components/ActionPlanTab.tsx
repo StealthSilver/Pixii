@@ -75,10 +75,10 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
  {strengths.map((s) => (
  <li
  key={s}
- className="flex gap-2 rounded-lg border border-emerald-200/70 bg-emerald-50/60 px-3 py-2.5 text-sm text-foreground dark:border-emerald-500/25 dark:bg-emerald-950/30"
+ className="flex items-start gap-2 rounded-lg border border-emerald-200/70 bg-emerald-50/60 px-3 py-2.5 text-sm text-foreground dark:border-emerald-500/25 dark:bg-emerald-950/30"
  >
  <FaCheck className="mt-0.5 size-4 shrink-0 text-emerald-700 dark:text-emerald-400" aria-hidden />
- {s}
+ <span className="min-w-0 flex-1 break-words leading-relaxed">{s}</span>
  </li>
  ))}
  </ul>
@@ -94,13 +94,13 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
  {weaknesses.map((s) => (
  <li
  key={s}
- className="flex gap-2 rounded-lg border border-amber-200/80 bg-amber-50/50 px-3 py-2.5 text-sm text-foreground dark:border-amber-500/25 dark:bg-amber-950/25"
+ className="flex items-start gap-2 rounded-lg border border-amber-200/80 bg-amber-50/50 px-3 py-2.5 text-sm text-foreground dark:border-amber-500/25 dark:bg-amber-950/25"
  >
  <FaExclamationTriangle
  className="mt-0.5 size-4 shrink-0 text-amber-700 dark:text-amber-300"
  aria-hidden
  />
- {s}
+ <span className="min-w-0 flex-1 break-words leading-relaxed">{s}</span>
  </li>
  ))}
  </ul>
@@ -130,7 +130,7 @@ export function ActionPlanTab({ job, intel, criteria }: Props) {
  {n}
  </span>
  <div className="min-w-0 flex-1">
- <p className="text-sm font-medium text-foreground">{text}</p>
+ <p className="text-sm font-medium leading-relaxed break-words text-foreground">{text}</p>
  <p className="mt-1 text-[11px] font-semibold text-muted-foreground">
  Impact: {impact}
  </p>

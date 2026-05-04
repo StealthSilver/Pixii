@@ -150,7 +150,7 @@ export function CompetitorTableTab({ listings, userAsin }: Props) {
  />
  ) : null}
  </div>
- <p className="line-clamp-2 text-xs font-medium text-foreground">
+ <p className="line-clamp-2 text-xs font-medium leading-relaxed break-words text-foreground">
  {row.title}
  </p>
  </div>

@@ -759,7 +759,7 @@ export default function ReviewAnalyticsPage() {
  {view === "result" && job && job.status === "complete" ? (
  <>
  <div className="flex flex-wrap items-start gap-2">
- <h2 className="min-w-0 flex-1 font-heading text-lg font-semibold tracking-tight text-foreground">
+ <h2 className="min-w-0 flex-1 font-heading text-lg font-semibold leading-snug tracking-tight break-words text-foreground">
  {titleHead}
  </h2>
  {job.userAsin ? (

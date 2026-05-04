@@ -22,7 +22,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
 
  return (
  <div className="space-y-6">
- <p className="rounded-lg border border-border bg-muted/80 px-4 py-3 text-sm text-foreground/90">
+ <p className="rounded-lg border border-border bg-muted/80 px-4 py-3 text-sm leading-relaxed text-foreground/90">
  These are the {sorted.length} things customers actually base their purchase decision
  on — ranked by how often they&apos;re mentioned.
  </p>
@@ -55,7 +55,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
  className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-sm ring-1 ring-black/[0.03] backdrop-blur-[1px] dark:ring-white/[0.05]"
  >
  <div className="flex flex-wrap items-start justify-between gap-2">
- <h3 className="font-heading text-base font-semibold text-foreground">
+ <h3 className="font-heading text-base font-semibold leading-snug break-words text-foreground">
  {c.criteriaName}
  </h3>
  <div className="flex flex-wrap items-center gap-2">
@@ -94,10 +94,10 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
  </div>
 
  <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
- <blockquote className="border-l-4 border-emerald-500 pl-3 text-xs italic text-muted-foreground">
+ <blockquote className="border-l-4 border-emerald-500 pl-3 text-xs italic leading-relaxed break-words text-muted-foreground">
  {c.topPositiveQuote}
  </blockquote>
- <blockquote className="border-l-4 border-red-500 pl-3 text-xs italic text-muted-foreground">
+ <blockquote className="border-l-4 border-red-500 pl-3 text-xs italic leading-relaxed break-words text-muted-foreground">
  {c.topNegativeQuote}
  </blockquote>
  </div>
@@ -111,7 +111,7 @@ export function PurchaseCriteriaTab({ criteria, keyInsight }: Props) {
  <p className="text-xs font-semibold uppercase tracking-wide text-primary">
  Key Insight
  </p>
- <p className="mt-2 text-sm font-medium leading-relaxed text-foreground">
+ <p className="mt-2 text-sm font-medium leading-relaxed break-words text-foreground">
  {keyInsight}
  </p>
  </div>

@@ -70,10 +70,10 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  {features.map((f) => (
  <li
  key={f}
- className="flex gap-2 rounded-lg border border-emerald-200/80 border-l-4 border-l-emerald-500 bg-card/95 px-3 py-2.5 text-sm text-foreground shadow-sm ring-1 ring-black/[0.03] dark:border-emerald-500/30 dark:bg-card dark:ring-white/[0.05]"
+ className="flex items-start gap-2 rounded-lg border border-emerald-200/80 border-l-4 border-l-emerald-500 bg-card/95 px-3 py-2.5 text-sm text-foreground shadow-sm ring-1 ring-black/[0.03] dark:border-emerald-500/30 dark:bg-card dark:ring-white/[0.05]"
  >
  <FaCheck className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
- <span>{f}</span>
+ <span className="min-w-0 flex-1 break-words leading-relaxed">{f}</span>
  </li>
  ))}
  </ul>
@@ -86,10 +86,10 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  {complaints.map((f) => (
  <li
  key={f}
- className="flex gap-2 rounded-lg border border-red-200/80 border-l-4 border-l-red-500 bg-card/95 px-3 py-2.5 text-sm text-foreground shadow-sm ring-1 ring-black/[0.03] dark:border-red-500/30 dark:bg-card dark:ring-white/[0.05]"
+ className="flex items-start gap-2 rounded-lg border border-red-200/80 border-l-4 border-l-red-500 bg-card/95 px-3 py-2.5 text-sm text-foreground shadow-sm ring-1 ring-black/[0.03] dark:border-red-500/30 dark:bg-card dark:ring-white/[0.05]"
  >
  <FaTimes className="mt-0.5 size-4 shrink-0 text-red-600" aria-hidden />
- <span>{f}</span>
+ <span className="min-w-0 flex-1 break-words leading-relaxed">{f}</span>
  </li>
  ))}
  </ul>
@@ -104,7 +104,7 @@ export function ReviewThemesTab({ intel, jobId, listings }: Props) {
  {needs.map((n) => (
  <span
  key={n}
- className="rounded-full border border-amber-300/80 bg-card px-3 py-1 text-xs font-medium text-amber-950 shadow-sm dark:border-amber-500/30 dark:bg-card/80 dark:text-amber-100"
+ className="max-w-full break-words rounded-full border border-amber-300/80 bg-card px-3 py-1 text-left text-xs font-medium leading-relaxed text-amber-950 shadow-sm dark:border-amber-500/30 dark:bg-card/80 dark:text-amber-100"
  >
  {n}
  </span>

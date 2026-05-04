@@ -177,8 +177,10 @@ function ReviewCard({ r }: { r: ReviewRow }) {
  {r.reviewDate ? new Date(r.reviewDate).toLocaleDateString() : ""}
  </span>
  </div>
- <p className="mt-1 font-medium text-foreground">{r.title}</p>
- <p className="mt-1 text-xs text-foreground/90">{expanded ? body : short}</p>
+ <p className="mt-1 break-words font-medium leading-snug text-foreground">{r.title}</p>
+ <p className="mt-1 whitespace-pre-wrap break-words text-xs leading-relaxed text-foreground/90">
+ {expanded ? body : short}
+ </p>
  {body.length > 220 ? (
  <button
  type="button"
