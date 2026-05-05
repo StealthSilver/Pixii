@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# Cached vendor bundles (e.g. scraped YouTube player scripts); do not commit — may trigger secret scanning.
+*-player-script.js
+
 # debug
 npm-debug.log*
 yarn-debug.log*
